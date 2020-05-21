@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.BaseActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_72"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/base_Lin"
+        android:background="@mipmap/hangyefengbao_top_bg"
+        >
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/base_left_iv"
+        android:src="@mipmap/denglu_icon_jiantou"
+        android:paddingRight="@dimen/dp_50"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="标题"
+        android:id="@+id/base_tv"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/titleWhite"
+        android:textSize="@dimen/sp_15"
+        />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/base_right_iv"
+            android:src="@mipmap/denglu_icon_jiantou"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/dp_30"
+            />
+    </LinearLayout>
+    <ViewFlipper
+        android:id="@+id/layout_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/base_Lin"
+        android:layout_marginTop="@dimen/dp_72"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
