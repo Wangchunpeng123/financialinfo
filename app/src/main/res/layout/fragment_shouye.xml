@@ -3,12 +3,175 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.ShouyeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/shouye_top_yuan"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/shouye_iv"
+            android:layout_width="300dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:scaleType="fitXY"
+            android:src="@mipmap/shouye_img"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shouye_tv" />
+
+        <ImageView
+            android:id="@+id/shouye_fengbao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/shouye_icon_hangyefengbao"
+            app:layout_constraintEnd_toStartOf="@+id/shouye_kuaixun"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
+            android:layout_marginTop="@dimen/dp_10"
+            />
+
+        <ImageView
+            android:id="@+id/shouye_kuaixun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/shouye_icon_shishikuaixun"
+            app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
+            app:layout_constraintEnd_toStartOf="@+id/shouye_shuju"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/shouye_fengbao"
+            android:layout_marginTop="@dimen/dp_10"
+            />
+
+        <ImageView
+            android:id="@+id/shouye_shuju"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/shouye_icon_caijinshuju"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/shouye_kuaixun"
+            app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
+            android:layout_marginTop="@dimen/dp_10"
+            />
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_180"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_39"
+            android:background="@mipmap/shouye_icon_sousuo_bg"
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@+id/shouye_tv"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+
+            <TextView
+                android:id="@+id/shouye_sousuo_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="大家都在搜：今日币圈"
+
+                />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@mipmap/shouye_icon_sousuo" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/shouye_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_35"
+            android:text="首页"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_21"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:src="@mipmap/shouye_qiandao_btn"
+          android:id="@+id/shouye_qiandao"
+          app:layout_constraintTop_toBottomOf="@+id/shouye_fengbao"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          android:layout_marginTop="@dimen/dp_10"
+          android:layout_marginLeft="@dimen/dp_10"
+          android:layout_marginRight="@dimen/dp_10"
+          />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="精选行情"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18"
+            android:id="@+id/shouye_jingxuan"
+            app:layout_constraintTop_toBottomOf="@id/shouye_qiandao"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="@dimen/dp_10"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shouye_jingxuan_iv"
+            android:src="@mipmap/shouye_hanqing_bg"
+            app:layout_constraintTop_toBottomOf="@id/shouye_jingxuan"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp_20"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shouye_jingxuan_iv1"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@mipmap/shouye_hanqing_bg"
+            app:layout_constraintLeft_toRightOf="@id/shouye_jingxuan_iv"
+            app:layout_constraintTop_toBottomOf="@id/shouye_jingxuan"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="今日热门"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18"
+            android:id="@+id/shouye_remen"
+            app:layout_constraintTop_toBottomOf="@id/shouye_jingxuan_iv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp_32"
+            android:layout_marginTop="@dimen/dp_10"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shouye_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/shouye_remen"
+            tools:layout_editor_absoluteX="17dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>

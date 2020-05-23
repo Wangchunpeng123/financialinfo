@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.yongyi.financialinfo"
-        minSdkVersion 29
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -57,4 +57,12 @@ dependencies {
     implementation 'com.github.githubZYQ:easypermission:v1.0.0'
     //viewpager2设置主界面
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    //Retrofit依赖
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    //配合Retrofit解析json字符所用
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    //使用jetpack组件中的ViewModel
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    implementation"androidx.lifecycle:lifecycle-viewmodel:2.0.0"
+
 }

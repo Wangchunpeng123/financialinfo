@@ -1,5 +1,6 @@
 package com.yongyi.financialinfo.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,23 +11,32 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.app.BaseActivity;
+import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.util.MyDialog;
 import com.yongyi.financialinfo.util.MyLog;
-import com.yongyi.financialinfo.util.MyToast;
+
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginActivity extends BaseActivity {
@@ -58,6 +68,8 @@ public class LoginActivity extends BaseActivity {
     TextView loginTry;
     @BindView(R.id.container)
     ConstraintLayout container;
+    @BindView(R.id.login_progress)
+    ProgressBar loginProgress;
     private String phong="";
     private boolean logintry=false;
     private TimeCount time;
@@ -69,39 +81,61 @@ public class LoginActivity extends BaseActivity {
         MyLog.e(TAG, "LoginActivity启动");
         time = new TimeCount(60000, 1000);
         initView();
-
+        //getMsg();
     }
 
-    private void initView() {
-        //设置按钮按下特效
-        loginOk.setOnTouchListener(new View.OnTouchListener(){
-            public boolean onTouch(View v, MotionEvent event) {
-                if(login86.getVisibility()==View.VISIBLE){
-            //重新设置按下时的背景图片
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    MyLog.i(TAG, "按下");
-                ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_yanzhengma2));
-
-                }else if(event.getAction() == MotionEvent.ACTION_UP){
-            //再修改为抬起时的正常图片
-                    MyLog.i(TAG, "抬起" );
-                ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_yanzhengma));
-                }
-                }else{
-                    //重新设置按下时的背景图片
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
-                        MyLog.i(TAG, "按下");
-                        ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_denglu2));
-
-                    }else if(event.getAction() == MotionEvent.ACTION_UP){
-                        //再修改为抬起时的正常图片
-                        MyLog.i(TAG, "抬起" );
-                        ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_denglu));
+    //获取服务器数据
+    private void getMsg() {
+        MyLog.e("onResponse","1111111111");
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(InterService.baseURL)
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+            MyLog.e("onResponse","222222222");
+            Call<ResponseBody> result = retrofit.create(InterService.class).getData();
+            result.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        MyLog.e("onResponse", 111+response.body().string()+111);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-                return false;
 
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    MyLog.e("onResponse","3333333333");
+                }
+            });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initView() {
+        //设置按钮按下特效,有可能和点击事件发生冲突
+        loginOk.setOnTouchListener((v, event) -> {
+            if(login86.getVisibility()==View.VISIBLE){
+        //重新设置按下时的背景图片
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
+                MyLog.i(TAG, "按下");
+            ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_yanzhengma2));
+
+            }else if(event.getAction() == MotionEvent.ACTION_UP){
+        //再修改为抬起时的正常图片
+                MyLog.i(TAG, "抬起" );
+            ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_yanzhengma));
             }
+            }else{
+                //重新设置按下时的背景图片
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    MyLog.i(TAG, "按下");
+                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_denglu2));
+
+                }else if(event.getAction() == MotionEvent.ACTION_UP){
+                    //再修改为抬起时的正常图片
+                    MyLog.i(TAG, "抬起" );
+                    ((ImageButton)v).setImageDrawable(getResources().getDrawable(R.mipmap.denglu_btn_denglu));
+                }
+            }
+            return false;
         });
 
         //设置底部字体颜色
@@ -158,8 +192,16 @@ public class LoginActivity extends BaseActivity {
                             }
                         }).show();
                     else {
-                        //验证成功进入主界面，失败请输入正确的验证码
-                        startActivity(new Intent(this,HomeActivity.class));
+                        loginProgress.setVisibility(View.VISIBLE);
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                //验证成功进入主界面，失败请输入正确的验证码
+                                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                finish();
+                            }
+                        };
+                        new Timer().schedule(task,1000);
                     }
                 }
                 break;
