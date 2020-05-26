@@ -76,6 +76,8 @@ public class HomeActivity extends BaseActivity {
         mFragments .add(new WoFragment());
         MyFragmentPagerAdapter mAdapter = new MyFragmentPagerAdapter(this, mFragments);
         mViewPager2.setAdapter(mAdapter);
+        //设置viewpager2是否可以滑动
+        mViewPager2.setUserInputEnabled(false);
         mViewPager2.registerOnPageChangeCallback(new OnPageChangeCallback(){
             @Override
             public void onPageSelected(int position) {

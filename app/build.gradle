@@ -64,5 +64,6 @@ dependencies {
     //使用jetpack组件中的ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
     implementation"androidx.lifecycle:lifecycle-viewmodel:2.0.0"
-
+    // 图片picasso
+    implementation 'com.squareup.picasso:picasso:2.3.2'
 }

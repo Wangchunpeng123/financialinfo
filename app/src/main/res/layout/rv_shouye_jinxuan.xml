@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/shouye_hanqing_bg"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:id="@+id/rv_shouye_xuhao"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginLeft="@dimen/dp_23"
+            android:textColor="@color/titleWhite"
+            android:layout_marginTop="@dimen/dp_8"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="黄金白银"
+            android:id="@+id/rv_shouye_biaoti"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_15"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:id="@+id/rv_shouye_shijian"
+            android:textColor="@color/text_gray"
+            android:layout_marginLeft="@dimen/dp_22"
+            android:layout_marginTop="@dimen/dp_8"
+            android:textSize="@dimen/sp_13"
+            />
+     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1237.26"
+        android:textSize="@dimen/sp_15"
+        android:id="@+id/rv_shouye_money"
+        android:textColor="@color/cengse"
+        android:layout_marginLeft="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_24"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+0.05%"
+        android:id="@+id/rv_shouye_baifen"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_24"
+        android:textSize="@dimen/sp_14"
+        android:background="@color/cengse_bg"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_6"
+        />
+
+</LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

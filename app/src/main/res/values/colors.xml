@@ -10,5 +10,6 @@
     <color name="gray1">#666666</color>
     <color name="text_gray">#999999</color>
     <color name="cengse">#FB6A5D</color>
-
+    <color name="cengse_bg">#FF424B</color>
+    <color name="green_bg">#00C72A</color>
 </resources>
