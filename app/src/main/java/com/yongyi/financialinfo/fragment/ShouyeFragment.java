@@ -60,6 +60,7 @@ public class ShouyeFragment extends Fragment {
     private List<String> rvList1;
     private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManager1;
+    private int value;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,11 +104,13 @@ public class ShouyeFragment extends Fragment {
         shouyeViewModel.mUserLiveData.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                // homeShouyeTv.setText(integer);
                 MyLog.e("shouyeViewModel", integer.toString());
-                // homeShouyeTv.setText(integer.toString());
+                value=integer;
+                MyLog.e("shouyeViewModel", value+"");
             }
         });
+        shouyeViewModel.getShouye();
+
     }
 
     private void initView() {

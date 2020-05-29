@@ -98,8 +98,10 @@ public class HangqingFragment extends Fragment {
                 holder.setClick(R.id.rv_hangqing_title_ll,s,position,rvAdapter);
                 if(clickPosition==position){
                     holder.setTxtSize(R.id.rv_hangqing_title_tv,15);
+                    holder.setTxtColor(R.id.rv_hangqing_title_tv,"#FFFFFF");
                     holder.setInVisibility(R.id.rv_hangqing_title_iv,View.VISIBLE);
                 }else {
+                    holder.setTxtColor(R.id.rv_hangqing_title_tv,"#FFC5C5");
                     holder.setTxtSize(R.id.rv_hangqing_title_tv,14);
                     holder.setInVisibility(R.id.rv_hangqing_title_iv,View.GONE);
                 }

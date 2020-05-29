@@ -94,7 +94,6 @@ public class HomeActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.home_shouye:
                 changeUi(0);
-
                 break;
             case R.id.home_hangqing:
                 changeUi(1);

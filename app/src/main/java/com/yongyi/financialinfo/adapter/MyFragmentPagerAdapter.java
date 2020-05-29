@@ -1,5 +1,7 @@
 package com.yongyi.financialinfo.adapter;
 
+import android.view.MotionEvent;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;

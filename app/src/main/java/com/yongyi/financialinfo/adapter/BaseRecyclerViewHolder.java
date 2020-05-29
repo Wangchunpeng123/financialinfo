@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.util.GradientDrawableUtils;
+import com.yongyi.financialinfo.util.MyLog;
 
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -208,6 +212,17 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
         Picasso.with(context).load(res).into(imageView);//Picasso加载图片的一种方式
     }
 
+    //设置本地圆角图片
+    public void setImgResRadius(Context context, int viewId, int res) {
+        ImageView imageView = (ImageView) itemView.findViewById(viewId);
+
+        RoundedCorners roundedCorners = new RoundedCorners(60);
+        //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
+        // RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+        RequestOptions options = RequestOptions.bitmapTransform(roundedCorners);
+        Glide.with(context).load(res).apply(options).into(imageView);
+    }
+
     //设置tv背景颜色
     public void setTxtBackground(int viewId, String color) {
         TextView textView = (TextView) itemView.findViewById(viewId);
@@ -217,5 +232,23 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
     public void setTxtBackgroundIv(int viewId,int mipmap) {
         TextView textView = (TextView) itemView.findViewById(viewId);
         textView.setBackgroundResource(mipmap);
+    }
+    //设置文本部分颜色
+    public void setTxtPortion(int viewId, String content,String s) {
+        int start = 0;
+         //  s="@"+s;
+        //找到控件
+        TextView textView = (TextView) itemView.findViewById(viewId);
+        //设置字体颜色
+        SpannableStringBuilder style=new SpannableStringBuilder(content);
+       //将要更改颜色的字符串通过“，”，分割出来
+        String[] strings=s.split(",");
+        for (String str:strings){
+            start=content.indexOf(str);//找到字符串开始位置
+            MyLog.e("BaseRecyclerViewHolder",String.valueOf(start));
+            //设置颜色
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#F37961")),start,start+str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
+        textView.setText(style);
     }
 }

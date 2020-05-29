@@ -5,11 +5,16 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="titleWhite">#FFFFFF</color>
     <color name="black">#333333</color>
+    <color name="hei">#000000</color>
+
     <color name="gray">#CCCCCC</color>
     <color name="blue">#0071D0</color>
     <color name="gray1">#666666</color>
     <color name="text_gray">#999999</color>
     <color name="cengse">#FB6A5D</color>
     <color name="cengse_bg">#FF424B</color>
+    <color name="cengse_remen">#F37961</color>
+
     <color name="green_bg">#00C72A</color>
+    <color name="fenhong"> #FFC5C5</color>#FFC5C5
 </resources>
