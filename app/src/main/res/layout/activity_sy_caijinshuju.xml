@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@mipmap/caijingshuju_top_bg" />
+
+    <ImageView
+        android:id="@+id/iv_caijingshuju_rili"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="89dp"
+        android:src="@mipmap/caijingshuju_icon_rili" />
+
+    <ImageView
+        android:id="@+id/iv_caijingshuju_line_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="127dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/caijingshuju_line_10" />
+    <ImageView
+        android:id="@+id/iv_caijungshuju_wujiaoxing_hong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="362dp"
+        android:layout_marginTop="97dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/shuju_main_wujiaoxing_hong" />
+    <ImageView
+        android:id="@+id/iv_caijungshuju_wujiaoxing_hui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="380.5dp"
+        android:layout_marginTop="97dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/shuju_main_wujiaoxing_hui" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_jiantou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_25"
+            android:src="@mipmap/caijingshuju_icon_jiantou" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="财经数据"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_15" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_43"
+        android:layout_marginTop="91dp"
+        android:text="2020.04.21  星期二"
+        android:textColor="#0071D0"
+        android:textSize="11sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_caijingshuju"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="132dp"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_10" />
+
+</FrameLayout>

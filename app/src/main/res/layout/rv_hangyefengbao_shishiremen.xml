@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dp_160"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/shishi_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/hangyefengbao_remen_bg"
+        />
+
+    <TextView
+        android:id="@+id/shishi_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="湖北个人住房贷款..."
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_13"
+         />
+
+    <TextView
+        android:id="@+id/shishi_tv_xin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="新"
+        android:textColor="#ff0071d0"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintLeft_toRightOf="@id/shishi_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/dp_15"
     android:layout_marginRight="@dimen/dp_15"
+    android:background="@color/titleWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <FrameLayout
             android:layout_width="@dimen/dp_35"
@@ -254,14 +255,12 @@
         </LinearLayout>
 
 
-
-
-    <TextView
+    <ImageView
         android:id="@+id/remen_line10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
-        android:background="@mipmap/shequ_main_line_10"
+        android:src="@mipmap/shequ_main_line_10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/remen_date" />
 </androidx.constraintlayout.widget.ConstraintLayout>

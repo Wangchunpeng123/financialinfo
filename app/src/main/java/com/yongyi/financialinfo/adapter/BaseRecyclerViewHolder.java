@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.custom.CircleImageTransformer;
 import com.yongyi.financialinfo.util.GradientDrawableUtils;
 import com.yongyi.financialinfo.util.MyLog;
 
@@ -149,18 +150,14 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
             Glide.with(context).load(imgUrl).apply(options).into(imageView);
         }
     }
-/*
-    public void setImgCrop(Context context, String imgUrl, int viewId){
+    //设置本地图片为圆形
+    public void setImgCrop(Context context,int image, int viewId){
         ImageView imageView= (ImageView) itemView.findViewById(viewId);
-        if (!"".equals(imgUrl)){
-            Picasso.with(context).load(imgUrl)
-                    .resize(200,200)
-                    .centerCrop()
-                    .placeholder(R.drawable.empty)
-                    .error(R.drawable.empty)
-                    .into(imageView);
-        }
-    }*/
+        Picasso.with(context)
+                .load(image)
+                .transform(new CircleImageTransformer())
+                .into(imageView);
+    }
 
     //        设置控件是否可见
     public void setInVisibility(int viewId, int v) {
@@ -251,4 +248,18 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
         }
         textView.setText(style);
     }
+
+
+    // 获取条目的真实位置
+    public int getRealPosition(RecyclerView.ViewHolder holder) {
+        int position = holder.getLayoutPosition();
+        if (position <=1) {
+            return position ;
+        }
+        else {
+            return position-1 ;
+        }
+
+    }
+
 }

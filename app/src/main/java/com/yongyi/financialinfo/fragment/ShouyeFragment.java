@@ -1,5 +1,6 @@
 package com.yongyi.financialinfo.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.activity.ShouyeCJSJActivity;
+import com.yongyi.financialinfo.activity.ShouyeHYFBActivity;
+import com.yongyi.financialinfo.activity.ShouyeSSKXActivity;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.model.ShouyeViewModel;
@@ -149,10 +153,13 @@ public class ShouyeFragment extends Fragment {
             case R.id.shouye_iv:
                 break;
             case R.id.shouye_fengbao:
+                startActivity(new Intent(getActivity(), ShouyeHYFBActivity.class));
                 break;
             case R.id.shouye_kuaixun:
+                startActivity(new Intent(getActivity(), ShouyeSSKXActivity.class));
                 break;
             case R.id.shouye_shuju:
+                startActivity(new Intent(getActivity(), ShouyeCJSJActivity.class));
                 break;
             case R.id.shouye_ll_shousuo:
                 break;
