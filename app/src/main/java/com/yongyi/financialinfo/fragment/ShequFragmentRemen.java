@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.activity.HomeActivity;
@@ -56,6 +57,8 @@ public class ShequFragmentRemen extends Fragment {
     RecyclerView sqRmFm;
     @BindView(R.id.sq_rm_fm_rv)
     RecyclerView sqRmFmRv;
+    @BindView(R.id.sq_rv_fm_tv)
+    TextView sqRvFmTv;
 
     private View view;
     private BaseRecyclerAdapter<ShequRemenBean> rmRvAdapter;
@@ -234,7 +237,7 @@ public class ShequFragmentRemen extends Fragment {
         };
         sqRmFm.setLayoutManager(manager);
         sqRmFm.setAdapter(rmRvAdapter);
-        
+        /*
         sqRmFm.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -251,23 +254,24 @@ public class ShequFragmentRemen extends Fragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState ==RecyclerView.SCROLL_STATE_IDLE){
-
                     Animation animBottomIn = AnimationUtils.loadAnimation(getActivity(),
                             R.anim.bottom_in);
                     animBottomIn.setDuration(240);
-                    
                     //暂停
                     if (myDy<0){
                         //上滑监听
+                        sqRvFmTv.setVisibility(firstPosition==0 ? View.VISIBLE : View.GONE);
                         sqRmFmRv.setVisibility(firstPosition==0 ? View.VISIBLE : View.GONE);
                         sqRmFmRv.startAnimation(animBottomIn);
+
                     }else{
+                        sqRvFmTv.setVisibility(firstPosition==0 ? View.VISIBLE : View.GONE);
                         sqRmFmRv.setVisibility(firstPosition>=1 ? View.GONE : View.VISIBLE);
                     }
                 }
             }
             
-        });
+        });*/
 
     }
 

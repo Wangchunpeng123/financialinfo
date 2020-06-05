@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="注册财经资讯"
+        android:text="欢迎注册"
         android:id="@+id/login_caijin"
         app:layout_constraintTop_toBottomOf="@+id/back_iv"
         android:layout_marginTop="@dimen/dp_50"
@@ -46,45 +46,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_phong"
-        android:text="已发送验证码至"
+        android:text="Hello，欢迎您的到来！"
         android:textSize="@dimen/sp_15"
-        android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/login_password_ll"
-        android:layout_marginLeft="@dimen/dp_31"
-        android:layout_marginBottom="@dimen/dp_7"
-        android:visibility="gone"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_password_ll"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/dp_31"
-        android:layout_marginRight="@dimen/dp_31"
         app:layout_constraintTop_toBottomOf="@+id/login_caijin"
-        android:layout_marginTop="@dimen/dp_72"
-        >
+        android:layout_marginLeft="@dimen/dp_31"
+       android:layout_marginTop="@dimen/dp_14"
+        />
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/login_86"
-            android:text="+86"
+            android:id="@+id/login_phong_tv"
+            android:text="手 机 号"
             android:visibility="visible"
             android:textSize="@dimen/sp_15"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp_31"
+            android:layout_marginRight="@dimen/dp_31"
+            app:layout_constraintTop_toBottomOf="@+id/login_caijin"
+            android:layout_marginTop="@dimen/dp_72"
             />
         <EditText
-            android:id="@+id/userphone"
-            android:layout_width="0dp"
-            android:layout_weight="5"
+            android:id="@+id/login_phone"
+            android:layout_width="@dimen/dp_100"
             android:layout_height="wrap_content"
             android:hint="请输入手机号"
+            android:maxLength="11"
             android:inputType="number"
             android:background="@null"
+            app:layout_constraintLeft_toRightOf="@id/login_phong_tv"
+            app:layout_constraintTop_toBottomOf="@+id/login_caijin"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_marginTop="@dimen/dp_72"
             />
-    </LinearLayout>
+
 
     <View
         android:id="@+id/login_line"
@@ -95,7 +93,7 @@
         android:layout_marginRight="@dimen/dp_35"
         android:background="@drawable/bg_dotted_line"
         android:layerType="software"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_ll"
+        app:layout_constraintTop_toBottomOf="@+id/login_phong_tv"
         />
 
     <ImageButton
@@ -167,17 +165,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/yanzhengma_et" />
 
-
-    <ImageButton
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_20"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/bg_dotted_line"
-        android:src="@mipmap/denglu_btn_yanzhengma"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_line"
-        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

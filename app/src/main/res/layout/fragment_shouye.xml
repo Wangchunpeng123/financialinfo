@@ -22,7 +22,7 @@
             android:id="@+id/shouye_iv"
             android:layout_width="330dp"
             android:layout_height="140dp"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:scaleType="fitXY"
             android:src="@mipmap/shouye_img"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -38,7 +38,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_3"
             />
 
         <ImageView
@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toStartOf="@+id/shouye_shuju"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/shouye_fengbao"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_3"
             />
 
         <ImageView
@@ -62,7 +62,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/shouye_kuaixun"
             app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_3"
             />
 
         <LinearLayout
@@ -114,7 +114,7 @@
           app:layout_constraintTop_toBottomOf="@+id/shouye_fengbao"
           app:layout_constraintLeft_toLeftOf="parent"
           app:layout_constraintRight_toRightOf="parent"
-          android:layout_marginTop="@dimen/dp_10"
+          android:layout_marginTop="@dimen/dp_5"
           android:layout_marginLeft="@dimen/dp_20"
           android:layout_marginRight="@dimen/dp_20"
           />
@@ -129,14 +129,15 @@
             app:layout_constraintTop_toBottomOf="@id/shouye_qiandao"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="@dimen/dp_32"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             />
 
           <androidx.recyclerview.widget.RecyclerView
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:id="@+id/shouye_rv_jinxuan"
-              android:layout_marginTop="@dimen/dp_8"
+              android:overScrollMode="never"
+              android:layout_marginTop="@dimen/dp_3"
               android:layout_marginLeft="@dimen/dp_15"
               android:layout_marginRight="@dimen/dp_15"
               app:layout_constraintTop_toBottomOf="@id/shouye_jingxuan"
@@ -144,8 +145,6 @@
               app:layout_constraintRight_toRightOf="parent"
 
               />
-
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -157,19 +156,20 @@
             app:layout_constraintTop_toBottomOf="@id/shouye_rv_jinxuan"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="@dimen/dp_32"
-            android:layout_marginTop="@dimen/dp_10"
-
+            android:layout_marginTop="@dimen/dp_5"
             />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shouye_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_8"
+            android:overScrollMode="never"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_20"
             app:layout_constraintTop_toBottomOf="@id/shouye_remen"
             app:layout_constraintBottom_toBottomOf="parent"
+
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,12 +5,19 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
+import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
+import com.yongyi.financialinfo.util.MyApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -52,6 +59,25 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        //加载标签rv
+        List<String> biaoqianList=new ArrayList<>();
+        biaoqianList.add("期货杠杆");
+        biaoqianList.add("华尔街");
+        biaoqianList.add("区块链");
+        LinearLayoutManager manager=new LinearLayoutManager(MyApplication.mContext);
+        manager.setOrientation(RecyclerView.HORIZONTAL);
+        BaseRecyclerAdapter<String> ad=new BaseRecyclerAdapter(MyApplication.mContext,biaoqianList,R.layout.rv_shishikuaixun_msg_biaoqian) {
+
+            @Override
+            public void bindData(BaseRecyclerViewHolder holder, Object o, int position) {
+                holder.setTxt(R.id.bianqian_button,(String)o);
+            }
+
+        };
+        holder.msgRv.setLayoutManager(manager);
+        holder.msgRv.setAdapter(ad);
+
+
         int state = mTextStateList.get(mList.get(position).getId(), STATE_UNKNOW);
         //第一次初始化，未知状态
         if (state == STATE_UNKNOW) {
@@ -105,11 +131,14 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
                 if (state == STATE_COLLAPSED) {
                     holder.content.setMaxLines(Integer.MAX_VALUE);
                     holder.expandOrFold.setText("收起");
+
                     mTextStateList.put(mList.get(position).getId(), STATE_EXPANDED);
+                    holder.ivLine.setImageResource(R.mipmap.caijingshuju_line_10);
                 } else if (state == STATE_EXPANDED) {
                     holder.content.setMaxLines(MAX_LINE_COUNT);
                     holder.expandOrFold.setText("展开");
                     mTextStateList.put(mList.get(position).getId(), STATE_COLLAPSED);
+                    holder.ivLine.setImageResource(R.mipmap.caijingshuju_line_1);
                 }
             }
         });
@@ -129,12 +158,16 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
         public TextView content;
         public TextView delete;
         public TextView expandOrFold;
+        public ImageView ivLine;
+        public RecyclerView msgRv;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            title_shishikuaixun = (TextView) itemView.findViewById(R.id.textView6);
-            content = (TextView) itemView.findViewById(R.id.textView7);
-            expandOrFold = (TextView) itemView.findViewById(R.id.textView8);
+            title_shishikuaixun =  itemView.findViewById(R.id.rv_shishi_title);
+            content =  itemView.findViewById(R.id.rv_shishi_content);
+            expandOrFold =  itemView.findViewById(R.id.rv_shishi_zhankai);
+            ivLine =  itemView.findViewById(R.id.shishi_line);
+            msgRv=  itemView.findViewById(R.id.shishi_msg_rv);
         }
     }
 }

@@ -19,29 +19,10 @@ import butterknife.ButterKnife;
 
 public class ShouyeCJSJActivity extends AppCompatActivity {
 
-    @BindView(R.id.rv_caijingshuju)
+    @BindView(R.id.caijing_rv)
     RecyclerView caijingshuju_rv;
-   /*
-    @BindView(R.id.rv_tv_time)
-    TextView rv_time;
-    @BindView(R.id.rv_tv_title)
-    TextView rc_title;
-    @BindView(R.id.rv_tv_neirong)
-    TextView rc_neirong;
-    @BindView(R.id.rv_iv_star1)
-    ImageView rv_star1;
-    @BindView(R.id.rv_iv_star2)
-    ImageView rv_star2;
-    @BindView(R.id.rv_iv_star3)
-    ImageView rv_star3;
-    @BindView(R.id.rv_iv_star4)
-    ImageView rv_star4;
-    @BindView(R.id.rv_iv_star5)
-    ImageView rv_star5;
-    @BindView(R.id.rv_iv_guoqi)
-    ImageView rv_guoqi;
-    */
-    @BindView(R.id.iv_jiantou)
+
+    @BindView(R.id.caijing_jiantou)
     ImageView rv_caijingshuju_jiantou;
     private BaseRecyclerAdapter<String> rvAdapter;
     private View view;
@@ -65,12 +46,7 @@ public class ShouyeCJSJActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
-
-
-
 
     private void initMsg() {
         rv_caijingshuju_List = new ArrayList<>();
@@ -82,20 +58,6 @@ public class ShouyeCJSJActivity extends AppCompatActivity {
         rv_caijingshuju_List.add("6");
         rv_caijingshuju_List.add("6");
 
-
-  /*        shouyeViewModel = ViewModelProviders.of(this).get(ShouyeViewModel.class);
-        //让TextView观察ViewModel中数据的变化,并实时展示
-
-        *shouyeViewModel.mUserLiveData.observe(getViewLifecycleOwner(), new Observer<Integer>() {
-
-            @Override
-            public void onChanged(Integer integer) {
-                // homeShouyeTv.setText(integer);
-                MyLog.e("shouyeViewModel", integer.toString());
-                // homeShouyeTv.setText(integer.toString());
-
-            }
-        }); */
     }
     private void initView() {
         //设置Rv布局管理者

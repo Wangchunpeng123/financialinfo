@@ -84,7 +84,6 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
         list_path = new ArrayList<>();
         list_path.add("https://gw.alicdn.com/tfs/TB1HYd0GVP7gK0jSZFjXXc5aXXa-1050-1050.png");
         list_path.add("https://gw.alicdn.com/bao/upload/TB1KcWYGQL0gK0jSZFAXXcA9pXa.jpg_Q75.jpg");
-
         list_path.add("https://gw.alicdn.com/bao/upload/TB17wP7F2b2gK0jSZK9XXaEgFXa.jpg_Q75.jpg");
 
 

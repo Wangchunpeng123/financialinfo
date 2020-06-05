@@ -1,84 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/caijing_head_iv"
         android:scaleType="fitXY"
-        android:src="@mipmap/caijingshuju_top_bg" />
+        android:src="@mipmap/caijingshuju_top_bg"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-        android:id="@+id/iv_caijingshuju_rili"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:id="@+id/caijing_jiantou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
+        android:src="@mipmap/hangyefengbao_icon_jiantou"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/dp_15" />
+
+    <TextView
+        android:id="@+id/caijing_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="财经数据"
+        android:textColor="@color/titleWhite"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <ImageView
+        android:id="@+id/caijing_rili"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginTop="89dp"
-        android:src="@mipmap/caijingshuju_icon_rili" />
-
-    <ImageView
-        android:id="@+id/iv_caijingshuju_line_10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="127dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/caijingshuju_line_10" />
-    <ImageView
-        android:id="@+id/iv_caijungshuju_wujiaoxing_hong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="362dp"
-        android:layout_marginTop="97dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/shuju_main_wujiaoxing_hong" />
-    <ImageView
-        android:id="@+id/iv_caijungshuju_wujiaoxing_hui"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="380.5dp"
-        android:layout_marginTop="97dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/shuju_main_wujiaoxing_hui" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/iv_jiantou"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_25"
-            android:src="@mipmap/caijingshuju_icon_jiantou" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="170dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:text="财经数据"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/sp_15" />
-    </RelativeLayout>
+        android:layout_marginTop="@dimen/dp_16"
+        android:src="@mipmap/caijingshuju_icon_rili"
+        app:layout_constraintTop_toBottomOf="@+id/caijing_head_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_43"
-        android:layout_marginTop="91dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_16"
         android:text="2020.04.21  星期二"
-        android:textColor="#0071D0"
-        android:textSize="11sp" />
+        android:textColor="@color/blue"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintTop_toBottomOf="@+id/caijing_head_iv"
+        app:layout_constraintLeft_toRightOf="@id/caijing_rili"
+        />
+    <ImageView
+        android:id="@+id/caijing_line_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/caijingshuju_line_10"
+        app:layout_constraintTop_toBottomOf="@+id/caijing_rili"
+        android:layout_marginTop="@dimen/dp_22"
+        />
+    <ImageView
+        android:id="@+id/caijung_wujiaoxing_hong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/shuju_main_wujiaoxing_hong"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caijing_head_iv"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_49"
+        />
+    <ImageView
+        android:id="@+id/caijung_wujiaoxing_hui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/shuju_main_wujiaoxing_hui"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caijing_head_iv"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_30"
+        />
+
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_caijingshuju"
+            android:id="@+id/caijing_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="132dp"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_marginBottom="@dimen/dp_10" />
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/caijing_line_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+           />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

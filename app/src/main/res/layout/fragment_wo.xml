@@ -113,6 +113,18 @@
                     app:layout_constraintLeft_toRightOf="@+id/fensi_iv"
                     android:layout_marginLeft="@dimen/dp_10"
                     />
+
+
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:id="@+id/wo_read1"
+                    android:background="@drawable/message_red_read_gidn"
+                    app:layout_constraintLeft_toRightOf="@id/fensi_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -161,6 +173,15 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     />
                 <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:id="@+id/wo_read2"
+                    android:background="@drawable/message_red_read_gidn"
+                    app:layout_constraintLeft_toRightOf="@id/xiangguan_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    />
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/wo_icon_jiantou"
@@ -207,6 +228,15 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     />
                 <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:id="@+id/wo_read3"
+                    android:background="@drawable/message_red_read_gidn"
+                    app:layout_constraintLeft_toRightOf="@id/dongtai_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    />
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/wo_icon_jiantou"
@@ -251,6 +281,15 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/xiaoxi_iv"
                     android:layout_marginLeft="@dimen/dp_10"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:id="@+id/wo_read4"
+                    android:background="@drawable/message_red_read_gidn"
+                    app:layout_constraintLeft_toRightOf="@id/xiaoxi_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/dp_3"
                     />
                 <ImageView
                     android:layout_width="wrap_content"

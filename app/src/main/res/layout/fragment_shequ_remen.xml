@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/titleWhite"
     tools:context=".fragment.ShequFragmentRemen">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+
+
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/titleWhite"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/sq_rv_fm_tv"
             android:text="值得关注"
             android:paddingLeft="@dimen/dp_15"
             android:textColor="@color/text_gray"
@@ -21,17 +34,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sq_rm_fm_rv"
+
+            android:overScrollMode="never"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_15"
             android:layout_marginRight="@dimen/dp_15"
-
             />
+    </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/sq_rm_fm"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
-    </LinearLayout>
 
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
