@@ -1,4 +1,4 @@
-package com.yongyi.financialinfo.bean;
+package com.yongyi.financialinfo.adapter;
 
 import android.app.Activity;
 import android.util.SparseArray;
@@ -9,14 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
-import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
-import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
+import com.yongyi.financialinfo.bean.ExpandFoldTextBean;
 import com.yongyi.financialinfo.util.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

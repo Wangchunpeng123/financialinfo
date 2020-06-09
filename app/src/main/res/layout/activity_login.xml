@@ -25,68 +25,64 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_head_iv"
         android:src="@mipmap/denglu_top_bg"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/login_caijin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="登录财经资讯"
-        android:id="@+id/login_caijin"
+        android:text="欢迎登录"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/back_iv"
-        android:layout_marginTop="@dimen/dp_50"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_50"
         android:layout_marginLeft="@dimen/dp_31"
         android:textSize="@dimen/dp_25"
-        android:textColor="@color/black"
         />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_phong"
-        android:text="已发送验证码至"
-        android:textSize="@dimen/sp_15"
-        android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/login_password_ll"
-        android:layout_marginLeft="@dimen/dp_31"
-        android:layout_marginBottom="@dimen/dp_7"
-        android:visibility="gone"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_password_ll"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/dp_31"
-        android:layout_marginRight="@dimen/dp_31"
+        android:text="Hello，欢迎您的到来！"
+        android:textColor="#ffa6a9b8"
+        android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/login_caijin"
-        android:layout_marginTop="@dimen/dp_72"
-        >
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_31"
+        android:layout_marginTop="@dimen/dp_13"
+        />
+
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/login_86"
-            android:text="+86"
+            android:id="@+id/login_zhanghao"
+            android:text="账号"
             android:visibility="visible"
             android:textSize="@dimen/sp_15"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp_31"
+            android:layout_marginRight="@dimen/dp_31"
+            app:layout_constraintTop_toBottomOf="@+id/login_caijin"
+            android:layout_marginTop="@dimen/dp_72"
             />
         <EditText
             android:id="@+id/userphone"
-            android:layout_width="0dp"
-            android:layout_weight="5"
+            android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
-            android:hint="请输入手机号"
+            android:hint="请输入您的账号"
             android:inputType="number"
             android:background="@null"
             android:maxLength="11"
+            app:layout_constraintLeft_toRightOf="@id/login_zhanghao"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_31"
+            app:layout_constraintTop_toBottomOf="@+id/login_caijin"
+            android:layout_marginTop="@dimen/dp_72"
             />
-    </LinearLayout>
+
 
     <View
         android:id="@+id/login_line"
@@ -97,23 +93,32 @@
         android:layout_marginRight="@dimen/dp_35"
         android:background="@drawable/bg_dotted_line"
         android:layerType="software"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_ll"
+        app:layout_constraintTop_toBottomOf="@+id/login_zhanghao"
         />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/login_denglu"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
-        android:contentDescription="@null"
-        android:src="@mipmap/denglu_btn_denglu"
+        android:layout_marginTop="92dp"
+        android:background="@mipmap/botton_denglu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_line" />
+        app:layout_constraintTop_toBottomOf="@+id/login_denglu_tv" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:textColor="#ffffffff"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="@id/login_denglu"
+        app:layout_constraintRight_toRightOf="@id/login_denglu"
+        app:layout_constraintTop_toTopOf="@id/login_denglu"
+        app:layout_constraintBottom_toBottomOf="@id/login_denglu"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -125,6 +130,105 @@
         android:indeterminateDrawable="@drawable/loading_progressbar"
         android:visibility="gone"
         android:id="@+id/login_progress"
+        />
+
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_mima"
+        android:text="密码"
+        android:visibility="visible"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_line"
+        android:layout_marginStart="@dimen/dp_31"
+        android:layout_marginTop="16dp"
+        />
+    <EditText
+        android:id="@+id/user_password"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="请输入您的密码"
+        android:inputType="textPassword"
+        android:maxLines="16"
+        app:layout_constraintLeft_toRightOf="@id/login_mima"
+        app:layout_constraintTop_toBottomOf="@+id/login_line"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/dp_20"
+        />
+
+    <View
+        android:id="@+id/login_line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_35"
+        android:background="@drawable/bg_dotted_line"
+        android:layerType="software"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_password" />
+
+    <CheckBox
+        android:id="@+id/yonghuxieyi_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:drawableStart="@animator/check_login"
+        app:layout_constraintTop_toBottomOf="@id/login_line1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_18"/>
+
+    <TextView
+        android:id="@+id/login_denglu_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我已阅读并接受"
+        android:textColor="#ff8e8e8e"
+        android:textSize="11sp"
+        app:layout_constraintLeft_toRightOf="@id/yonghuxieyi_cb"
+        app:layout_constraintTop_toBottomOf="@id/login_line1"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_6"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="《用户协议》"
+        android:textColor="@color/cengse"
+        android:textSize="11sp"
+        app:layout_constraintLeft_toRightOf="@id/login_denglu_tv"
+        app:layout_constraintTop_toBottomOf="@id/login_line1"
+        android:layout_marginTop="@dimen/dp_20" />
+    <TextView
+        android:id="@+id/forget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码？"
+        android:textColor="@color/cengse"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_line1"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_30"
+
+        />
+
+    <TextView
+        android:id="@+id/login_zhuche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="立即注册"
+        android:textColor="@color/cengse"
+        app:layout_constraintBottom_toTopOf="@id/login_xieyi"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="@dimen/dp_10"
         />
 
     <TextView
@@ -139,46 +243,4 @@
         android:layout_marginBottom="@dimen/dp_20"
         android:textColor="@color/gray"
         />
-
-    <EditText
-        android:id="@+id/userpassword"
-        android:layout_width="@dimen/dp_220"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_80"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:hint="请输入密码"
-        tools:ignore="MissingConstraints"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_line"
-
-        />
-
-    <View
-        android:id="@+id/login_line1"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="@dimen/dp_30"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="@dimen/dp_35"
-        android:background="@drawable/bg_dotted_line"
-        android:layerType="software"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userpassword" />
-
-    <TextView
-        android:id="@+id/login_zhuche"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp"
-        android:text="立即注册"
-        android:textColor="#0071D0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_line1"
-        tools:ignore="MissingConstraints" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

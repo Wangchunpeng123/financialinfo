@@ -1,33 +1,44 @@
 package com.yongyi.financialinfo.activity;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
-import android.util.Base64;
-
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.app.BaseActivity;
-import com.yongyi.financialinfo.bean.LoginYanzhengmaBean;
 import com.yongyi.financialinfo.http.InterService;
-
-import com.yongyi.financialinfo.util.Base64Utils;
+import com.yongyi.financialinfo.util.MyDialog;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyToast;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
 
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,68 +53,98 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.userphone)
     EditText userphone;
     @BindView(R.id.login_denglu)
-    ImageButton loginDenglu;
-    @BindView(R.id.userpassword)
-    EditText userpassword;
+    ImageView loginDenglu;
+    @BindView(R.id.user_password)
+    EditText userPassword;
     @BindView(R.id.login_zhuche)
     TextView loginZhuche;
     @BindView(R.id.login_xieyi)
     TextView loginXieyi;
-    @BindView(R.id.login_head_iv)
-    ImageView  loginHeadIv;
+    @BindView(R.id.yonghuxieyi_cb)
+    CheckBox yonghuxieyi_cb;
+    @BindView(R.id.login_progress)
+    ProgressBar loginProgress;
 
-    private Bitmap decodedByte;
-    
+    private String phone;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         MyLog.e(TAG, "LoginActivity启动");
-
         initView();
-        getMsg();
     }
 
+
     private void initView() {
-        //设置底部字体颜色
-        SpannableStringBuilder style=new SpannableStringBuilder(loginXieyi.getText().toString());
-        style.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")),9,18, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        loginXieyi.setText(style);
-
-
-        }
-
-    //获取服务器数据
-    private void getMsg() {
-
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(InterService.baseURL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-
-        Call<LoginYanzhengmaBean> result = retrofit.create(InterService.class).getImageYanzhengma();
-        result.enqueue(new Callback<LoginYanzhengmaBean>() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void onResponse(Call<LoginYanzhengmaBean> call, Response<LoginYanzhengmaBean> response) {
-                runOnUiThread(new Runnable() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (yonghuxieyi_cb.isChecked() && userphone.length() == 11 && userPassword.length() >=6){
+                    loginDenglu.setBackgroundResource(R.mipmap.botton_dengluhover);
+                }else {
+                    loginDenglu.setBackgroundResource(R.mipmap.botton_denglu);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                yonghuxieyi_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void run() {
-                        loginHeadIv.setImageBitmap(Base64Utils.toBitmap(response.body().getData()));
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(yonghuxieyi_cb == buttonView){
+                            if (isChecked && userphone.length() == 11 && userPassword.length() >= 6){
+                                // loginDenglu.setEnabled(true);
+                                loginDenglu.setBackgroundResource(R.mipmap.botton_dengluhover);
+                            }else {
+                                //  loginDenglu.setEnabled(false);
+                                loginDenglu.setBackgroundResource(R.mipmap.botton_denglu);
+                            }
+                        }
                     }
                 });
 
             }
 
+        };
+        userphone.addTextChangedListener(textWatcher);
+        userPassword.addTextChangedListener(textWatcher);
+
+        //设置底部字体颜色
+        SpannableStringBuilder style=new SpannableStringBuilder(loginXieyi.getText().toString());
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")),9,18, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        loginXieyi.setText(style);
+    }
+
+    //获取服务器数据
+    private void isLogin() {
+        //获取当前的账号密码
+        phone=userphone.getText().toString().trim();
+        password=userPassword.getText().toString().trim();
+        MyLog.e(TAG,"登录时的phone和password:"+phone+"###"+password);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(InterService.baseURL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        Call<ResponseBody> result = retrofit.create(InterService.class).login(phone,password,1,"futures","000000");
+        result.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Call<LoginYanzhengmaBean> call, Throwable t) {
-                
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                MyLog.e(TAG,"##########" + response.body() + "##########");
+                saveMsg();
             }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                MyLog.e(TAG, "登录失败");
+            }
         });
     }
 
-
-
-    @OnClick({R.id.back_iv, R.id.userphone, R.id.login_denglu, R.id.userpassword, R.id.login_zhuche})
+    @OnClick({R.id.back_iv, R.id.userphone, R.id.login_denglu, R.id.user_password, R.id.login_zhuche})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
@@ -113,12 +154,65 @@ public class LoginActivity extends BaseActivity {
             case R.id.userphone:
                 break;
             case R.id.login_denglu:
+                if (userphone.getText().toString().length() < 11)
+                    new MyDialog(this, "登录失败", "请输入11位号码").show();
+                  else if( userPassword.getText().toString().length() < 6)
+                    new MyDialog(this, "登录失败", "密码数大于六位").show();
+                    else  if(yonghuxieyi_cb.isChecked()==false)
+                    new MyDialog(this, "登录失败", "请勾选\"我已阅读\"").show();
+                       else {
+                             loginDenglu.setBackgroundResource(R.mipmap.botton_dengluhover);
+                             loginProgress.setVisibility(View.VISIBLE);
+                             isLogin();
+                             //延时一秒进入主界面
+                                TimerTask task = new TimerTask() {
+                                  @Override
+                                     public void run() {
+                                        //验证成功进入主界面，失败请输入正确的验证码
+                                           startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                           finish();
+                                                      }
+                                                                  };
+                                           new Timer().schedule(task,1000);
+                           }
                 break;
-            case R.id.userpassword:
+            case R.id.user_password:
                 break;
             case R.id.login_zhuche:
-                startActivity(new Intent(this,UserZhuCheActivity.class));
+                startActivityForResult(new Intent(this,UserZhuCheActivity.class),1);
                 break;
         }
+    }
+
+    private  void saveMsg(){
+        SpSimpleUtils.saveSp("phone",phone,this,"LoginActivity");
+        SpSimpleUtils.saveSp("password",password,this,"LoginActivity");
+        MyLog.e(TAG,"登录成功重新保存的phone和password:"+phone+"###"+password);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 1:
+                phone =  data.getStringExtra("phone");
+                password =  data.getStringExtra("password");
+        }
+        userphone.setText(phone);
+        userPassword.setText(password);
+        SpSimpleUtils.saveSp("phone",phone,this,"LoginActivity");
+        SpSimpleUtils.saveSp("password",password,this,"LoginActivity");
+        MyLog.e(TAG,"注册界面传来的phone和password:"+phone+"###"+password);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        phone=SpSimpleUtils.getSp("phone",this,"LoginActivity");
+        password=SpSimpleUtils.getSp("phone",this,"LoginActivity");
+        userphone.setText(phone);
+        userPassword.setText(password);
+        MyLog.e(TAG,"获取本地phone和password:"+phone+"###"+password);
+       // initView();
     }
 }

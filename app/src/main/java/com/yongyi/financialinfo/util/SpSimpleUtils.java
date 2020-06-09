@@ -10,6 +10,9 @@ public class SpSimpleUtils {
 
     /**
      * 存储数据
+     * key=键
+     * value=值
+     * msg=对应的文件名
      */
     public static void saveSp(String key, String value,Context context,String msg) {
         SharedPreferences activity_login = context.getSharedPreferences(msg, Context.MODE_PRIVATE);

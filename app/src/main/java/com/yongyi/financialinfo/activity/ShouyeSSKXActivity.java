@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
-import com.yongyi.financialinfo.bean.ExpandFoldTextAdapter;
+import com.yongyi.financialinfo.adapter.ExpandFoldTextAdapter;
 import com.yongyi.financialinfo.bean.ExpandFoldTextBean;
 
 import java.util.ArrayList;
