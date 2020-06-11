@@ -14,17 +14,25 @@
         android:src="@mipmap/hangyefengbao_top_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <!--圆角banner: cardCornerRadius-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/yuanjiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fengbao_iv"
+        android:layout_marginRight="@dimen/dp_13"
+        android:layout_marginLeft="@dimen/dp_13">
 
     <com.youth.banner.Banner
         android:id="@+id/banner_hyfb"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_180"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fengbao_iv"
-        android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginRight="@dimen/dp_15"
-       >
+        android:layout_height="@dimen/dp_160"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <TextView
             android:id="@+id/title_bg"
@@ -38,7 +46,7 @@
             android:layout_marginTop="@dimen/dp_100"/>
 
     </com.youth.banner.Banner>
-
+</androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/hangyefengbao_jiantou"
@@ -73,7 +81,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/sp_18"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner_hyfb"
+        app:layout_constraintTop_toBottomOf="@+id/yuanjiao"
         android:layout_marginLeft="@dimen/dp_16"
         />
 

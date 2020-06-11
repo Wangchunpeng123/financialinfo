@@ -8,10 +8,14 @@ import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.adapter.GlideImageLoader;
+import com.yongyi.financialinfo.bean.BannerListBean;
+import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.model.ShouyeViewModel;
+import com.yongyi.financialinfo.util.MyLog;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,6 +27,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShouyeHYFBActivity extends AppCompatActivity {
 
@@ -32,6 +42,8 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
     RecyclerView shishiremen_Rv;
     @BindView(R.id.hangyefengbao_jiantou)
     ImageView hangyefengbao_jiantou;
+    @BindView(R.id.banner_hyfb)
+    Banner hyfbBanner;
     private ScheduledExecutorService scheduledExecutorService;
     private BaseRecyclerAdapter<String> rvAdapter;
     private View view;
@@ -41,18 +53,18 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
     private LinearLayoutManager HYFB_layoutManager;
     private GridLayoutManager HYFB_layoutManger1;
     private List<String> list_path;
+    private String TAG="ShouyeHYFBActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sy_hangyefengbao);
-
+        getBanner();
         ButterKnife.bind(this);
         //初始化数据
         initMsg();
         //初始化界面
         initView();
-
     }
 
     //RecyclerView
@@ -75,31 +87,27 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
         rv_hangyefengbao_list.add("15");
         rv_hangyefengbao_remen_List = new ArrayList<>();
         rv_hangyefengbao_remen_List.add("新");
+        rv_hangyefengbao_remen_List.add("热");
         rv_hangyefengbao_remen_List.add("新");
+        rv_hangyefengbao_remen_List.add("热");
         rv_hangyefengbao_remen_List.add("新");
         rv_hangyefengbao_remen_List.add("热");
-        rv_hangyefengbao_remen_List.add("热");
-        rv_hangyefengbao_remen_List.add("热");
-
-        list_path = new ArrayList<>();
-        list_path.add("https://gw.alicdn.com/tfs/TB1HYd0GVP7gK0jSZFjXXc5aXXa-1050-1050.png");
-        list_path.add("https://gw.alicdn.com/bao/upload/TB1KcWYGQL0gK0jSZFAXXcA9pXa.jpg_Q75.jpg");
-        list_path.add("https://gw.alicdn.com/bao/upload/TB17wP7F2b2gK0jSZK9XXaEgFXa.jpg_Q75.jpg");
-
-
+//        list_path = new ArrayList<>();
+//        list_path.add("http://image.yysc.online/files/2019/11/9/a7a31e38be0234298e530ef00f57ede8.png");
+//        list_path.add("http://image.yysc.online/files/2019/11/9/d1c98533f6c57a70864c7b8427ff043b.png");
     }
 
     private void initView() {
 
-        Banner banner = (Banner) findViewById(R.id.banner_hyfb);
+        //Banner banner = (Banner) findViewById(R.id.banner_hyfb);
         //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
+        //banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
-        banner.setImages(list_path);
+        //banner.setImages(list_path);
         ////设置指示器的位置，小点点，左中右。
-        banner.setIndicatorGravity(BannerConfig.RIGHT);
+        //banner.setIndicatorGravity(BannerConfig.RIGHT);
         //banner设置方法全部调用完毕时最后调用
-        banner.start();
+        //banner.start();
 
         /*
         传入所有列数的最小公倍数，1和42的最小公倍数为2，即意味着每一列将被分为2格
@@ -131,6 +139,39 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
             }
         };
         hangqingzixun_Rv.setAdapter(rvAdapter);
+    }
+    //获取banner
+    private void getBanner() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(InterService.baseURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Call<BannerListBean> result = retrofit.create(InterService.class).getBanner("futures");
+        result.enqueue(new Callback<BannerListBean>() {
+            @Override
+            public void onResponse(Call<BannerListBean> call, Response<BannerListBean> response) {
+             /*   try {
+                    MyLog.e(TAG,"##########" + response.body().string()+ "##########");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+              MyLog.e(TAG,"##########" + response.body().getSuccess()+ "##########");
+               BannerListBean bean=response.body();
+                list_path=new ArrayList<>();
+                String[] str=bean.getData().get(0).getPicturePath().split(",");
+                for(int i=0;i<str.length;i++)
+                list_path.add(str[i]);
+                        hyfbBanner.setImageLoader(new GlideImageLoader());
+                        hyfbBanner.setImages(list_path);
+                        hyfbBanner.setIndicatorGravity(BannerConfig.RIGHT);
+                        hyfbBanner.start();
+            }
+
+            @Override
+            public void onFailure(Call<BannerListBean> call, Throwable t) {
+                MyLog.e(TAG,"失败");
+            }
+        });
     }
 
     @OnClick({R.id.hangyefengbao_jiantou, R.id.fengbao_textView})

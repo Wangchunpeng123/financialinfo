@@ -1,5 +1,6 @@
 package com.yongyi.financialinfo.http;
 
+import com.yongyi.financialinfo.bean.BannerListBean;
 import com.yongyi.financialinfo.bean.LoginPhoneYanzhengmaBean;
 import com.yongyi.financialinfo.bean.LoginYanzhengmaBean;
 import com.yongyi.financialinfo.bean.UserBean;
@@ -11,6 +12,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface InterService {
 
@@ -44,5 +46,9 @@ public interface InterService {
                              @Field("code") String code,
                              @Field("type") int type,
                              @Field("project") String project);
+
+    //获取Banner列表
+    @GET("/banner/getBannerList")
+    Call<BannerListBean> getBanner(@Query("project") String project);
 
 }

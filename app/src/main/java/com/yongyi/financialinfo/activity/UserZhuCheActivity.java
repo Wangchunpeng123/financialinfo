@@ -139,13 +139,13 @@ public class UserZhuCheActivity extends AppCompatActivity {
                         setResult(RESULT_OK,intent);
                         finish();
                     }else{
-                        new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置");
+                        new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置").show();
                     }
 
             }
             @Override
             public void onFailure(Call<UserBean> call, Throwable t) {
-                new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置");
+                new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置").show();
             }
         });
     }

@@ -46,6 +46,10 @@
             android:name=".activity.UserZhuCheActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+        <activity
+            android:name=".activity.ContentActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_config" />

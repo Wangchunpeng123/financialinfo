@@ -13,6 +13,8 @@ import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.activity.HomeActivity;
 import com.yongyi.financialinfo.activity.LoginActivity;
 import com.yongyi.financialinfo.custom.CircleImageTransformer;
+import com.yongyi.financialinfo.http.InterService;
+import com.yongyi.financialinfo.util.MyLog;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,6 +22,14 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,8 +63,8 @@ public class WoFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_wo, container, false);
         ButterKnife.bind(this, view);
         return view;
-    }
 
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
