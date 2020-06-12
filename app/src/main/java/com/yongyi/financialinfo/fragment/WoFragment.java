@@ -8,11 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.activity.HomeActivity;
 import com.yongyi.financialinfo.activity.LoginActivity;
+import com.yongyi.financialinfo.bean.UserBean;
 import com.yongyi.financialinfo.custom.CircleImageTransformer;
+import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
+
+import java.lang.reflect.Type;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -45,7 +52,7 @@ public class WoFragment extends Fragment {
     @BindView(R.id.wo_ll_tuichu)
     ConstraintLayout woLlTuichu;
     private View view;
-
+    private UserBean userBean;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,16 +71,21 @@ public class WoFragment extends Fragment {
         initView();
     }
 
+    private void initMsg() {
+        Gson gson = new Gson();
+        String json =SpSimpleUtils.getSp("UserBean",getContext(),"LoginActivity");
+        userBean= gson.fromJson(json, UserBean.class);
+        MyLog.e("WoFragment:",userBean.getSuccess());
+    }
     private void initView() {
-
         Picasso.with(getActivity())
-                .load(R.mipmap.denglu_top_bg)
+                .load(userBean.getData().getHead())
                 .transform(new CircleImageTransformer())
                 .into(woHead);
+        woBiaoqian.setText(userBean.getData().getSignature());
+        woName.setText(userBean.getData().getNickName());
     }
 
-    private void initMsg() {
-    }
 
     @OnClick({R.id.wo_head, R.id.wo_name, R.id.wo_biaoqian, R.id.wo_shezhi, R.id.wo_ll_fensi, R.id.wo_ll_xiangguan, R.id.wo_ll_dongtai, R.id.wo_ll_xiaoxi, R.id.wo_ll_tuichu})
     public void onClick(View view) {

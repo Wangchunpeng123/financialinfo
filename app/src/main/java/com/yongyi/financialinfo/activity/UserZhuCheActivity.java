@@ -20,6 +20,7 @@ import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.util.Base64Utils;
 import com.yongyi.financialinfo.util.MyDialog;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyToast;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 
 import java.io.IOException;
@@ -67,16 +68,13 @@ public class UserZhuCheActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userzhuche);
         ButterKnife.bind(this);
+        RetrofitUtils.init();
         timeCount = new TimeCount(60000,1000);
         getImageYanzhengma();
     }
     //获取图形验证码
     private void getImageYanzhengma() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(InterService.baseURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        Call<LoginYanzhengmaBean> result = retrofit.create(InterService.class).getImageYanzhengma();
+        Call<LoginYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getImageYanzhengma();
         result.enqueue(new Callback<LoginYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginYanzhengmaBean> call, Response<LoginYanzhengmaBean> response) {
@@ -98,16 +96,11 @@ public class UserZhuCheActivity extends AppCompatActivity {
 
     //获取手机验证码
     private void getPhoneYanzhengma() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(InterService.baseURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MyLog.e(TAG,"手机号：" + shoujihaoEt.getText().toString() + "图形验证码："+tuxiangYanzhengmaEt.getText().toString());
-        Call<LoginPhoneYanzhengmaBean> result = retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),1,"futures",tuxiangYanzhengmaEt.getText().toString());
+        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),1,"futures",tuxiangYanzhengmaEt.getText().toString());
         result.enqueue(new Callback<LoginPhoneYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginPhoneYanzhengmaBean> call, Response<LoginPhoneYanzhengmaBean> response) {
-                    MyLog.e(TAG,"##########" + response.body().getSuccess() + "##########");
+                    MyLog.e(TAG,"##########getPhoneYanzhengma:" + response.body().getSuccess() + "##########");
                     if(response.body().getSuccess()=="true"){
                         timeCount.start();
                     }else{
@@ -125,13 +118,13 @@ public class UserZhuCheActivity extends AppCompatActivity {
     }
     //上传注册信息
     private void postZhuce() {
-        RetrofitUtils.init();
         Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class)
                 .postZhuce(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),1,"futures");
         result.enqueue(new Callback<UserBean>() {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {
-                    MyLog.e(TAG,"##########" + response.body().getSuccess() + "##########");
+                MyLog.e(TAG,"##########" + response.body().getMsg()+ "##########");
+                MyLog.e(TAG,"##########postZhuce:" + response.body().getSuccess() + "##########");
                     if(response.body().getSuccess()=="true"){
                         Intent intent = new Intent();
                         intent.putExtra("phone",shoujihaoEt.getText().toString());
@@ -139,13 +132,13 @@ public class UserZhuCheActivity extends AppCompatActivity {
                         setResult(RESULT_OK,intent);
                         finish();
                     }else{
-                        new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置");
+                        new MyDialog(UserZhuCheActivity.this,"注册失败",response.body().getMsg()).show();
                     }
 
             }
             @Override
             public void onFailure(Call<UserBean> call, Throwable t) {
-                new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置");
+                new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置").show();
             }
         });
     }
@@ -216,5 +209,18 @@ public class UserZhuCheActivity extends AppCompatActivity {
             shoujiYanzhengmaClick.setClickable(true);
         }
     }
-    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Intent intent = new Intent();
+                intent.putExtra("phone",shoujihaoEt.getText().toString());
+                intent.putExtra("password",mimaEt.getText().toString());
+                setResult(RESULT_OK,intent);
+                finish();
+                break;
+        }
+        //返回false是不吃掉，后面的监听也能得到这个事件，而返回true是吃掉，后面的监听就得不到这个事件了。
+        return true;
+    }
 }

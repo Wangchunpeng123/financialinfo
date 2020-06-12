@@ -31,7 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sq_rm_fm_rv"
-
             android:overScrollMode="never"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_15"

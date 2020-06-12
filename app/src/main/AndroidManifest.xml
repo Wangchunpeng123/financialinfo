@@ -16,10 +16,6 @@
 
         </activity>
         <activity android:name=".activity.HomeActivity">
-
-        </activity>
-        <activity
-            android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,11 +23,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.LoginActivity">
+
+        </activity>
+        <activity
             android:name=".app.BaseActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
         <activity
             android:name=".activity.ShouyeSSKXActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
@@ -44,6 +46,10 @@
         </activity>
         <activity
             android:name=".activity.UserZhuCheActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.ShouyeCJSJconteActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <meta-data

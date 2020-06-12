@@ -1,9 +1,11 @@
 package com.yongyi.financialinfo.fragment;
 
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,16 @@ import android.widget.LinearLayout;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
+import com.yongyi.financialinfo.bean.HangqingBean;
+import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.RetrofitUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,9 +32,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -43,23 +54,26 @@ public class HangqingFragment extends Fragment {
     private View view;
 
     private BaseRecyclerAdapter<String> rvAdapter;
-    private BaseRecyclerAdapter<String> rvAdapter1;
+    private BaseRecyclerAdapter<HangqingBean> rvAdapter1;
     private List<String> rvList;
-    private List<String> rvList1;
+    private List<HangqingBean> rvList1=new ArrayList<>();
     private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManager1;
     private int clickPosition;
     private static String Tag="HangqingFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_hangqing, container, false);
         ButterKnife.bind(this, view);
+        RetrofitUtils.init("http://api.coindog.com/api/v1/");
         return view;
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //初始化数据
         initMsg();
         //初始化界面
@@ -69,17 +83,12 @@ public class HangqingFragment extends Fragment {
         clickPosition=0;
 
         rvList=new ArrayList<>();
-        rvList.add("主力");
-        rvList.add("大连");
-        rvList.add("上海");
-        rvList.add("上期能源");
-        rvList.add("黄金白银");
+        rvList.add("Binance");
+        rvList.add("Bitfinex");
+        rvList.add("Bittrex");
+        rvList.add("Huobipro");
 
-        rvList1=new ArrayList<>();
-        rvList1.add("泸铜1901");
-        rvList1.add("泸铜1902");
-        rvList1.add("泸铜1903");
-        rvList1.add("泸铜1904");
+        getMsg("Binance");
     }
     private void initView() {
         //设置Rv布局管理者
@@ -107,7 +116,6 @@ public class HangqingFragment extends Fragment {
                 }
 
 
-
             }
 
             @Override
@@ -116,6 +124,7 @@ public class HangqingFragment extends Fragment {
                 clickPosition=position;
                 MyLog.e(Tag,"clickPosition:"+clickPosition);
                 rvAdapter.notifyDataSetChanged();
+                getMsg(s);
             }
         };
         hangqingRvTitle.setAdapter(rvAdapter);
@@ -123,19 +132,38 @@ public class HangqingFragment extends Fragment {
 
        layoutManager1 = new LinearLayoutManager(getActivity());
         hangqingRvMsg.setLayoutManager(layoutManager1);
-        rvAdapter1=new BaseRecyclerAdapter<String>(getContext(),rvList1,R.layout.rv_hangqing_msg) {
+        rvAdapter1=new BaseRecyclerAdapter<HangqingBean>(getContext(),rvList1,R.layout.rv_hangqing_msg) {
             @Override
-            public void bindData(BaseRecyclerViewHolder holder, String s, int position) {
-                holder.setTxt( R.id.hangqing_msg_tv1,s);
-                if(s.equals("泸铜1902")){
-                    holder.setTxtBackgroundIv(R.id.hangqing_msg_tv3,R.mipmap.hangqing_main_shuzi_l_bg);
-
-                }
-            }
-
-
+            public void bindData(BaseRecyclerViewHolder holder, HangqingBean s, int position) {
+                holder.setTxt( R.id.hangqing_msg_tv1,s.getTicker());
+                holder.setTxt( R.id.hangqing_msg_tv2,s.getClose());
+                holder.setTxt( R.id.hangqing_msg_tv3,s.getDegree());
+                holder.setTxt( R.id.hangqing_msg_tv4,s.getVol());
+                if(s.getDegree().contains("-"))
+                 holder.setTxtBackgroundIv(R.id.hangqing_msg_tv3,R.mipmap.hangqing_main_shuzi_l_bg);
+                else
+                    holder.setTxtBackgroundIv(R.id.hangqing_msg_tv3,R.mipmap.hangqing_main_shuzi_h_bg);
+        }
         };
         hangqingRvMsg.setAdapter(rvAdapter1);
+    }
+
+    private void getMsg(String itemName) {
+        Call<List<HangqingBean>> call=RetrofitUtils.retrofit.create(InterService.class).getHangqing(itemName);
+        call.enqueue(new Callback<List<HangqingBean>>() {
+            @Override
+            public void onResponse(Call<List<HangqingBean>> call, Response<List<HangqingBean>> response) {
+                    MyLog.e(Tag,response.toString());
+                     rvList1.clear();
+                     rvList1.addAll(response.body());
+                     rvAdapter1.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<HangqingBean>> call, Throwable t) {
+                MyLog.e(Tag,"获取失败");
+            }
+        });
     }
 
 

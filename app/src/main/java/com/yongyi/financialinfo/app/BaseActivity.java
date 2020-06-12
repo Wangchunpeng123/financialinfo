@@ -35,7 +35,7 @@ public abstract class BaseActivity extends FragmentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                MyToast.shortToast(this, "在按一次退出程序");
+                MyToast.shortToast(this, "再按一次退出程序");
                 activityManager.finishAllActivity();
                 break;
         }

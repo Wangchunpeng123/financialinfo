@@ -11,7 +11,11 @@ import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.adapter.ExpandFoldTextAdapter;
 import com.yongyi.financialinfo.bean.ExpandFoldTextBean;
+import com.yongyi.financialinfo.http.InterService;
+import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.RetrofitUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +24,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ShouyeSSKXActivity extends Activity {
+
+    private String Tag="ShouyeSSKXActivity";
     @BindView(R.id.rv_layout_shishikuaixun)
     RecyclerView ShiShiKuaiXun;
     List<ExpandFoldTextBean> mList = new ArrayList<>();
@@ -40,11 +50,32 @@ public class ShouyeSSKXActivity extends Activity {
         setContentView(R.layout.activity_sy_shishikuaixun);
 
         ButterKnife.bind(this);
+        RetrofitUtils.init("http://api.coindog.com/live/");
         //初始化数据
         initMsg();
-
+        //获取快讯数据
+        getMsg();
         //初始化界面
         initView();
+    }
+
+    private void getMsg() {
+        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).getKuaixun(100);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    MyLog.e(Tag,response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                MyLog.e(Tag,"获取失败");
+            }
+        });
     }
 
     private void initView() {

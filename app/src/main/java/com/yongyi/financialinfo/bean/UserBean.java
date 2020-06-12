@@ -1,8 +1,12 @@
 package com.yongyi.financialinfo.bean;
 
 public class UserBean {
+    private String msg;
    private User data;
     private String success;
+
+    public UserBean() {
+    }
 
     public User getData() {
         return data;
@@ -20,7 +24,15 @@ public class UserBean {
         this.success = success;
     }
 
-    private class User {
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public static class User {
         private String uuid;
         private String id;
         private String phone;

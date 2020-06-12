@@ -19,4 +19,11 @@ public class RetrofitUtils {
                 .build();
 
     }
+    public static void init(String url) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+    }
 }
