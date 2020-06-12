@@ -133,7 +133,7 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
                 //MyLog.e(TAG,"bindData:"+s.getTitle());
                 //设置图片为圆角
                 holder.setImgGray(ShouyeHYFBActivity.this,s.getPicture(),R.id.rv_shouye_iv);
-                holder.setTxt(R.id.rv_shouye_riqi, MyUtil.longToDate(s.getPublishTime()));
+                holder.setTxt(R.id.rv_shouye_riqi, MyUtil.longToDate2(s.getPublishTime()));
             }
         };
         hangqingzixun_Rv.setAdapter(zixunRvAdapter);

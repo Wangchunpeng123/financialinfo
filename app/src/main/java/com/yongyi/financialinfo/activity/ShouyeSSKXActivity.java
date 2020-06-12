@@ -11,8 +11,10 @@ import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.adapter.ExpandFoldTextAdapter;
 import com.yongyi.financialinfo.bean.ExpandFoldTextBean;
+import com.yongyi.financialinfo.bean.ShouyeKuaixunBean;
 import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyUtil;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 
 import java.io.IOException;
@@ -32,17 +34,17 @@ import retrofit2.Response;
 public class ShouyeSSKXActivity extends Activity {
 
     private String Tag="ShouyeSSKXActivity";
+
     @BindView(R.id.rv_layout_shishikuaixun)
     RecyclerView ShiShiKuaiXun;
-    List<ExpandFoldTextBean> mList = new ArrayList<>();
     @BindView(R.id.shishi_jiantou)
     ImageView shishiJiantou;
     @BindView(R.id.shishi_date_tv)
     TextView shishiDateTv;
-    private BaseRecyclerAdapter<String> rvAdapter;
-    private View view;
-    private List<String> shishikuaixun1;
-    private LinearLayoutManager layoutManager;
+
+    List<ShouyeKuaixunBean.KuaixunDate.livesList> mList = new ArrayList<>();
+    ExpandFoldTextAdapter adapter = new ExpandFoldTextAdapter(mList, this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,63 +53,49 @@ public class ShouyeSSKXActivity extends Activity {
 
         ButterKnife.bind(this);
         RetrofitUtils.init("http://api.coindog.com/live/");
-        //初始化数据
-        initMsg();
-        //获取快讯数据
-        getMsg();
         //初始化界面
         initView();
+        //获取快讯数据
+        getMsg();
     }
 
     private void getMsg() {
-        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).getKuaixun(100);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ShouyeKuaixunBean> call=RetrofitUtils.retrofit.create(InterService.class).getKuaixun(10);
+        call.enqueue(new Callback<ShouyeKuaixunBean>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    MyLog.e(Tag,response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(Call<ShouyeKuaixunBean> call, Response<ShouyeKuaixunBean> response) {
+                MyLog.e(Tag,response.body().getList().get(0).getDate());
+                mList.addAll(response.body().getList().get(0).getLives());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        shishiDateTv.setText(response.body().getList().get(0).getDate()+"    "+ MyUtil.dateToWeek(response.body().getList().get(0).getDate()));
+                    }
+                });
+                //将标题和内容分离出来
+                for(int i=0;i<mList.size();i++){
+                 String[] strs=mList.get(i).getContent().split("】");
+                    String titleStr=strs[0].replace("【","");
+                    titleStr=titleStr.replace("】","");
+                    mList.get(i).setTiltle(titleStr);
+                    mList.get(i).setContent(strs[1]);
+                     }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ShouyeKuaixunBean> call, Throwable t) {
                 MyLog.e(Tag,"获取失败");
             }
         });
     }
 
     private void initView() {
-        ExpandFoldTextAdapter adapter = new ExpandFoldTextAdapter(mList, this);
-        ShiShiKuaiXun = (RecyclerView) findViewById(R.id.rv_layout_shishikuaixun);
-        ShiShiKuaiXun.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        ShiShiKuaiXun.setLayoutManager(new LinearLayoutManager(this));
         ShiShiKuaiXun.setAdapter(adapter);
-        layoutManager = new LinearLayoutManager(this);
-        ShiShiKuaiXun.setLayoutManager(layoutManager);
-        rvAdapter = new BaseRecyclerAdapter<String>(getBaseContext(), shishikuaixun1, R.layout.rv_shishikuaixun_msg) {
-            @Override
-            public void bindData(BaseRecyclerViewHolder holder, String s, int position) {
-
-            }
-        };
     }
 
-    private void initMsg() {
-        String longContent = "地表最强量化基金正在布局比特币资产！近期一份监管文件显示，美国私募基金公司Renaissance Technologies（文艺复兴科技)的旗舰基金Medallion（大奖章基金）正考虑投资比特币期货，该基金已被允许进入芝加哥商品交易所（CME）的现金结算比特币期货市场毫无疑问，这个创办以...";
-
-        for (int i = 0; i < 20; i++) {
-            ExpandFoldTextBean bean = new ExpandFoldTextBean();
-            if (i % 2 == 0) {
-                bean.setContent(i + longContent);
-                bean.setId(i);
-            } else {
-                bean.setContent(i + longContent);
-                bean.setId(i);
-            }
-            mList.add(bean);
-        }
-    }
 
     @OnClick({R.id.shishi_jiantou, R.id.shishi_date_tv})
     public void onClick(View view) {

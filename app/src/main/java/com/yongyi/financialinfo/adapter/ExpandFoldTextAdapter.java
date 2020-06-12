@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.bean.ExpandFoldTextBean;
+import com.yongyi.financialinfo.bean.ShouyeKuaixunBean;
 import com.yongyi.financialinfo.util.MyApplication;
+import com.yongyi.financialinfo.util.MyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +44,9 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
      * 如果使用position作为key，则删除、增加条目的时候会出现显示错乱
      */
     private SparseArray<Integer> mTextStateList;//保存文本状态集合
-    List<ExpandFoldTextBean> mList;
+    List<ShouyeKuaixunBean.KuaixunDate.livesList> mList;
 
-    public ExpandFoldTextAdapter(List<ExpandFoldTextBean> list, Activity context) {
+    public ExpandFoldTextAdapter(List<ShouyeKuaixunBean.KuaixunDate.livesList> list, Activity context) {
         mContent = context;
         this.mList = list;
         mTextStateList = new SparseArray<>();
@@ -57,7 +59,7 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        //加载标签rv
+      /*  //加载标签rv
         List<String> biaoqianList=new ArrayList<>();
         biaoqianList.add("期货杠杆");
         biaoqianList.add("华尔街");
@@ -74,9 +76,11 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
         };
         holder.msgRv.setLayoutManager(manager);
         holder.msgRv.setAdapter(ad);
+*/
 
-
-        int state = mTextStateList.get(mList.get(position).getId(), STATE_UNKNOW);
+        holder.title_shishikuaixun.setText(mList.get(position).getTiltle());
+        holder.rvShishiTime.setText(MyUtil.longToDate3(mList.get(position).getCreated_at()));
+        int state = mTextStateList.get(mList.get(position).getZhuangTai(), STATE_UNKNOW);
         //第一次初始化，未知状态
         if (state == STATE_UNKNOW) {
             holder.content.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -90,10 +94,10 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
                         holder.content.setMaxLines(MAX_LINE_COUNT);//设置最大显示行数
                         holder.expandOrFold.setVisibility(View.VISIBLE);//显示“展开// ”
                         holder.expandOrFold.setText("展开");
-                        mTextStateList.put(mList.get(position).getId(), STATE_COLLAPSED);//保存状态
+                        mTextStateList.put(mList.get(position).getZhuangTai(), STATE_COLLAPSED);//保存状态
                     } else {
                         holder.expandOrFold.setVisibility(View.GONE);
-                        mTextStateList.put(mList.get(position).getId(), STATE_NOT_OVERFLOW);
+                        mTextStateList.put(mList.get(position).getZhuangTai(), STATE_NOT_OVERFLOW);
                     }
                     return true;
                 }
@@ -118,6 +122,7 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
                     holder.expandOrFold.setText("收起");
                     break;
             }
+
             holder.content.setText(mList.get(position).getContent());
         }
 
@@ -125,17 +130,17 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
         holder.expandOrFold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int state = mTextStateList.get(mList.get(position).getId(), STATE_UNKNOW);
+                int state = mTextStateList.get(mList.get(position).getZhuangTai(), STATE_UNKNOW);
                 if (state == STATE_COLLAPSED) {
                     holder.content.setMaxLines(Integer.MAX_VALUE);
                     holder.expandOrFold.setText("收起");
 
-                    mTextStateList.put(mList.get(position).getId(), STATE_EXPANDED);
+                    mTextStateList.put(mList.get(position).getZhuangTai(), STATE_EXPANDED);
                     holder.ivLine.setImageResource(R.mipmap.caijingshuju_line_10);
                 } else if (state == STATE_EXPANDED) {
                     holder.content.setMaxLines(MAX_LINE_COUNT);
                     holder.expandOrFold.setText("展开");
-                    mTextStateList.put(mList.get(position).getId(), STATE_COLLAPSED);
+                    mTextStateList.put(mList.get(position).getZhuangTai(), STATE_COLLAPSED);
                     holder.ivLine.setImageResource(R.mipmap.caijingshuju_line_1);
                 }
             }
@@ -157,6 +162,8 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
         public TextView delete;
         public TextView expandOrFold;
         public ImageView ivLine;
+        public TextView rvShishiTime;
+
         public RecyclerView msgRv;
 
         public MyViewHolder(View itemView) {
@@ -165,7 +172,9 @@ public class ExpandFoldTextAdapter extends RecyclerView.Adapter<ExpandFoldTextAd
             content =  itemView.findViewById(R.id.rv_shishi_content);
             expandOrFold =  itemView.findViewById(R.id.rv_shishi_zhankai);
             ivLine =  itemView.findViewById(R.id.shishi_line);
-            msgRv=  itemView.findViewById(R.id.shishi_msg_rv);
+            rvShishiTime =  itemView.findViewById(R.id.rv_shishi_time);
+
+           // msgRv=  itemView.findViewById(R.id.shishi_msg_rv);
         }
     }
 }

@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_180"
+    android:layout_height="@dimen/dp_100"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/shouye_hanqing_bg"
+
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/shouye_hanqing_bg"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="0"
             android:id="@+id/rv_shouye_xuhao"
             android:textSize="@dimen/sp_15"
             android:layout_marginLeft="@dimen/dp_23"
             android:textColor="@color/titleWhite"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="@dimen/dp_8"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="黄金白银"
+            android:text="null"
             android:id="@+id/rv_shouye_biaoti"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_15"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/rv_shouye_xuhao"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -42,41 +37,36 @@
             android:text="00:00"
             android:id="@+id/rv_shouye_shijian"
             android:textColor="@color/text_gray"
-            android:layout_marginLeft="@dimen/dp_22"
-            android:layout_marginTop="@dimen/dp_8"
             android:textSize="@dimen/sp_13"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+
             />
-     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1237.26"
+        android:text="0000.00"
         android:textSize="@dimen/sp_15"
         android:id="@+id/rv_shouye_money"
         android:textColor="@color/cengse"
-        android:layout_marginLeft="@dimen/dp_18"
-        android:layout_marginTop="@dimen/dp_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginBottom="@dimen/dp_20"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+0.05%"
+        android:text="+0.00%"
         android:id="@+id/rv_shouye_baifen"
-        android:layout_marginLeft="@dimen/dp_30"
-        android:layout_marginTop="@dimen/dp_24"
         android:textSize="@dimen/sp_14"
-        android:background="@color/cengse_bg"
-        android:paddingLeft="@dimen/dp_8"
-        android:paddingRight="@dimen/dp_6"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_10"
         />
-
-</LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

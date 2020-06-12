@@ -3,6 +3,7 @@ package com.yongyi.financialinfo.http;
 import com.yongyi.financialinfo.bean.HangqingBean;
 import com.yongyi.financialinfo.bean.LoginPhoneYanzhengmaBean;
 import com.yongyi.financialinfo.bean.LoginYanzhengmaBean;
+import com.yongyi.financialinfo.bean.ShouyeKuaixunBean;
 import com.yongyi.financialinfo.bean.ShouyeNewBean;
 import com.yongyi.financialinfo.bean.UserBean;
 
@@ -63,7 +64,7 @@ public interface InterService {
 
     //首页-实时快讯
     @GET("list/")
-    Call<ResponseBody> getKuaixun(@Query("limit") Integer limit);
+    Call<ShouyeKuaixunBean> getKuaixun(@Query("limit") Integer limit);
 
     //行情
     @GET("ticks/{itemName}")

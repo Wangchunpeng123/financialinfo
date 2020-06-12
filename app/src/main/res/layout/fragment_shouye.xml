@@ -41,10 +41,10 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/shouye_icon_hangyefengbao"
             app:layout_constraintEnd_toStartOf="@+id/shouye_kuaixun"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
             android:layout_marginTop="@dimen/dp_3"
+            android:layout_marginRight="@dimen/dp_15"
             />
 
         <ImageView
@@ -54,7 +54,6 @@
             android:src="@mipmap/shouye_icon_shishikuaixun"
             app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
             app:layout_constraintEnd_toStartOf="@+id/shouye_shuju"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/shouye_fengbao"
             android:layout_marginTop="@dimen/dp_3"
             />
@@ -65,10 +64,10 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/shouye_icon_caijinshuju"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/shouye_kuaixun"
             app:layout_constraintTop_toBottomOf="@+id/shouye_iv"
             android:layout_marginTop="@dimen/dp_3"
+            android:layout_marginLeft="@dimen/dp_15"
             />
 
         <LinearLayout

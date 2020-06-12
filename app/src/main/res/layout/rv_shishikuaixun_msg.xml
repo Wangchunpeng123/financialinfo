@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/titleWhite"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -35,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_18"
-        android:text="华尔街神级基金布局比特币期货，大奖章会推升比特币吗？"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/sp_15"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -51,7 +52,7 @@
         android:layout_marginLeft="@dimen/dp_10"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <!--<androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/shishi_msg_rv"
@@ -59,7 +60,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_18"
-        />
+        />-->
     <TextView
         android:id="@+id/rv_shishi_zhankai"
         android:layout_width="wrap_content"
@@ -68,7 +69,7 @@
         android:textColor="@color/blue"
         android:textSize="@dimen/sp_13"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shishi_msg_rv"
+        app:layout_constraintTop_toBottomOf="@+id/rv_shishi_content"
         android:layout_marginLeft="@dimen/dp_11"
         android:layout_marginTop="@dimen/dp_11"
          />

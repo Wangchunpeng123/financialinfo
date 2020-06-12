@@ -15,6 +15,7 @@ import com.yongyi.financialinfo.activity.ShouyeHYFBActivity;
 import com.yongyi.financialinfo.activity.ShouyeSSKXActivity;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
+import com.yongyi.financialinfo.bean.HangqingBean;
 import com.yongyi.financialinfo.bean.ShouyeNewBean;
 import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.model.ShouyeViewModel;
@@ -64,10 +65,12 @@ public class ShouyeFragment extends Fragment {
     RecyclerView shouyeRvJinxuan;
     private ShouyeViewModel shouyeViewModel;
     private View view;
-    private BaseRecyclerAdapter<String> rvAdapter;
+    private BaseRecyclerAdapter<HangqingBean> rvAdapter;
     private BaseRecyclerAdapter<ShouyeNewBean.Mydata.dateMsg> rvAdapter1;
-    private List<String> rvList;
-    private List<ShouyeNewBean.Mydata.dateMsg> rvList1=new ArrayList<>();
+
+    private List<ShouyeNewBean.Mydata.dateMsg> newsRvList=new ArrayList<>();
+    private List<HangqingBean> hangQingrvList=new ArrayList<>();
+
     private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManager1;
     private int value;
@@ -78,7 +81,7 @@ public class ShouyeFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_shouye, container, false);
         ButterKnife.bind(this, view);
-        RetrofitUtils.init();
+
         return view;
     }
 
@@ -88,10 +91,38 @@ public class ShouyeFragment extends Fragment {
         //初始化界面
         initView();
         //初始化数据
-        getMsg(pageIndex);
+        getNewsMsg(pageIndex);
+        getHangqingMsg();
     }
+
+    //获取行情数据
+    private void getHangqingMsg() {
+        RetrofitUtils.init("http://api.coindog.com/api/v1/");
+        Call<List<HangqingBean>> call=RetrofitUtils.retrofit.create(InterService.class).getHangqing("Binance");
+        call.enqueue(new Callback<List<HangqingBean>>() {
+            @Override
+            public void onResponse(Call<List<HangqingBean>> call, Response<List<HangqingBean>> response) {
+                MyLog.e(TAG,response.toString());
+                hangQingrvList.clear();
+                for(int i=1;i<response.body().size()&&hangQingrvList.size()<9;i++){
+                        hangQingrvList.add(response.body().get(i));
+                         hangQingrvList.get(i-1).setIndex(i);
+                         if(hangQingrvList.get(i-1).getClose().length()>8)
+                         hangQingrvList.get(i-1).setClose(hangQingrvList.get(i-1).getClose().substring(0,8));
+                }
+                rvAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<HangqingBean>> call, Throwable t) {
+                MyLog.e(TAG,"获取失败");
+            }
+        });
+    }
+
     //获取新闻数据
-    private void getMsg(int pageNo) {
+    private void getNewsMsg(int pageNo) {
+        RetrofitUtils.init();
         Call<ShouyeNewBean> result=RetrofitUtils.retrofit.create(InterService.class).getNews(5,pageNo,"blockchain");
         result.enqueue(new Callback<ShouyeNewBean>() {
             @Override
@@ -99,11 +130,11 @@ public class ShouyeFragment extends Fragment {
                 MyLog.e(TAG,"onResponse:"+response.body().getSuccess());
                 if(response.body().getSuccess()=="true"){
                     if ("1".equals(pageNo)){
-                        rvList1.clear();
-                        rvList1.addAll(response.body().getData().getList());
+                        newsRvList.clear();
+                        newsRvList.addAll(response.body().getData().getList());
                         rvAdapter1.notifyDataSetChanged();
                     }else {
-                        rvList1.addAll(response.body().getData().getList());
+                        newsRvList.addAll(response.body().getData().getList());
                         rvAdapter1.notifyDataSetChanged();
                     }
                     isPage=response.body().getData().isHasMore();
@@ -124,10 +155,6 @@ public class ShouyeFragment extends Fragment {
     }
 
     private void initView() {
-        rvList=new ArrayList<>();
-        rvList.add("1");
-        rvList.add("2");
-        rvList.add("3");
 
         //设置Rv布局管理者
         layoutManager = new LinearLayoutManager(getActivity());
@@ -135,18 +162,26 @@ public class ShouyeFragment extends Fragment {
         layoutManager1 = new LinearLayoutManager(getActivity());
         layoutManager1.setOrientation(RecyclerView.HORIZONTAL);
         shouyeRvJinxuan.setLayoutManager(layoutManager1);
-        rvAdapter=new BaseRecyclerAdapter<String>(getContext(),rvList,R.layout.rv_shouye_jinxuan) {
+
+        //绑定行情数据
+        rvAdapter=new BaseRecyclerAdapter<HangqingBean>(getContext(),hangQingrvList,R.layout.rv_shouye_jinxuan) {
             @Override
-            public void bindData(BaseRecyclerViewHolder holder, String s, int position) {
-                holder.setTxt(R.id.rv_shouye_xuhao,s);
-                if(s.equals("2")){
-                    holder.setTxtBackground(R.id.rv_shouye_baifen, "#00C72A");
-                }
+            public void bindData(BaseRecyclerViewHolder holder, HangqingBean s, int position) {
+                holder.setTxt(R.id.rv_shouye_xuhao,s.getIndex()+"");
+                holder.setTxt(R.id.rv_shouye_biaoti,s.getExchangeName());
+                holder.setTxt( R.id.rv_shouye_money,s.getClose());
+                holder.setTxt( R.id.rv_shouye_shijian,MyUtil.longToDate3(s.getDateTime()));
+                holder.setTxt( R.id.rv_shouye_baifen,s.getDegree());
+                if(s.getDegree().contains("-"))
+                    holder.setTxtBackgroundIv(R.id.rv_shouye_baifen,R.mipmap.shouye_hanqing_shuju_l_bg);
+                else
+                    holder.setTxtBackgroundIv(R.id.rv_shouye_baifen,R.mipmap.shouye_hanqing_shuju_h_bg);
             }
         };
         shouyeRvJinxuan.setAdapter(rvAdapter);
 
-        rvAdapter1=new BaseRecyclerAdapter<ShouyeNewBean.Mydata.dateMsg>(getContext(),rvList1,R.layout.rv_shouye) {
+        //绑定新闻数据
+        rvAdapter1=new BaseRecyclerAdapter<ShouyeNewBean.Mydata.dateMsg>(getContext(),newsRvList,R.layout.rv_shouye) {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, ShouyeNewBean.Mydata.dateMsg s, int position) {
 
@@ -155,7 +190,7 @@ public class ShouyeFragment extends Fragment {
                 //MyLog.e(TAG,"bindData:"+s.getTitle());
                 //设置图片为圆角
                 holder.setImgGray(getContext(),s.getPicture(),R.id.rv_shouye_iv);
-                holder.setTxt(R.id.rv_shouye_riqi, MyUtil.longToDate(s.getPublishTime()));
+                holder.setTxt(R.id.rv_shouye_riqi, MyUtil.longToDate2(s.getPublishTime()));
             }
         };
         shouyeRv.setAdapter(rvAdapter1);
@@ -171,7 +206,7 @@ public class ShouyeFragment extends Fragment {
                     //加载更多
                     pageIndex++;
                     if (isPage==true){
-                        getMsg(pageIndex);
+                        getNewsMsg(pageIndex);
                         MyLog.e(TAG, "onScrollStateChanged: "+pageIndex);
                     }
                 }

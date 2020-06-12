@@ -169,10 +169,11 @@ public class ShequFragmentRemen extends Fragment {
                     holder.setImgRes(getActivity(), R.id.remen_dianzan_iv, R.mipmap.shequ_icon_zan_h);
                 else
                     holder.setImgRes(getActivity(), R.id.remen_dianzan_iv, R.mipmap.shequ_icon_zan1);
-
+                MyLog.e(Tag,"绑定数据:"+position);
                 //设置部分字体颜色
                 // holder.setTxtPortion(R.id.remen_content,"比特币老矿工，中国玩客云链克币第一人，关注币姐@区块链币姐带你暴力挖矿！！",s+",中国玩客");
                 if (bean.getImages().size() >= 2) {
+                    MyLog.e(Tag,"size >= 2  position:"+position);
                     holder.setInVisibility(R.id.remen_dandu_iv, View.GONE);
                     holder.setInVisibility(R.id.remen_rv, View.VISIBLE);
                     holder.setInVisibility(R.id.remen_jinghao, View.VISIBLE);
@@ -181,11 +182,12 @@ public class ShequFragmentRemen extends Fragment {
                     initRvAdapter2(bean.getImages());
                     holder.setRecyclerViewItem(R.id.remen_rv, layoutManager, rmRvAdapter2);
                 } else if (bean.getImages().size() == 1) {
-                    //  holder.setImgRes(getActivity(),R.id.remen_dandu_iv,R.drawable.touxiang);
-                    holder.setImg(getActivity(), bean.getImages().get(0), R.id.remen_dandu_iv);
+
                     holder.setInVisibility(R.id.remen_rv, View.GONE);
                     holder.setInVisibility(R.id.remen_jinghao, View.GONE);
                     holder.setInVisibility(R.id.remen_huati, View.GONE);
+                    holder.setInVisibility(R.id.remen_dandu_iv, View.VISIBLE);
+                    holder.setImg(getActivity(), bean.getImages().get(0), R.id.remen_dandu_iv);
                 }
             }
 
