@@ -76,7 +76,7 @@ public class ShouyeCJSJActivity extends AppCompatActivity {
             public void clickEvent(int viewId, String s, int position) {
                 super.clickEvent(viewId, s, position);
                 Intent intent = new Intent(ShouyeCJSJActivity.this,ShouyeCJSJconteActivity.class);
-                    intent.putExtra("title","圣诞节了房间大酒");
+                    intent.putExtra("title","圣诞节了房间大");
                 startActivity(intent);
             }
         };
