@@ -53,6 +53,7 @@ public class WoFragment extends Fragment {
     ConstraintLayout woLlTuichu;
     private View view;
     private UserBean userBean;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class WoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //初始化数据
         initMsg();
         //初始化界面

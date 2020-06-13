@@ -1,5 +1,6 @@
 package com.yongyi.financialinfo.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.activity.LoginActivity;
+import com.yongyi.financialinfo.activity.MainActivity;
 import com.yongyi.financialinfo.adapter.FragmentVpAdapter;
 import com.yongyi.financialinfo.adapter.HorizontalCanScrollViewPager;
 import com.yongyi.financialinfo.adapter.MyFragmentPagerAdapter;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
 import com.yongyi.financialinfo.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class ShequFragment extends Fragment {
     private View view;
     private FragmentVpAdapter shequVpAdapter;
     private List<Fragment> listFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,6 +67,7 @@ public class ShequFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //初始化数据
         initMsg();
         //初始化界面

@@ -17,6 +17,7 @@ import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.bean.HangqingBean;
 import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyToast;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 
 import java.io.IOException;
@@ -135,7 +136,8 @@ public class HangqingFragment extends Fragment {
         rvAdapter1=new BaseRecyclerAdapter<HangqingBean>(getContext(),rvList1,R.layout.rv_hangqing_msg) {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, HangqingBean s, int position) {
-                holder.setTxt( R.id.hangqing_msg_tv1,s.getTicker());
+                
+                holder.setTxt( R.id.hangqing_msg_tv1,s.getTicker().split(":")[1]);
                 holder.setTxt( R.id.hangqing_msg_tv2,s.getClose());
                 holder.setTxt( R.id.hangqing_msg_tv3,s.getDegree());
                 holder.setTxt( R.id.hangqing_msg_tv4,s.getVol());
@@ -154,9 +156,13 @@ public class HangqingFragment extends Fragment {
             @Override
             public void onResponse(Call<List<HangqingBean>> call, Response<List<HangqingBean>> response) {
                     MyLog.e(Tag,response.toString());
-                     rvList1.clear();
-                     rvList1.addAll(response.body());
-                     rvAdapter1.notifyDataSetChanged();
+                    if(response.body()!=null){
+                        rvList1.clear();
+                        rvList1.addAll(response.body());
+                        rvAdapter1.notifyDataSetChanged();
+                    }else{
+                        MyToast.shortToast(getContext(),"获取数据失败");
+                    }
             }
 
             @Override

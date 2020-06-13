@@ -1,5 +1,6 @@
 package com.yongyi.financialinfo.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.yongyi.financialinfo.fragment.ShequFragment;
 import com.yongyi.financialinfo.fragment.ShouyeFragment;
 import com.yongyi.financialinfo.fragment.WoFragment;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyToast;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,7 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.home_ll)
     LinearLayout homeLl;
 
+    private  String startType ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,8 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void initView() {
+        startType = SpSimpleUtils.getSp("startType",this,"MainActivity");
+
         List<Fragment> mFragments = new ArrayList<>();
         mFragments .add(new ShouyeFragment());
         mFragments .add(new HangqingFragment());
@@ -99,9 +105,17 @@ public class HomeActivity extends BaseActivity {
                 changeUi(1);
                 break;
             case R.id.home_shequ:
+                //检查是否登录
+
+                if (startType.equals("1"))
+                    startActivity(new Intent(this, LoginActivity.class));
+                else
                 changeUi(2);
                 break;
             case R.id.home_wo:
+                if (startType.equals("1"))
+                    startActivity(new Intent(this, LoginActivity.class));
+                else
                 changeUi(3);
                 break;
         }

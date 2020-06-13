@@ -38,6 +38,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,8 +50,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class LoginActivity extends BaseActivity {
-
+public class LoginActivity extends AppCompatActivity {
+    private String Tag="LoginActivity";
     @BindView(R.id.back_iv)
     ImageView backIv;
     @BindView(R.id.userphone)
@@ -76,7 +77,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        MyLog.e(TAG, "LoginActivity启动");
+        MyLog.e(Tag, "LoginActivity启动");
         initView();
     }
 
@@ -124,19 +125,19 @@ public class LoginActivity extends BaseActivity {
         loginXieyi.setText(style);
     }
 
-    //获取服务器数据
+    //登录
     private void login() {
         //获取当前的账号密码
         phone=userphone.getText().toString().trim();
         password=userPassword.getText().toString().trim();
-        MyLog.e(TAG,"登录时的phone和password:"+phone+"###"+password);
+        MyLog.e(Tag,"登录时的phone和password:"+phone+"###"+password);
         RetrofitUtils.init();
         Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class).login(phone,password,1,"futures");
         result.enqueue(new Callback<UserBean>() {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {
-                MyLog.e(TAG,"##########login:" + response.body().getSuccess()+ "##########");
-                if(response.body().getSuccess()=="true"){
+                MyLog.e(Tag,"##########login:" + response.body().getSuccess()+ "##########");
+                if(response.body()!=null&&response.body().getSuccess()=="true"){
                     userBean=response.body();
                     saveMsg();
                     //延时一秒进入主界面
@@ -144,6 +145,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void run() {
                             //验证成功进入主界面，失败请输入正确的验证码
+                            SpSimpleUtils.saveSp("startType","2",LoginActivity.this,"MainActivity");
                             startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                             finish();
                         }
@@ -167,7 +169,7 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
-                MyLog.i(TAG, "返回");
+                MyLog.i(Tag, "返回");
                 finish();
                 break;
             case R.id.userphone:
@@ -183,7 +185,6 @@ public class LoginActivity extends BaseActivity {
                              loginDenglu.setBackgroundResource(R.mipmap.botton_dengluhover);
                              loginProgress.setVisibility(View.VISIBLE);
                              login();
-
                            }
                 break;
             case R.id.user_password:
@@ -197,7 +198,7 @@ public class LoginActivity extends BaseActivity {
     private  void saveMsg(){
         SpSimpleUtils.saveSp("phone",phone,this,"LoginActivity");
         SpSimpleUtils.saveSp("password",password,this,"LoginActivity");
-        MyLog.e(TAG,"登录成功重新保存的phone和password:"+phone+"###"+password);
+        MyLog.e(Tag,"登录成功重新保存的phone和password:"+phone+"###"+password);
         String userStr=new Gson().toJson(userBean);
        // MyLog.e(TAG,"userStr:"+userStr);
         SpSimpleUtils.saveSp("UserBean",userStr ,this,"LoginActivity");
@@ -216,7 +217,7 @@ public class LoginActivity extends BaseActivity {
                     userPassword.setSelection(password.length());
                     SpSimpleUtils.saveSp("phone",phone,this,"LoginActivity");
                     SpSimpleUtils.saveSp("password",password,this,"LoginActivity");
-                    MyLog.e(TAG,"注册界面传来的phone和password:"+phone+"###"+password);
+                    MyLog.e(Tag,"注册界面传来的phone和password:"+phone+"###"+password);
                 }
         }
 
@@ -229,7 +230,7 @@ public class LoginActivity extends BaseActivity {
         password=SpSimpleUtils.getSp("password",this,"LoginActivity");
         userphone.setText(phone);
         userPassword.setText(password);
-        MyLog.e(TAG,"获取本地phone和password:"+phone+"###"+password);
+        MyLog.e(Tag,"获取本地phone和password:"+phone+"###"+password);
     }
 
 }

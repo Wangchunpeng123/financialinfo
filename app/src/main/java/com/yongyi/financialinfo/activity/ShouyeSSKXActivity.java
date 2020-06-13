@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
@@ -14,6 +15,7 @@ import com.yongyi.financialinfo.bean.ExpandFoldTextBean;
 import com.yongyi.financialinfo.bean.ShouyeKuaixunBean;
 import com.yongyi.financialinfo.http.InterService;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyToast;
 import com.yongyi.financialinfo.util.MyUtil;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -31,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShouyeSSKXActivity extends Activity {
+public class ShouyeSSKXActivity extends AppCompatActivity {
 
     private String Tag="ShouyeSSKXActivity";
 
@@ -60,28 +63,31 @@ public class ShouyeSSKXActivity extends Activity {
     }
 
     private void getMsg() {
-        Call<ShouyeKuaixunBean> call=RetrofitUtils.retrofit.create(InterService.class).getKuaixun(10);
+        Call<ShouyeKuaixunBean> call=RetrofitUtils.retrofit.create(InterService.class).getKuaixun(100);
         call.enqueue(new Callback<ShouyeKuaixunBean>() {
             @Override
             public void onResponse(Call<ShouyeKuaixunBean> call, Response<ShouyeKuaixunBean> response) {
-                MyLog.e(Tag,response.body().getList().get(0).getDate());
-                mList.addAll(response.body().getList().get(0).getLives());
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        shishiDateTv.setText(response.body().getList().get(0).getDate()+"    "+ MyUtil.dateToWeek(response.body().getList().get(0).getDate()));
+                MyLog.e(Tag,response.toString());
+                if(response.body()!=null) {
+                    mList.addAll(response.body().getList().get(0).getLives());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            shishiDateTv.setText(response.body().getList().get(0).getDate() + "    " + MyUtil.dateToWeek(response.body().getList().get(0).getDate()));
+                        }
+                    });
+                    //将标题和内容分离出来
+                    for (int i = 0; i < mList.size(); i++) {
+                        String[] strs = mList.get(i).getContent().split("】");
+                        String titleStr = strs[0].replace("【", "");
+                        titleStr = titleStr.replace("】", "");
+                        mList.get(i).setTiltle(titleStr);
+                        mList.get(i).setContent(strs[1]);
                     }
-                });
-                //将标题和内容分离出来
-                for(int i=0;i<mList.size();i++){
-                 String[] strs=mList.get(i).getContent().split("】");
-                    String titleStr=strs[0].replace("【","");
-                    titleStr=titleStr.replace("】","");
-                    mList.get(i).setTiltle(titleStr);
-                    mList.get(i).setContent(strs[1]);
-                     }
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                }else {
+                    MyToast.shortToast(ShouyeSSKXActivity.this,"获取快讯失败！");
+                }
             }
 
             @Override

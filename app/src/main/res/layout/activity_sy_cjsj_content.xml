@@ -16,18 +16,18 @@
         android:id="@+id/content_jiantou"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_20"
         android:src="@mipmap/hangyefengbao_icon_jiantou"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="@dimen/dp_15" />
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        android:padding="@dimen/dp_10"/>
 
     <TextView
         android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_22"
         android:text=""
         android:textColor="@color/titleWhite"
         app:layout_constraintLeft_toLeftOf="parent"

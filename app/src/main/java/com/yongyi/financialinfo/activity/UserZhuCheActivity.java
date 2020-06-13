@@ -78,13 +78,15 @@ public class UserZhuCheActivity extends AppCompatActivity {
         result.enqueue(new Callback<LoginYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginYanzhengmaBean> call, Response<LoginYanzhengmaBean> response) {
-               // MyLog.e(TAG,"##########" + response.body().getData() + "##########");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tuxingYanzhengma.setImageBitmap(Base64Utils.toBitmap(response.body().getData()));
-                    }
-                });
+                MyLog.e(TAG,"##########" + response.toString() + "##########");
+                if(response.body()!=null&&response.body().getSuccess()=="true") {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tuxingYanzhengma.setImageBitmap(Base64Utils.toBitmap(response.body().getData()));
+                        }
+                    });
+                }
             }
 
             @Override
@@ -100,8 +102,8 @@ public class UserZhuCheActivity extends AppCompatActivity {
         result.enqueue(new Callback<LoginPhoneYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginPhoneYanzhengmaBean> call, Response<LoginPhoneYanzhengmaBean> response) {
-                    MyLog.e(TAG,"##########getPhoneYanzhengma:" + response.body().getSuccess() + "##########");
-                    if(response.body().getSuccess()=="true"){
+                MyLog.e(TAG,"##########" + response.toString() + "##########");
+                    if(response.body()!=null&&response.body().getSuccess()=="true"){
                         timeCount.start();
                     }else{
                         getImageYanzhengma();
@@ -125,7 +127,7 @@ public class UserZhuCheActivity extends AppCompatActivity {
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {
                 MyLog.e(TAG,"##########" + response.body().getMsg()+ "##########");
                 MyLog.e(TAG,"##########postZhuce:" + response.body().getSuccess() + "##########");
-                    if(response.body().getSuccess()=="true"){
+                    if(response.body()!=null&&response.body().getSuccess()=="true"){
                         Intent intent = new Intent();
                         intent.putExtra("phone",shoujihaoEt.getText().toString());
                         intent.putExtra("password",mimaEt.getText().toString());

@@ -104,13 +104,17 @@ public class ShouyeFragment extends Fragment {
             public void onResponse(Call<List<HangqingBean>> call, Response<List<HangqingBean>> response) {
                 MyLog.e(TAG,response.toString());
                 hangQingrvList.clear();
-                for(int i=1;i<response.body().size()&&hangQingrvList.size()<9;i++){
+                if(response.body()!=null){
+                 for(int i=1;i<response.body().size()&&hangQingrvList.size()<9;i++){
                         hangQingrvList.add(response.body().get(i));
                          hangQingrvList.get(i-1).setIndex(i);
                          if(hangQingrvList.get(i-1).getClose().length()>8)
                          hangQingrvList.get(i-1).setClose(hangQingrvList.get(i-1).getClose().substring(0,8));
-                }
+                  }
                 rvAdapter.notifyDataSetChanged();
+                }else{
+                    MyToast.shortToast(getContext(),"暂无行情");
+                }
             }
 
             @Override
@@ -123,12 +127,12 @@ public class ShouyeFragment extends Fragment {
     //获取新闻数据
     private void getNewsMsg(int pageNo) {
         RetrofitUtils.init();
-        Call<ShouyeNewBean> result=RetrofitUtils.retrofit.create(InterService.class).getNews(5,pageNo,"blockchain");
+        Call<ShouyeNewBean> result=RetrofitUtils.retrofit.create(InterService.class).getNews(10,pageNo,"blockchain");
         result.enqueue(new Callback<ShouyeNewBean>() {
             @Override
             public void onResponse(Call<ShouyeNewBean> call, Response<ShouyeNewBean> response) {
-                MyLog.e(TAG,"onResponse:"+response.body().getSuccess());
-                if(response.body().getSuccess()=="true"){
+                MyLog.e(TAG,"onResponse:"+response.toString());
+                if(response.body()!=null&&response.body().getSuccess()=="true"){
                     if ("1".equals(pageNo)){
                         newsRvList.clear();
                         newsRvList.addAll(response.body().getData().getList());
@@ -141,13 +145,12 @@ public class ShouyeFragment extends Fragment {
                     if(!isPage)
                     MyToast.shortToast(getActivity(),"暂无更多新闻！");
                 }else{
-                    MyToast.shortToast(getContext(),"暂无新闻");
+                    MyToast.shortToast(getContext(),"暂无热门");
                 }
             }
             @Override
             public void onFailure(Call<ShouyeNewBean> call, Throwable t) {
                 MyLog.e(TAG,"获取失败");
-                MyToast.shortToast(getContext(),"获取新闻列表失败");
             }
 
         });
@@ -168,7 +171,7 @@ public class ShouyeFragment extends Fragment {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, HangqingBean s, int position) {
                 holder.setTxt(R.id.rv_shouye_xuhao,s.getIndex()+"");
-                holder.setTxt(R.id.rv_shouye_biaoti,s.getExchangeName());
+                holder.setTxt(R.id.rv_shouye_biaoti,s.getTicker().split(":")[1]);
                 holder.setTxt( R.id.rv_shouye_money,s.getClose());
                 holder.setTxt( R.id.rv_shouye_shijian,MyUtil.longToDate3(s.getDateTime()));
                 holder.setTxt( R.id.rv_shouye_baifen,s.getDegree());
@@ -200,7 +203,7 @@ public class ShouyeFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                MyLog.e(TAG, "onScrollStateChanged: "+"状态="+newState+"位置"+lastVisibleItem+"===="+layoutManager.getItemCount() );
+               // MyLog.e(TAG, "onScrollStateChanged: "+"状态="+newState+"位置"+lastVisibleItem+"===="+layoutManager.getItemCount() );
                 //SCROLL_STATE_IDLE当rv停止滑动时
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem+2>= layoutManager.getItemCount()) {
                     //加载更多
@@ -220,7 +223,7 @@ public class ShouyeFragment extends Fragment {
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                 if(shouyeRv.canScrollVertically(-1)){
                     shouyeRv.setNestedScrollingEnabled(false);
-                    MyLog.e(TAG, "onScrolled : true");
+                  //  MyLog.e(TAG, "onScrolled : true");
                 }else {
                     shouyeRv.setNestedScrollingEnabled(true);
                     MyLog.e(TAG, "onScrolled : false");//滑动到顶部

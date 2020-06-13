@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yongyi.financialinfo">
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name=".util.MyApplication"
         android:allowBackup="true"
@@ -16,14 +19,11 @@
 
         </activity>
         <activity android:name=".activity.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity">
+            android:name=".activity.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>
         <activity
@@ -32,14 +32,19 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.ShouyeSSKXActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".activity.ShouyeHYFBActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity
             android:name=".activity.ShouyeCJSJActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -51,13 +56,12 @@
         <activity
             android:name=".activity.ShouyeCJSJconteActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
         </activity>
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_config" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
 
 </manifest>

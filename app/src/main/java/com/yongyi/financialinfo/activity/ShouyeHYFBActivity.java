@@ -24,6 +24,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -174,12 +175,13 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
 
     //获取新闻数据
     private void getMsg(int pageNo) {
-        Call<ShouyeNewBean> result= RetrofitUtils.retrofit.create(InterService.class).getNews(5,pageNo,"blockchain");
+        RetrofitUtils.init();
+        Call<ShouyeNewBean> result= RetrofitUtils.retrofit.create(InterService.class).getNews(10,pageNo,"blockchain");
         result.enqueue(new Callback<ShouyeNewBean>() {
             @Override
             public void onResponse(Call<ShouyeNewBean> call, Response<ShouyeNewBean> response) {
-                MyLog.e(TAG,"onResponse:"+response.body().getSuccess());
-                if(response.body().getSuccess()=="true"){
+                MyLog.e(TAG,"onResponse:"+response.toString());
+                if(response.body()!=null&&response.body().getSuccess()=="true"){
                     if ("1".equals(pageNo)){
                         zixunRvList.clear();
                         zixunRvList.addAll(response.body().getData().getList());
@@ -198,7 +200,6 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ShouyeNewBean> call, Throwable t) {
                 MyLog.e(TAG,"获取失败");
-                MyToast.shortToast(ShouyeHYFBActivity.this,"获取新闻列表失败");
             }
 
         });

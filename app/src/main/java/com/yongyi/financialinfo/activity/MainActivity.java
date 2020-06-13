@@ -1,16 +1,26 @@
 package com.yongyi.financialinfo.activity;
 
 import androidx.annotation.NonNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.View;
 
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.app.BaseActivity;
+import com.yongyi.financialinfo.bean.UserBean;
+import com.yongyi.financialinfo.http.InterService;
+import com.yongyi.financialinfo.util.MyApplication;
+import com.yongyi.financialinfo.util.MyDialog;
 import com.yongyi.financialinfo.util.MyLog;
+import com.yongyi.financialinfo.util.MyToast;
+import com.yongyi.financialinfo.util.RetrofitUtils;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
 import com.zyq.easypermission.EasyPermission;
 import com.zyq.easypermission.EasyPermissionResult;
 
@@ -22,17 +32,30 @@ import java.util.TimerTask;
 public class MainActivity extends BaseActivity {
     private Timer timer ;
     private TimerTask task;
+    private String phone;
+    private String password;
+    private String startType;//startType=1:从来没有登录成功过，进入游客模式；startType=2:登录过，直接自动登录；startType=3:登陆过从主界面退出来；
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        phone= SpSimpleUtils.getSp("phone",this,"LoginActivity");
+        password=SpSimpleUtils.getSp("password",this,"LoginActivity");
+       // phone="";
+       // password="";
         timer = new Timer();
         task = new TimerTask() {
             @Override
             public void run() {
                 //要执行的操作
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-                finish();
+                if(phone.equals("")&password.equals(""))
+                {
+                    SpSimpleUtils.saveSp("startType","1",MainActivity.this,"MainActivity");
+                    startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                } else{
+                    login();
+                }
         }
         };
         initPermission();
@@ -70,6 +93,45 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    //获取服务器数据
+    private void login() {
+        RetrofitUtils.init();
+        Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class).login(phone,password,1,"futures");
+        result.enqueue(new Callback<UserBean>() {
+            @Override
+            public void onResponse(Call<UserBean> call, Response<UserBean> response) {
+                if(response.body()!=null&&response.body().getSuccess()=="true"){
+                    //延时一秒进入主界面
+                    TimerTask task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            //验证成功进入主界面，失败请输入正确的验证码
+                            SpSimpleUtils.saveSp("startType","2",MainActivity.this,"MainActivity");
+                            startActivity(new Intent(MainActivity.this,HomeActivity.class));
+                            finish();
+                        }
+                    };
+                    new Timer().schedule(task,1000);
+                }else{
+                    new MyDialog(MainActivity.this,"登录失败",response.body().getMsg()){
+                        @Override
+                        public void onClick() {
+                            super.onClick();
+                            SpSimpleUtils.saveSp("startType","1",MainActivity.this,"MainActivity");
+                            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                            finish();
+                        }
+                    }.show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserBean> call, Throwable t) {
+                new MyDialog(MainActivity.this,"登录失败","请检查账号密码！").show();
+            }
+        });
+    }
 }
 
 
