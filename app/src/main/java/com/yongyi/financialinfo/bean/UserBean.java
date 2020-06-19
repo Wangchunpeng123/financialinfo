@@ -34,7 +34,7 @@ public class UserBean {
 
     public static class User {
         private String uuid;
-        private String id;
+        private long id;
         private String phone;
         private String password;
         private String head;
@@ -54,14 +54,6 @@ public class UserBean {
 
         public void setUuid(String uuid) {
             this.uuid = uuid;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
         }
 
         public String getPhone() {
@@ -161,5 +153,12 @@ public class UserBean {
         }
 
 
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
     }
 }

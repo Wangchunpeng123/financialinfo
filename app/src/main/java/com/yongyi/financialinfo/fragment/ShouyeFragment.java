@@ -10,9 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.activity.NewsContentActivity;
 import com.yongyi.financialinfo.activity.ShouyeCJSJActivity;
 import com.yongyi.financialinfo.activity.ShouyeHYFBActivity;
 import com.yongyi.financialinfo.activity.ShouyeSSKXActivity;
+import com.yongyi.financialinfo.activity.SignInActvity;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.bean.HangqingBean;
@@ -53,8 +55,6 @@ public class ShouyeFragment extends Fragment {
     ImageView shouyeKuaixun;
     @BindView(R.id.shouye_shuju)
     ImageView shouyeShuju;
-    @BindView(R.id.shouye_ll_shousuo)
-    LinearLayout shouyeLlShousuo;
     @BindView(R.id.shouye_qiandao)
     ImageView shouyeQiandao;
     @BindView(R.id.shouye_remen)
@@ -136,14 +136,13 @@ public class ShouyeFragment extends Fragment {
                     if ("1".equals(pageNo)){
                         newsRvList.clear();
                         newsRvList.addAll(response.body().getData().getList());
-                        rvAdapter1.notifyDataSetChanged();
                     }else {
                         newsRvList.addAll(response.body().getData().getList());
-                        rvAdapter1.notifyDataSetChanged();
                     }
                     isPage=response.body().getData().isHasMore();
                     if(!isPage)
                     MyToast.shortToast(getActivity(),"暂无更多新闻！");
+                    rvAdapter1.notifyDataSetChanged();
                 }else{
                     MyToast.shortToast(getContext(),"暂无热门");
                 }
@@ -187,13 +186,26 @@ public class ShouyeFragment extends Fragment {
         rvAdapter1=new BaseRecyclerAdapter<ShouyeNewBean.Mydata.dateMsg>(getContext(),newsRvList,R.layout.rv_shouye) {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, ShouyeNewBean.Mydata.dateMsg s, int position) {
-
+                holder.setClick(R.id.rv_shouye1,s,position,rvAdapter1);
                 holder.setTxt( R.id.rv_shouye_tv,s.getTitle());
                 holder.setTxt( R.id.rv_shouye_caijin,s.getSource());
                 //MyLog.e(TAG,"bindData:"+s.getTitle());
                 //设置图片为圆角
                 holder.setImgGray(getContext(),s.getPicture(),R.id.rv_shouye_iv);
                 holder.setTxt(R.id.rv_shouye_riqi, MyUtil.longToDate2(s.getPublishTime()));
+            }
+            @Override
+            public void clickEvent(int viewId, ShouyeNewBean.Mydata.dateMsg s, int position) {
+                super.clickEvent(viewId, s, position);
+                Intent intent = new Intent(getContext(), NewsContentActivity.class);
+                intent.putExtra("title",s.getTitle());
+                intent.putExtra("Content",s.getContent());
+                intent.putExtra("Source",s.getSource());
+                intent.putExtra("Hot",s.getHot());
+                intent.putExtra("Time",MyUtil.longToDate2(s.getPublishTime()));
+                intent.putExtra("Author",s.getAuthor());
+                intent.putExtra("Picture",s.getPicture());
+                startActivity(intent);
             }
         };
         shouyeRv.setAdapter(rvAdapter1);
@@ -234,7 +246,7 @@ public class ShouyeFragment extends Fragment {
 
     }
 
-    @OnClick({R.id.shouye_iv, R.id.shouye_fengbao, R.id.shouye_kuaixun, R.id.shouye_shuju, R.id.shouye_ll_shousuo, R.id.shouye_qiandao, R.id.shouye_remen})
+    @OnClick({R.id.shouye_iv, R.id.shouye_fengbao, R.id.shouye_kuaixun, R.id.shouye_shuju, R.id.shouye_qiandao, R.id.shouye_remen})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.shouye_iv:
@@ -248,9 +260,8 @@ public class ShouyeFragment extends Fragment {
             case R.id.shouye_shuju:
                 startActivity(new Intent(getActivity(), ShouyeCJSJActivity.class));
                 break;
-            case R.id.shouye_ll_shousuo:
-                break;
             case R.id.shouye_qiandao:
+                startActivity(new Intent(getActivity(), SignInActvity.class));
                 break;
             case R.id.shouye_remen:
                 break;

@@ -1,5 +1,6 @@
 package com.yongyi.financialinfo.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -136,8 +137,10 @@ public class LoginActivity extends AppCompatActivity {
         result.enqueue(new Callback<UserBean>() {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {
-                MyLog.e(Tag,"##########login:" + response.body().getSuccess()+ "##########");
+
                 if(response.body()!=null&&response.body().getSuccess()=="true"){
+                    MyLog.e(Tag,"##########login:" + response.body().getSuccess()+ "##########");
+                    MyLog.e(Tag,"##########login:" + response.body().getData().getId()+ "##########");
                     userBean=response.body();
                     saveMsg();
                     //延时一秒进入主界面
@@ -145,7 +148,10 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             //验证成功进入主界面，失败请输入正确的验证码
-                            SpSimpleUtils.saveSp("startType","2",LoginActivity.this,"MainActivity");
+                            SpSimpleUtils.saveSp("startType","2",LoginActivity.this,"LoginActivity");
+                            String userStr=new Gson().toJson(response.body());
+                            SpSimpleUtils.saveSp("UserBean",userStr ,LoginActivity.this,"LoginActivity");
+                            SpSimpleUtils.saveSp("userId",response.body().getData().getId()+"" ,LoginActivity.this,"LoginActivity");
                             startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                             finish();
                         }
@@ -200,7 +206,6 @@ public class LoginActivity extends AppCompatActivity {
         SpSimpleUtils.saveSp("password",password,this,"LoginActivity");
         MyLog.e(Tag,"登录成功重新保存的phone和password:"+phone+"###"+password);
         String userStr=new Gson().toJson(userBean);
-       // MyLog.e(TAG,"userStr:"+userStr);
         SpSimpleUtils.saveSp("UserBean",userStr ,this,"LoginActivity");
     }
 

@@ -19,4 +19,6 @@
 
     <color name="green_bg">#00C72A</color>
     <color name="fenhong"> #FFC5C5</color>
+    <color name="colorTransparent" >#01000000</color>
+    <color name="ball_text">#F95D59</color>
 </resources>

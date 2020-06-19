@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.activity.LoginActivity;
 import com.yongyi.financialinfo.activity.MainActivity;
+import com.yongyi.financialinfo.activity.ShequCameraActivity;
 import com.yongyi.financialinfo.adapter.FragmentVpAdapter;
 import com.yongyi.financialinfo.adapter.HorizontalCanScrollViewPager;
 import com.yongyi.financialinfo.adapter.MyFragmentPagerAdapter;
@@ -107,6 +108,7 @@ public class ShequFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.shequ_camera:
+              startActivity(new Intent(getContext(), ShequCameraActivity.class));
                 break;
             case R.id.shequ_remen:
                 ViewUtil.setTextClick(shequRemen,15,getResources().getColor(R.color.titleWhite),shequRemenLine,true);

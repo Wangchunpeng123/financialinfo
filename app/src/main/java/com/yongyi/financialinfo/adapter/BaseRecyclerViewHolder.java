@@ -151,14 +151,21 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
         }
     }
     //设置本地图片为圆形
-    public void setImgCrop(Context context,int image, int viewId){
+    public void setImgBdCrop(Context context,int image, int viewId){
         ImageView imageView= (ImageView) itemView.findViewById(viewId);
         Picasso.with(context)
                 .load(image)
                 .transform(new CircleImageTransformer())
                 .into(imageView);
     }
-
+    //设置本地图片为圆形
+    public void setImgUrlCrop(Context context,String url, int viewId){
+        ImageView imageView= (ImageView) itemView.findViewById(viewId);
+        Picasso.with(context)
+                .load(url)
+                .transform(new CircleImageTransformer())
+                .into(imageView);
+    }
     //        设置控件是否可见
     public void setInVisibility(int viewId, int v) {
         itemView.findViewById(viewId).setVisibility(v);

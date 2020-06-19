@@ -68,7 +68,7 @@ public class HangqingFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_hangqing, container, false);
         ButterKnife.bind(this, view);
-        RetrofitUtils.init("http://api.coindog.com/api/v1/");
+
         return view;
     }
     @Override
@@ -151,6 +151,7 @@ public class HangqingFragment extends Fragment {
     }
 
     private void getMsg(String itemName) {
+        RetrofitUtils.init("http://api.coindog.com/api/v1/");
         Call<List<HangqingBean>> call=RetrofitUtils.retrofit.create(InterService.class).getHangqing(itemName);
         call.enqueue(new Callback<List<HangqingBean>>() {
             @Override

@@ -19,7 +19,7 @@
             android:layout_width="@dimen/dp_35"
             android:layout_height="@dimen/dp_35"
             android:scaleType="fitXY"
-            android:src="@drawable/touxiang"
+            android:id="@+id/remen_touxiang"
             />
             <ImageView
                 android:layout_width="@dimen/dp_35"
@@ -117,46 +117,14 @@
         android:layout_marginTop="@dimen/dp_5"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/remen_rv"
-        android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@+id/remen_dandu_iv"
-        android:layout_marginTop="@dimen/dp_13"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/remen_jinghao"
-        android:visibility="visible"
-        android:text="#区块链与比特圈"
-        android:textColor="@color/blue"
-        android:textSize="@dimen/sp_13"
-        app:layout_constraintTop_toBottomOf="@+id/remen_rv"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="@dimen/dp_10"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/remen_huati"
-        android:text="1.5w人参与了该话题"
-        android:visibility="visible"
-        android:textColor="@color/text_gray"
-        android:textSize="@dimen/sp_13"
-        app:layout_constraintTop_toBottomOf="@+id/remen_rv"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="@dimen/dp_10"
-        />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/remen_line1"
         android:src="@mipmap/shequ_main_line_1"
-        app:layout_constraintTop_toBottomOf="@+id/remen_jinghao"
+        app:layout_constraintTop_toBottomOf="@+id/remen_dandu_iv"
         android:layout_marginTop="@dimen/dp_9"
         />
         <TextView
@@ -226,7 +194,7 @@
 
 
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/remen_zhuanfa_ll"
@@ -252,7 +220,7 @@
                 android:textSize="@dimen/sp_13"
                 />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
 
     <ImageView

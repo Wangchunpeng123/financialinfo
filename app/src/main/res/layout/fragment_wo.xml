@@ -21,7 +21,7 @@
                 android:layout_height="@dimen/dp_40"
                 android:scaleType="fitXY"
                 android:id="@+id/wo_head"
-                android:src="@mipmap/hangqing_main_shuzi_h_bg"
+                android:src="@drawable/tianjia"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/wo_name"
-                android:text="null"
+                android:text="名字"
                 android:textColor="@color/titleWhite"
                 android:textSize="@dimen/sp_21"
                 app:layout_constraintLeft_toRightOf="@+id/wo_head"
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/wo_biaoqian"
-                android:text="null"
+                android:text="个性签名"
                 android:textColor="@color/cengbai"
                 android:textSize="@dimen/sp_11"
                 app:layout_constraintLeft_toRightOf="@+id/wo_head"
@@ -62,6 +62,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/dp_15"
                 android:layout_marginTop="@dimen/dp_40"
+                android:padding="@dimen/dp_10"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -104,7 +105,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="粉丝/关注"
+                    android:text="粉丝"
                     android:textSize="@dimen/sp_15"
                     android:textColor="@color/black"
                     android:id="@+id/fensi_tv"
@@ -115,7 +116,7 @@
                     />
 
 
-                <ImageView
+            <!--    <ImageView
                     android:layout_width="@dimen/dp_6"
                     android:layout_height="@dimen/dp_6"
                     android:id="@+id/wo_read1"
@@ -123,7 +124,7 @@
                     app:layout_constraintLeft_toRightOf="@id/fensi_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/dp_3"
-                    />
+                    />-->
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -140,6 +141,62 @@
                     android:src="@mipmap/wo_line_1"
                     android:layout_alignBottom="@+id/fensi_iv"
                     app:layout_constraintTop_toBottomOf="@id/fensi_iv"
+                    android:layout_marginTop="@dimen/dp_10"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/wo_ll_guanzhu"
+                android:layout_marginTop="@dimen/dp_30"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/wo_icon_dongtai"
+                    android:id="@+id/dongtai_iv"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关注"
+                    android:textSize="@dimen/sp_15"
+                    android:textColor="@color/black"
+                    android:id="@+id/dongtai_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/dongtai_iv"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    />
+           <!--     <ImageView
+                    android:layout_width="@dimen/dp_6"
+                    android:layout_height="@dimen/dp_6"
+                    android:id="@+id/wo_read3"
+                    android:background="@drawable/message_red_read_gidn"
+                    app:layout_constraintLeft_toRightOf="@id/dongtai_tv"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/dp_3"
+                    />-->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/wo_icon_jiantou"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="@dimen/dp_15"
+                    />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/wo_line_1"
+                    app:layout_constraintTop_toBottomOf="@id/dongtai_iv"
                     android:layout_marginTop="@dimen/dp_10"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -172,7 +229,7 @@
                     app:layout_constraintLeft_toRightOf="@+id/xiangguan_iv"
                     android:layout_marginLeft="@dimen/dp_10"
                     />
-                <ImageView
+               <!-- <ImageView
                     android:layout_width="@dimen/dp_6"
                     android:layout_height="@dimen/dp_6"
                     android:id="@+id/wo_read2"
@@ -180,7 +237,7 @@
                     app:layout_constraintLeft_toRightOf="@id/xiangguan_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/dp_3"
-                    />
+                    />-->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -198,61 +255,7 @@
                     android:layout_marginTop="@dimen/dp_10"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/wo_ll_dongtai"
-                android:layout_marginTop="@dimen/dp_30"
-                >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/wo_icon_dongtai"
-                    android:id="@+id/dongtai_iv"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginLeft="@dimen/dp_15"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="好友动态"
-                    android:textSize="@dimen/sp_15"
-                    android:textColor="@color/black"
-                    android:id="@+id/dongtai_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/dongtai_iv"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    />
-                <ImageView
-                    android:layout_width="@dimen/dp_6"
-                    android:layout_height="@dimen/dp_6"
-                    android:id="@+id/wo_read3"
-                    android:background="@drawable/message_red_read_gidn"
-                    app:layout_constraintLeft_toRightOf="@id/dongtai_tv"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="@dimen/dp_3"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/wo_icon_jiantou"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="@dimen/dp_15"
-                    />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/wo_line_1"
-                    app:layout_constraintTop_toBottomOf="@id/dongtai_iv"
-                    android:layout_marginTop="@dimen/dp_10"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -282,7 +285,7 @@
                     app:layout_constraintLeft_toRightOf="@+id/xiaoxi_iv"
                     android:layout_marginLeft="@dimen/dp_10"
                     />
-                <ImageView
+               <!-- <ImageView
                     android:layout_width="@dimen/dp_6"
                     android:layout_height="@dimen/dp_6"
                     android:id="@+id/wo_read4"
@@ -290,7 +293,7 @@
                     app:layout_constraintLeft_toRightOf="@id/xiaoxi_tv"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/dp_3"
-                    />
+                    />-->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

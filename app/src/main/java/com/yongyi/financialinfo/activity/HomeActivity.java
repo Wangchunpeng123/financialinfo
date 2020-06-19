@@ -73,7 +73,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void initView() {
-        startType = SpSimpleUtils.getSp("startType",this,"MainActivity");
+        startType = SpSimpleUtils.getSp("startType",this,"LoginActivity");
 
         List<Fragment> mFragments = new ArrayList<>();
         mFragments .add(new ShouyeFragment());

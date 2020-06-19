@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 
+import com.google.gson.Gson;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.app.BaseActivity;
 import com.yongyi.financialinfo.bean.UserBean;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity {
                 //要执行的操作
                 if(phone.equals("")&password.equals(""))
                 {
-                    SpSimpleUtils.saveSp("startType","1",MainActivity.this,"MainActivity");
+                    SpSimpleUtils.saveSp("startType","1",MainActivity.this,"LoginActivity");
                     startActivity(new Intent(getApplicationContext(),HomeActivity.class));
                 } else{
                     login();
@@ -64,13 +65,19 @@ public class MainActivity extends BaseActivity {
 
     private void initPermission() {
         //检测权限
-        if(EasyPermission.build().hasPermission(this,Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE)){
+        if(EasyPermission.build().hasPermission(this,Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE)){
             timer.schedule(task,2000);
         }else{
             EasyPermission.build()
                     .mRequestCode(1)
                     .mContext(this)
-                    .mPerms(Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE)
+                    .mPerms(Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
                     .mResult(new EasyPermissionResult() {
                         @Override
                         public void onPermissionsAccess(int requestCode) {
@@ -101,23 +108,27 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {
                 if(response.body()!=null&&response.body().getSuccess()=="true"){
+                    MyLog.e(TAG,"##########login:" + response.body().getData().getId()+ "##########");
                     //延时一秒进入主界面
                     TimerTask task = new TimerTask() {
                         @Override
                         public void run() {
                             //验证成功进入主界面，失败请输入正确的验证码
-                            SpSimpleUtils.saveSp("startType","2",MainActivity.this,"MainActivity");
+                            SpSimpleUtils.saveSp("startType","2",MainActivity.this,"LoginActivity");
+                            String userStr=new Gson().toJson(response.body());
+                            SpSimpleUtils.saveSp("UserBean",userStr ,MainActivity.this,"LoginActivity");
+                            SpSimpleUtils.saveSp("userId",response.body().getData().getId()+"" ,MainActivity.this,"LoginActivity");
                             startActivity(new Intent(MainActivity.this,HomeActivity.class));
                             finish();
                         }
                     };
-                    new Timer().schedule(task,1000);
+                    new Timer().schedule(task,500);
                 }else{
                     new MyDialog(MainActivity.this,"登录失败",response.body().getMsg()){
                         @Override
                         public void onClick() {
                             super.onClick();
-                            SpSimpleUtils.saveSp("startType","1",MainActivity.this,"MainActivity");
+                            SpSimpleUtils.saveSp("startType","1",MainActivity.this,"LoginActivity");
                             startActivity(new Intent(MainActivity.this,LoginActivity.class));
                             finish();
                         }

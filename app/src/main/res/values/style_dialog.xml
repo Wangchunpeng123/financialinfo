@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dialog动画 -->
+<resources>
+<style name="style_dialog">
+
+    <item name="android:windowEnterAnimation">@anim/fragment_open_enter</item>
+
+    <item name="android:windowExitAnimation">@anim/fragment_open_exit</item>
+
+</style>
+</resources>
