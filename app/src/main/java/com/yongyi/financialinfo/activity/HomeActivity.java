@@ -73,7 +73,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void initView() {
-        startType = SpSimpleUtils.getSp("startType",this,"LoginActivity");
 
         List<Fragment> mFragments = new ArrayList<>();
         mFragments .add(new ShouyeFragment());
@@ -97,6 +96,7 @@ public class HomeActivity extends BaseActivity {
 
     @OnClick({R.id.home_shouye, R.id.home_hangqing, R.id.home_shequ, R.id.home_wo})
     public void onClick(View view) {
+        startType = SpSimpleUtils.getSp("startType",this,"LoginActivity");
         switch (view.getId()) {
             case R.id.home_shouye:
                 changeUi(0);

@@ -20,7 +20,7 @@
         android:layout_height="@dimen/dp_40"
         android:scaleType="fitXY"
         android:id="@+id/tuijian_head"
-        android:src="@mipmap/hangqing_main_shuzi_h_bg"
+        android:src="@mipmap/pic_morentouxiang"
         app:layout_constraintTop_toBottomOf="@+id/tuijian_cha"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

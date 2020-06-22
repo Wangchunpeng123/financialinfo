@@ -28,23 +28,104 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_22"
-        android:text=""
+        android:text="交易所公告"
         android:textColor="@color/titleWhite"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
-        android:id="@+id/content_tv_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text=""
-        android:scrollbars="vertical"
-        android:singleLine="false"
+        android:id="@+id/jy_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15"
         app:layout_constraintTop_toBottomOf="@+id/caijing_head_iv"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="@dimen/dp_72"
-        android:layout_marginBottom="@dimen/dp_13"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+     />
+    <TextView
+        android:id="@+id/jy_sours_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="来源： "
+        android:textSize="@dimen/dp_13"
+        app:layout_constraintTop_toBottomOf="@+id/jy_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_20"
         android:layout_marginLeft="@dimen/dp_13"
-        android:layout_marginRight="@dimen/dp_13"/>
+        />
+    <TextView
+        android:id="@+id/jy_sours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="null"
+        android:textSize="@dimen/dp_13"
+        app:layout_constraintTop_toBottomOf="@+id/jy_title"
+        app:layout_constraintLeft_toRightOf="@id/jy_sours_tv"
+        android:layout_marginTop="@dimen/dp_20"
+        />
 
+    <TextView
+        android:id="@+id/jy_zuozhe_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="作者： "
+        android:textSize="@dimen/dp_13"
+        app:layout_constraintTop_toBottomOf="@+id/jy_title"
+       app:layout_constraintLeft_toRightOf="@id/jy_sours"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        />
+    <TextView
+        android:id="@+id/jy_zuozhe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="null"
+        android:textSize="@dimen/dp_13"
+        app:layout_constraintTop_toBottomOf="@+id/jy_title"
+        app:layout_constraintLeft_toRightOf="@id/jy_zuozhe_tv"
+        android:layout_marginTop="@dimen/dp_20"
+        />
+    <TextView
+        android:id="@+id/jy_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="null"
+        android:textSize="@dimen/dp_13"
+        app:layout_constraintTop_toBottomOf="@+id/jy_title"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_2"
+        android:id="@+id/jy_line"
+        android:background="@mipmap/caijingshuju_line_1"
+        app:layout_constraintTop_toBottomOf="@+id/jy_sours_tv"
+        android:layout_marginTop="@dimen/dp_5"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/jy_content_sv"
+         app:layout_constraintTop_toBottomOf="@id/jy_line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        >
+        <TextView
+            android:id="@+id/jy_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="null"
+            android:textSize="@dimen/dp_13"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

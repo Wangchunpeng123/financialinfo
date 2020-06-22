@@ -69,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox yonghuxieyi_cb;
     @BindView(R.id.login_progress)
     ProgressBar loginProgress;
+    @BindView(R.id.forget)
+    TextView forget;
 
     private String phone;
     private String password;
@@ -171,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.back_iv, R.id.userphone, R.id.login_denglu, R.id.user_password, R.id.login_zhuche})
+    @OnClick({R.id.back_iv, R.id.userphone, R.id.login_denglu, R.id.user_password, R.id.login_zhuche,R.id.forget})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
@@ -197,6 +199,9 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.login_zhuche:
                 startActivityForResult(new Intent(this,UserZhuCheActivity.class),1);
+                break;
+            case R.id.forget:
+                startActivity(new Intent(this,LoginWangjiActivity.class));
                 break;
         }
     }

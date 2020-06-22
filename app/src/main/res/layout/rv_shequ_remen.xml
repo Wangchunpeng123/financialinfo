@@ -20,6 +20,7 @@
             android:layout_height="@dimen/dp_35"
             android:scaleType="fitXY"
             android:id="@+id/remen_touxiang"
+                android:src="@mipmap/pic_morentouxiang"
             />
             <ImageView
                 android:layout_width="@dimen/dp_35"

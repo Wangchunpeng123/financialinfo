@@ -40,7 +40,7 @@ import static com.yongyi.financialinfo.R.id.userzhuche_et_qr;
 import static com.yongyi.financialinfo.R.id.userzhuche_et_tuxing_yanzhengma;
 import static com.yongyi.financialinfo.R.id.userzhuche_zhuche;
 
-public class UserZhuCheActivity extends AppCompatActivity {
+public class LoginWangjiActivity extends AppCompatActivity {
     @BindView(R.id.back_iv)
     ImageView back;
     @BindView(R.id.userzhuche_iv_tuxing_yanzhengma)
@@ -51,8 +51,6 @@ public class UserZhuCheActivity extends AppCompatActivity {
     TextView shoujiYanzhengmaClick;
     @BindView(userzhuche_zhuche)
     ImageView imageBtnZhuche;
-    @BindView(R.id.userzhuche_cb)
-    CheckBox userzhucheCb;
     @BindView(R.id.userzhuche_et_tuxing_yanzhengma)
     EditText tuxiangYanzhengmaEt;
     @BindView(R.id.userzhuche_et_shouji_yanzhengma)
@@ -63,10 +61,10 @@ public class UserZhuCheActivity extends AppCompatActivity {
     EditText userzhucheEtQr;
 
     private TimeCount timeCount;
-    private String TAG="UserZhuCheActivity";
+    private String TAG="WangJiMiMaActivity";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_userzhuche);
+        setContentView(R.layout.activity_login_wangji);
         ButterKnife.bind(this);
         RetrofitUtils.init();
         timeCount = new TimeCount(60000,1000);
@@ -76,6 +74,7 @@ public class UserZhuCheActivity extends AppCompatActivity {
     private void getImageYanzhengma() {
         Call<LoginYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getImageYanzhengma();
         result.enqueue(new Callback<LoginYanzhengmaBean>() {
+            @Override
             public void onResponse(Call<LoginYanzhengmaBean> call, Response<LoginYanzhengmaBean> response) {
                 MyLog.e(TAG,"##########" + response.toString() + "##########");
                 if(response.body()!=null&&response.body().getSuccess()=="true") {
@@ -97,51 +96,54 @@ public class UserZhuCheActivity extends AppCompatActivity {
 
     //获取手机验证码
     private void getPhoneYanzhengma() {
-        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),1,"futures",tuxiangYanzhengmaEt.getText().toString());
+        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),3,"futures",tuxiangYanzhengmaEt.getText().toString());
         result.enqueue(new Callback<LoginPhoneYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginPhoneYanzhengmaBean> call, Response<LoginPhoneYanzhengmaBean> response) {
                 MyLog.e(TAG,"##########" + response.toString() + "##########");
-                    if(response.body()!=null&&response.body().getSuccess()=="true"){
-                        timeCount.start();
-                    }else{
-                        getImageYanzhengma();
-                        tuxiangYanzhengmaEt.setText("");
-                        new MyDialog(UserZhuCheActivity.this,"获取验证码失败",response.body().getMsg()).show();
-                    }
+                if(response.body()!=null&&response.body().getSuccess()=="true"){
+                    timeCount.start();
+                }else{
+                    getImageYanzhengma();
+                    tuxiangYanzhengmaEt.setText("");
+                    new MyDialog(LoginWangjiActivity.this,"获取验证码失败",response.body().getMsg()+"或手机号不正确").show();
+                }
             }
             //18183229574
             @Override
             public void onFailure(Call<LoginPhoneYanzhengmaBean> call, Throwable t) {
-                new MyDialog(UserZhuCheActivity.this,"获取验证码失败","手机号或者验证码有误");
+                new MyDialog(LoginWangjiActivity.this,"获取验证码失败","手机号或者验证码有误");
             }
         });
     }
-    //上传注册信息
-    private void postZhuce() {
-        Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class)
-                .postZhuce(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),1,"futures");
-        result.enqueue(new Callback<UserBean>() {
+    //忘记密码
+    private void resetPassword(){
+        MyLog.e(TAG,"上传的内容有：" + shoujihaoEt.getText().toString() + " "
+                + mimaEt.getText().toString() + " "
+                + userzhucheEtQr.getText().toString() + " "
+                + shoujiYanzhengmaEt.getText().toString() + " "+"futures");
+        Call<ResponseBody> result = RetrofitUtils.retrofit.create(InterService.class).resetPassword(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),"futures");
+        result.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<UserBean> call, Response<UserBean> response) {
-                MyLog.e(TAG,"##########" + response.body().getMsg()+ "##########");
-                MyLog.e(TAG,"##########postZhuce:" + response.body().getSuccess() + "##########");
-                    if(response.body()!=null&&response.body().getSuccess()=="true"){
-                        Intent intent = new Intent();
-                        intent.putExtra("phone",shoujihaoEt.getText().toString());
-                        intent.putExtra("password",mimaEt.getText().toString());
-                        setResult(RESULT_OK,intent);
-                        finish();
-                    }else{
-                        new MyDialog(UserZhuCheActivity.this,"注册失败",response.body().getMsg()).show();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                MyLog.e(TAG,response.toString());
+                if (response.body() != null){
+                    try {
+                        MyLog.e(TAG,response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
+                    MyToast.shortToast(LoginWangjiActivity.this,"重置成功");
+                    finish();
+                }else {
+                    MyLog.e(TAG,"空的");
+                }
             }
             @Override
-            public void onFailure(Call<UserBean> call, Throwable t) {
-                new MyDialog(UserZhuCheActivity.this,"注册失败","请重新设置").show();
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
             }
         });
+
     }
 
 
@@ -149,7 +151,7 @@ public class UserZhuCheActivity extends AppCompatActivity {
     public void Onclick(View view){
         switch (view.getId()){
             case R.id.back_iv:
-                Intent intent1 = new Intent(UserZhuCheActivity.this,LoginActivity.class);
+                Intent intent1 = new Intent(LoginWangjiActivity.this,LoginActivity.class);
                 startActivity(intent1);
                 finish();
                 break;
@@ -162,7 +164,7 @@ public class UserZhuCheActivity extends AppCompatActivity {
                 }
                 else if(tuxiangYanzhengmaEt.length()<4){
                     Toast.makeText(this,"验证码输入错误",Toast.LENGTH_SHORT).show();
-                   }else{
+                }else{
                     getPhoneYanzhengma();
                 }
                 break;
@@ -171,12 +173,11 @@ public class UserZhuCheActivity extends AppCompatActivity {
                     if (userzhucheEtQr.length() >=6){
                         if (shoujiYanzhengmaEt.length() ==6){
                             if (mimaEt.length() >= 6){
-                                if (userzhucheCb.isChecked()){
-                                    //上传注册信息
-                                    postZhuce();
-
-                                }else {
-                                    Toast.makeText(this,"请勾选用户协议",Toast.LENGTH_SHORT).show();
+                                //上传修改信息
+                                if(mimaEt.getText().toString().equals(userzhucheEtQr.getText().toString()))
+                                     resetPassword();
+                                else{
+                                    Toast.makeText(this,"两次密码不相同",Toast.LENGTH_SHORT).show();
                                 }
                             }else {
                                 Toast.makeText(this,"密码不得小于6位数",Toast.LENGTH_SHORT).show();
@@ -210,18 +211,5 @@ public class UserZhuCheActivity extends AppCompatActivity {
             shoujiYanzhengmaClick.setClickable(true);
         }
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                Intent intent = new Intent();
-                intent.putExtra("phone",shoujihaoEt.getText().toString());
-                intent.putExtra("password",mimaEt.getText().toString());
-                setResult(RESULT_OK,intent);
-                finish();
-                break;
-        }
-        //返回false是不吃掉，后面的监听也能得到这个事件，而返回true是吃掉，后面的监听就得不到这个事件了。
-        return true;
-    }
+
 }

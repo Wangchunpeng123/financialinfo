@@ -9,10 +9,12 @@ import com.yongyi.financialinfo.bean.ShequPinglunMsgBean;
 import com.yongyi.financialinfo.bean.ShequRemenGuanzhuBean;
 import com.yongyi.financialinfo.bean.ShequRemenSsBean;
 import com.yongyi.financialinfo.bean.ShequRemenTuijianGuanzhuBean;
+import com.yongyi.financialinfo.bean.ShouyeJiaoyisuoBean;
 import com.yongyi.financialinfo.bean.ShouyeKuaixunBean;
 import com.yongyi.financialinfo.bean.ShouyeNewBean;
 import com.yongyi.financialinfo.bean.SignListBean;
 import com.yongyi.financialinfo.bean.SignNowBean;
+import com.yongyi.financialinfo.bean.SuccessBean;
 import com.yongyi.financialinfo.bean.UserBean;
 import com.yongyi.financialinfo.bean.User;
 import com.yongyi.financialinfo.bean.UserTalkBean;
@@ -133,9 +135,9 @@ public interface InterService {
     //发表说说
     @FormUrlEncoded
     @POST("/user/talk/publishTalk")
-    Call<ResponseBody> postShuoshuo(@Field("userId") String userId,
-                                    @Field("content") String content,
-                                    @Field("picture") String picture);
+    Call<SuccessBean> postShuoshuo(@Field("userId") String userId,
+                                   @Field("content") String content,
+                                   @Field("picture") String picture);
     //打包图片
     @Multipart
     @POST("upload")
@@ -171,5 +173,19 @@ public interface InterService {
     //今日签到
     @POST("/user/sign/signNow")
     Call<SignNowBean> signNow(@Query("userId") long userId);
+
+    //今日是否已经签到
+    @GET("/news/getNewListByProject.do")
+    Call<ShouyeJiaoyisuoBean> getJiaoyisuo(@Query("project") String project,
+                                           @Query("pageNumber") int pageNumber,
+                                           @Query("pageSize") int pageSize);
+    //重置密码
+    @FormUrlEncoded
+    @POST("/system/resetPassword")
+    Call<ResponseBody> resetPassword(@Field("phone") String phone,
+                                     @Field("newPassword") String newPassword,
+                                     @Field("confirmPassword") String confirmPassword,
+                                     @Field("code") String code,
+                                     @Field("project") String project);
 }
 

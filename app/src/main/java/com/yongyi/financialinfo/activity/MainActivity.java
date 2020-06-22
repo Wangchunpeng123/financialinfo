@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 //要执行的操作
-                if(phone.equals("")&password.equals(""))
+                if(phone.equals("")||password.equals(""))
                 {
                     SpSimpleUtils.saveSp("startType","1",MainActivity.this,"LoginActivity");
                     startActivity(new Intent(getApplicationContext(),HomeActivity.class));

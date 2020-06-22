@@ -70,6 +70,7 @@ public class ShequFragmentRemen extends Fragment {
     private int guanzhuPage=1;
     private int  tuijianPageNb=1;
     private boolean tuijianHasMore=true;
+
     private List<ShequRemenTuijianGuanzhuBean.Mydata> tuijanGuanzhuList=new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,13 +84,14 @@ public class ShequFragmentRemen extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //初始化数据
-        initMsg();
-        //初始化界面
-        initView();
-        getTuijianGuanzhu();
-        //获取关注用户
-        getIsGuanzhu(guanzhuPage);
+
+            //初始化数据
+            initMsg();
+            //初始化界面
+            initView();
+            getTuijianGuanzhu();
+            //获取关注用户
+            getIsGuanzhu(guanzhuPage);
 
     }
     private void dianZan(long talkId,int type){
@@ -153,11 +155,14 @@ public class ShequFragmentRemen extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 MyLog.e(Tag,response.toString());
-                try {
-                    MyLog.e(Tag,response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(response.body()!=null){
+                    try {
+                        MyLog.e(Tag,response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
             @Override
@@ -256,9 +261,9 @@ public class ShequFragmentRemen extends Fragment {
                     holder.setImgRes(getActivity(), R.id.tuijian_guanzhu, R.mipmap.shequ_icon_yiguanzhu);
                 else
                     holder.setImgRes(getActivity(), R.id.tuijian_guanzhu, R.mipmap.shequ_icon_guanzhu);
-                if(s.getHead().equals("http://video.cqscrb.top/logo.jpg"))
+               /* if(s.getHead().equals("http://video.cqscrb.top/logo.jpg")||s.getHead().equals("http://image.yysc.online/"))
                     holder.setImgBdCrop(getActivity(),R.mipmap.pic_morentouxiang,R.id.tuijian_head);
-                    else
+                    else*/
                 holder.setImgUrlCrop(getActivity(),s.getHead(),R.id.tuijian_head);
 
                 holder.setClick(R.id.tuijian_guanzhu,s,position,tuijianAdapter);
@@ -298,10 +303,10 @@ public class ShequFragmentRemen extends Fragment {
                 holder.setTxt(R.id.remen_time, MyUtil.longToDate3(bean.getPublishTime()));
                 holder.setTxt(R.id.remen_date, MyUtil.longToDate4(bean.getPublishTime()));
 
-                if(bean.getUser().getHead().equals("http://video.cqscrb.top/logo.jpg"))
-                    holder.setImgBdCrop(getActivity(),R.mipmap.pic_morentouxiang,R.id.tuijian_head);
-                else
-                holder.setImg(getContext(),bean.getUser().getHead(),R.id.remen_touxiang);
+              /*  if(bean.getUser().getHead().equals("http://video.cqscrb.top/logo.jpg")||bean.getUser().getHead().equals("http://image.yysc.online/"))
+                    holder.setImgBdCrop(getActivity(),R.mipmap.pic_morentouxiang,R.id.remen_touxiang);
+                else*/
+                holder.setImgUrlCrop(getContext(),bean.getUser().getHead(),R.id.remen_touxiang);
 
                 holder.setTxt(R.id.remen_content, bean.getContent());
                 holder.setTxt(R.id.remen_dianzan_tv, bean.getZanCount()+"");
@@ -442,7 +447,7 @@ public class ShequFragmentRemen extends Fragment {
                     //  MyLog.e(TAG, "onScrolled : true");
                 }else {
                     sqRmFm.setNestedScrollingEnabled(true);
-                    MyLog.e(Tag, "onScrolled : false");//滑动到顶部
+                    //MyLog.e(Tag, "onScrolled : false");//滑动到顶部
                 }
 
             }

@@ -57,7 +57,7 @@ public class ShequFragment extends Fragment {
     private View view;
     private FragmentVpAdapter shequVpAdapter;
     private List<Fragment> listFragment;
-
+    private  String startType ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,11 +68,13 @@ public class ShequFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //初始化数据
-        initMsg();
-        //初始化界面
-        initView();
+        startType = SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
+        if(startType.equals("2")) {
+            //初始化数据
+            initMsg();
+            //初始化界面
+            initView();
+        }
     }
 
     private void initMsg() {

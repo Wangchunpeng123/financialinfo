@@ -1,17 +1,15 @@
 package com.yongyi.financialinfo.fragment;
 
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.activity.ShouyeHangqingActivity;
 import com.yongyi.financialinfo.adapter.BaseRecyclerAdapter;
 import com.yongyi.financialinfo.adapter.BaseRecyclerViewHolder;
 import com.yongyi.financialinfo.bean.HangqingBean;
@@ -20,25 +18,21 @@ import com.yongyi.financialinfo.util.MyLog;
 import com.yongyi.financialinfo.util.MyToast;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -52,6 +46,9 @@ public class HangqingFragment extends Fragment {
     LinearLayout hangqingChicangliang;
     @BindView(R.id.hangqing_rv_msg)
     RecyclerView hangqingRvMsg;
+    @BindView(R.id.swipe)
+    SwipeRefreshLayout swipe;
+    private String name="Binance";
     private View view;
 
     private BaseRecyclerAdapter<String> rvAdapter;
@@ -92,6 +89,14 @@ public class HangqingFragment extends Fragment {
         getMsg("Binance");
     }
     private void initView() {
+       // swipe.setColorSchemeColors(R.color.colorPrimary);
+  /*      swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                getMsg(name);
+            }
+            });*/
         //设置Rv布局管理者
         layoutManager = new LinearLayoutManager(getActivity());
         //设置横向滑动
@@ -125,6 +130,7 @@ public class HangqingFragment extends Fragment {
                 clickPosition=position;
                 MyLog.e(Tag,"clickPosition:"+clickPosition);
                 rvAdapter.notifyDataSetChanged();
+                name=s;
                 getMsg(s);
             }
         };
@@ -136,16 +142,40 @@ public class HangqingFragment extends Fragment {
         rvAdapter1=new BaseRecyclerAdapter<HangqingBean>(getContext(),rvList1,R.layout.rv_hangqing_msg) {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, HangqingBean s, int position) {
-                
+                holder.setClick(R.id.hq_msg_ll,s,position,rvAdapter1);
                 holder.setTxt( R.id.hangqing_msg_tv1,s.getTicker().split(":")[1]);
-                holder.setTxt( R.id.hangqing_msg_tv2,s.getClose());
                 holder.setTxt( R.id.hangqing_msg_tv3,s.getDegree());
-                holder.setTxt( R.id.hangqing_msg_tv4,s.getVol());
+
+                if(s.getClose().split("\\.")[1].length()>2)
+                     holder.setTxt( R.id.hangqing_msg_tv2,s.getClose().substring(0,s.getClose().indexOf(".")+3));
+                else
+                    holder.setTxt( R.id.hangqing_msg_tv2,s.getClose());
+
+                if(s.getVol().split("\\.")[1].length()>2)
+                    holder.setTxt( R.id.hangqing_msg_tv4,s.getVol().substring(0,s.getVol().indexOf(".")+3));
+                else
+                    holder.setTxt( R.id.hangqing_msg_tv4,s.getVol());
+
                 if(s.getDegree().contains("-"))
                  holder.setTxtBackgroundIv(R.id.hangqing_msg_tv3,R.mipmap.hangqing_main_shuzi_l_bg);
                 else
                     holder.setTxtBackgroundIv(R.id.hangqing_msg_tv3,R.mipmap.hangqing_main_shuzi_h_bg);
         }
+
+            @Override
+            public void clickEvent(int viewId, HangqingBean s, int position) {
+                super.clickEvent(viewId, s, position);
+                Intent intent = new Intent(getContext(), ShouyeHangqingActivity.class);
+                intent.putExtra("ticker",s.getTicker());
+                intent.putExtra("exchangeName",s.getExchangeName());
+                intent.putExtra("degree",s.getDegree());
+                intent.putExtra("dateTime",s.getDateTime());
+                intent.putExtra("open",s.getOpen());
+                intent.putExtra("close",s.getClose());
+                intent.putExtra("high",s.getHigh());
+                intent.putExtra("low",s.getLow());
+                startActivity(intent);
+            }
         };
         hangqingRvMsg.setAdapter(rvAdapter1);
     }
@@ -161,6 +191,12 @@ public class HangqingFragment extends Fragment {
                         rvList1.clear();
                         rvList1.addAll(response.body());
                         rvAdapter1.notifyDataSetChanged();
+                   /*     getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                swipe.setRefreshing(false);
+                            }
+                        });*/
                     }else{
                         MyToast.shortToast(getContext(),"获取数据失败");
                     }

@@ -15,8 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.bean.LoginYanzhengmaBean;
 import com.yongyi.financialinfo.bean.ShouyeNewBean;
+import com.yongyi.financialinfo.bean.SuccessBean;
 import com.yongyi.financialinfo.http.InterService;
+import com.yongyi.financialinfo.util.MyDialog;
 import com.yongyi.financialinfo.util.MyLog;
 import com.yongyi.financialinfo.util.MyToast;
 import com.yongyi.financialinfo.util.MyUtil;
@@ -163,20 +166,25 @@ public class ShequCameraActivity extends AppCompatActivity {
     private void postShuoshuo() {
 
         RetrofitUtils.init();
-        Call<ResponseBody> result=RetrofitUtils.retrofit.create(InterService.class).postShuoshuo(userId,cameraEt.getText().toString().trim(),imageUrl);
-        result.enqueue(new Callback<ResponseBody>() {
+        Call<SuccessBean> result=RetrofitUtils.retrofit.create(InterService.class).postShuoshuo(userId,cameraEt.getText().toString().trim(),imageUrl);
+        result.enqueue(new Callback<SuccessBean>() {
             @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(retrofit2.Call<SuccessBean> call, Response<SuccessBean> response) {
                 MyLog.e(Tag,"onResponse:"+response.toString());
-                if(response.body()!=null){
+            /*    try {
+                    MyLog.e(Tag,"onResponse:"+response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+                if(response.body()!=null&&response.body().isSuccess()==true){
                     MyToast.shortToast(ShequCameraActivity.this,"发布成功");
                     finish();
-                }else{
-                    MyToast.shortToast(ShequCameraActivity.this,"发表失败");
+                }else if(response.body()!=null&&response.body().isSuccess()==false){
+                    new MyDialog(ShequCameraActivity.this, "发表失败", "内容不能小于9个字符").show();
                 }
             }
             @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+            public void onFailure(retrofit2.Call<SuccessBean> call, Throwable t) {
                 MyLog.e(Tag,"获取失败");
             }
 

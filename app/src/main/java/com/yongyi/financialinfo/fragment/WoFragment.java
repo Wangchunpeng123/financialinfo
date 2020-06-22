@@ -63,7 +63,7 @@ public class WoFragment extends Fragment {
     private View view;
     private UserBean userBean;
     private String Tag="WoFragment";
-
+    private String startType;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,6 +95,7 @@ public class WoFragment extends Fragment {
         if(!userBean.getData().getHead().equals("http://video.cqscrb.top/logo.jpg")&&!userBean.getData().getHead().equals("") ){
             Picasso.with(getActivity())
                     .load(userBean.getData().getHead())
+                    .error(R.mipmap.pic_morentouxiang)
                     .transform(new CircleImageTransformer())
                     .into(woHead);
         }
@@ -105,57 +106,55 @@ public class WoFragment extends Fragment {
 
     @OnClick({R.id.wo_head, R.id.wo_name, R.id.wo_biaoqian, R.id.wo_shezhi, R.id.wo_ll_fensi, R.id.wo_ll_xiangguan, R.id.wo_ll_guanzhu, R.id.wo_ll_xiaoxi, R.id.wo_ll_tuichu})
     public void onClick(View view) {
-        String startType= SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
+        startType = SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
         switch (view.getId()) {
             case R.id.wo_head:
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                 startActivity(new Intent(getActivity(), WoSetUserActivity.class));
             else
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_name:
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoSetUserActivity.class));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_biaoqian:
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoSetUserActivity.class));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_shezhi:
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoSetUserActivity.class));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_ll_fensi:
                 //打开粉丝界面
-
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoGuanzhuActivity.class).putExtra("flag",2));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_ll_xiangguan:
                 //打开与我相关
-
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoYuwoxiangguanActivity.class));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_ll_guanzhu:
                 //打开关注界面
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoGuanzhuActivity.class).putExtra("flag",1));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.wo_ll_xiaoxi:
-                if(startType.equals("1"))
+                if(!startType.equals("1"))
                     startActivity(new Intent(getActivity(), WoXiaoxiActivity.class));
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -170,7 +169,9 @@ public class WoFragment extends Fragment {
                             MyLog.e("WoFragment:","true");
                             SpSimpleUtils.saveSp("UserBean","" , getContext(),"LoginActivity");
                             SpSimpleUtils.saveSp("userId","" ,getContext(),"LoginActivity");
-                            SpSimpleUtils.saveSp("startType","2",getContext(),"LoginActivity");
+                            SpSimpleUtils.saveSp("startType","1",getContext(),"LoginActivity");
+                            SpSimpleUtils.saveSp("phone","" ,getContext(),"LoginActivity");
+                            SpSimpleUtils.saveSp("password","" ,getContext(),"LoginActivity");
                             woName.setText("名字");
                             woBiaoqian.setText("个性签名");
                             woHead.setImageResource(R.mipmap.pic_morentouxiang);

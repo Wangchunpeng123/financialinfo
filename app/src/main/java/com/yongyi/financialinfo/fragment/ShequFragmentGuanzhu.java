@@ -82,7 +82,25 @@ public class ShequFragmentGuanzhu extends Fragment {
         getIsGuanzhu(guanzhuPage);
 
     }
-    private void dianZan(long talkId,int type){
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            guanzhuPage=1;
+            tuijianPageNb=1;
+            remenBeans.clear();
+            guanzhuList.clear();
+            getIsGuanzhu(guanzhuPage);
+            MyLog.e(Tag,"onResume1");
+        }else
+            MyLog.e(Tag,"onResume2");
+
+    }
+
+    private void dianZan(long talkId, int type){
         MyLog.e(Tag,"dianZan:getId:"+userBean.getData().getId()+"talkId:"+talkId);
         Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).dianZan(userBean.getData().getId(),talkId,type);
         call.enqueue(new Callback<ResponseBody>() {
@@ -164,7 +182,7 @@ public class ShequFragmentGuanzhu extends Fragment {
             public void onResponse(Call<ShequRemenSsBean> call, Response<ShequRemenSsBean> response) {
                 MyLog.e(Tag,response.toString());
 
-                if(response.body()!=null){
+                if(response.body()!=null&&response.body().getData().getList().size()!=0){
                     if ("1".equals(tuijianPageNb)){
                         remenBeans.clear();
                         for(int i=0;i<response.body().getData().getList().size();i++) {
@@ -222,10 +240,7 @@ public class ShequFragmentGuanzhu extends Fragment {
                 holder.setTxt(R.id.remen_name, bean.getUser().getNickName());
                 holder.setTxt(R.id.remen_time, MyUtil.longToDate3(bean.getPublishTime()));
                 holder.setTxt(R.id.remen_date, MyUtil.longToDate4(bean.getPublishTime()));
-                if(bean.getUser().getHead().equals("http://video.cqscrb.top/logo.jpg"))
-                    holder.setImgBdCrop(getActivity(),R.mipmap.pic_morentouxiang,R.id.tuijian_head);
-                else
-                    holder.setImg(getContext(),bean.getUser().getHead(),R.id.remen_touxiang);
+                holder.setImgUrlCrop(getContext(),bean.getUser().getHead(),R.id.remen_touxiang);
                 holder.setTxt(R.id.remen_content, bean.getContent());
                 holder.setTxt(R.id.remen_dianzan_tv, bean.getZanCount()+"");
                 holder.setTxt(R.id.remen_pinlun_tv, bean.getCommentCount()+"");
@@ -322,6 +337,7 @@ public class ShequFragmentGuanzhu extends Fragment {
                         MyLog.e(Tag,!remenBeans.get(position).getGuanzhu()+"");
                         setGuanzhu(bean.getUser().getId(),!remenBeans.get(position).getGuanzhu());
                         remenBeans.get(position).setGuanzhu(!remenBeans.get(position).getGuanzhu());
+                        remenBeans.remove(position);
                         rmRvAdapter.notifyDataSetChanged();
                         break;
                     case R.id.remen_dandu_iv:

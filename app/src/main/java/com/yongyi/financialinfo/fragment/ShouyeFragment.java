@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
+import com.yongyi.financialinfo.activity.ShouyeHangqingActivity;
+import com.yongyi.financialinfo.activity.LoginActivity;
 import com.yongyi.financialinfo.activity.NewsContentActivity;
 import com.yongyi.financialinfo.activity.ShouyeCJSJActivity;
 import com.yongyi.financialinfo.activity.ShouyeHYFBActivity;
@@ -25,9 +26,9 @@ import com.yongyi.financialinfo.util.MyLog;
 import com.yongyi.financialinfo.util.MyToast;
 import com.yongyi.financialinfo.util.MyUtil;
 import com.yongyi.financialinfo.util.RetrofitUtils;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -174,10 +175,26 @@ public class ShouyeFragment extends Fragment {
                 holder.setTxt( R.id.rv_shouye_money,s.getClose());
                 holder.setTxt( R.id.rv_shouye_shijian,MyUtil.longToDate3(s.getDateTime()));
                 holder.setTxt( R.id.rv_shouye_baifen,s.getDegree());
+                holder.setClick(R.id.jinxuan_cons, s,position,rvAdapter);
                 if(s.getDegree().contains("-"))
                     holder.setTxtBackgroundIv(R.id.rv_shouye_baifen,R.mipmap.shouye_hanqing_shuju_l_bg);
                 else
                     holder.setTxtBackgroundIv(R.id.rv_shouye_baifen,R.mipmap.shouye_hanqing_shuju_h_bg);
+            }
+
+            @Override
+            public void clickEvent(int viewId, HangqingBean s, int position) {
+                super.clickEvent(viewId, s, position);
+                Intent intent = new Intent(getContext(), ShouyeHangqingActivity.class);
+                intent.putExtra("ticker",s.getTicker());
+                intent.putExtra("exchangeName",s.getExchangeName());
+                intent.putExtra("degree",s.getDegree());
+                intent.putExtra("dateTime",s.getDateTime());
+                intent.putExtra("open",s.getOpen());
+                intent.putExtra("close",s.getClose());
+                intent.putExtra("high",s.getHigh());
+                intent.putExtra("low",s.getLow());
+                startActivity(intent);
             }
         };
         shouyeRvJinxuan.setAdapter(rvAdapter);
@@ -261,7 +278,11 @@ public class ShouyeFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ShouyeCJSJActivity.class));
                 break;
             case R.id.shouye_qiandao:
-                startActivity(new Intent(getActivity(), SignInActvity.class));
+                String startType= SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
+                if (startType.equals("1"))
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                else
+                    startActivity(new Intent(getActivity(), SignInActvity.class));
                 break;
             case R.id.shouye_remen:
                 break;

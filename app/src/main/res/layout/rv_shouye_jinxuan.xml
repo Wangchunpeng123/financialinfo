@@ -4,7 +4,7 @@
     android:layout_height="@dimen/dp_100"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/shouye_hanqing_bg"
-
+    android:id="@+id/jinxuan_cons"
     >
 
         <TextView

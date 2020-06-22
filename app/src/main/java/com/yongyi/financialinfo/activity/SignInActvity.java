@@ -18,6 +18,7 @@ import com.yongyi.financialinfo.util.MyAdvertisementView;
 import com.yongyi.financialinfo.util.MyLog;
 import com.yongyi.financialinfo.util.MyUtil;
 import com.yongyi.financialinfo.util.RetrofitUtils;
+import com.yongyi.financialinfo.util.SpSimpleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +71,14 @@ public class SignInActvity extends AppCompatActivity {
     boolean satIsSignin;
     boolean sunIsSignin;
     int cDays;
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
         RetrofitUtils.init();
+        userId= SpSimpleUtils.getSp("userId",this,"LoginActivity");
         hassgin();
         getmsg();
         MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this);
@@ -155,20 +158,20 @@ public class SignInActvity extends AppCompatActivity {
 
     //用户签到历史,默认只会返回当月签到记录
     private void getmsg(){
-        Intent intent = getIntent();
-        String s = intent.getStringExtra("userId");
-        if (s == null){
-            MyLog.e(TAG,"哦");
-        }else {
-            MyLog.e(TAG,"&&&$$$"+s);
-        }
-        Call<SignListBean> call = RetrofitUtils.retrofit.create(InterService.class).getSignList(4186);
+        Call<SignListBean> call = RetrofitUtils.retrofit.create(InterService.class).getSignList(Long.valueOf(userId));
         call.enqueue(new Callback<SignListBean>() {
             @Override
             public void onResponse(Call<SignListBean> call, Response<SignListBean> response) {
                 MyLog.e(TAG,response.toString());
                 if (response.body() != null && response.body().getSuccess() == true){
                     list.addAll(response.body().getData());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            allDays.setText(list.size()+"");
+                        }
+                    });
+
                 }
             }
 
@@ -188,7 +191,7 @@ public class SignInActvity extends AppCompatActivity {
         call.enqueue(new Callback<HasSignBean>() {
             @Override
             public void onResponse(Call<HasSignBean> call, Response<HasSignBean> response) {
-
+                MyLog.e(TAG,response.toString());
                 if (response.body() != null && response.body().isSuccess() == true){
 
                     if (response.body().isData() == false){
@@ -236,10 +239,7 @@ public class SignInActvity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("mData",MODE_PRIVATE);
 
         String week = sharedPreferences.getString("week","");
-        cDays = sharedPreferences.getInt("continuousDays",0);
-
-        allDays.setText(cDays+"");
-
+        //cDays = sharedPreferences.getInt("continuousDays",0);
 
         if (week.equals("星期一")){
             sharedPreferences.edit().remove("week");

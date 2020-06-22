@@ -158,11 +158,12 @@ public class BaseRecyclerViewHolder<T> extends RecyclerView.ViewHolder {
                 .transform(new CircleImageTransformer())
                 .into(imageView);
     }
-    //设置本地图片为圆形
+    //设置网络图片为圆形
     public void setImgUrlCrop(Context context,String url, int viewId){
         ImageView imageView= (ImageView) itemView.findViewById(viewId);
         Picasso.with(context)
                 .load(url)
+                .error(R.mipmap.pic_morentouxiang)
                 .transform(new CircleImageTransformer())
                 .into(imageView);
     }
