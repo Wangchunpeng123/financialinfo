@@ -73,6 +73,8 @@ public class WoYuwoxiangguanActivity extends AppCompatActivity {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, ShequRemenSsBean.Mydata.dateMsg bean, int position) {
                 //设置共同参数
+                holder.setInVisibility(R.id.remen_pinlun_ll,View.GONE);
+                holder.setInVisibility(R.id.remen_time,View.GONE);
                 holder.setTxt(R.id.remen_name, bean.getUser().getNickName());
                 holder.setTxt(R.id.remen_time, MyUtil.longToDate3(bean.getPublishTime()));
                 holder.setTxt(R.id.remen_date, MyUtil.longToDate4(bean.getPublishTime()));
@@ -88,7 +90,7 @@ public class WoYuwoxiangguanActivity extends AppCompatActivity {
                     holder.setInVisibility(R.id.remen_dandu_iv,View.GONE);
 
                 if (bean.getHasZan())
-                    holder.setImgRes(WoYuwoxiangguanActivity.this, R.id.remen_dianzan_iv, R.mipmap.shequ_icon_zan_h);
+                    holder.setImgRes(WoYuwoxiangguanActivity.this, R.id.remen_dianzan_iv, R.mipmap.shequ_icon_zan1);
                 else
                     holder.setImgRes(WoYuwoxiangguanActivity.this, R.id.remen_dianzan_iv, R.mipmap.shequ_icon_zan1);
                 //设置点击事件
@@ -102,16 +104,20 @@ public class WoYuwoxiangguanActivity extends AppCompatActivity {
                 super.clickEvent(viewId, bean, position);
                 switch (viewId){
                     case R.id.remen_dianzan_ll:
-                        list.get(position).setHasZan(!list.get(position).getHasZan());
+                    /*    list.get(position).setHasZan(!list.get(position).getHasZan());
                         if(!list.get(position).getHasZan()){
                             list.get(position).setZanCount(list.get(position).getZanCount()-1);
                         }
                         else{
                             list.get(position).setZanCount(list.get(position).getZanCount()+1);
+                        }*/
+                        if(!list.get(position).getHasZan()){
+                            dianZan(list.get(position).getId(),2);
+                            list.get(position).setHasZan(!list.get(position).getHasZan());
+                            list.get(position).setZanCount(list.get(position).getZanCount()+1);
+                            RvAdapter.notifyDataSetChanged();
                         }
-                        dianZan(list.get(position).getId(),2);
 
-                        RvAdapter.notifyDataSetChanged();
                         break;
                     case R.id.remen_pinlun_ll:
 
@@ -201,7 +207,7 @@ public class WoYuwoxiangguanActivity extends AppCompatActivity {
     private void getMsg(int pageIndex) {
         UserTalkBean userTalkBean=new UserTalkBean();
         userTalkBean.set_pageNumber(String.valueOf(pageIndex));
-        userTalkBean.set_pageSize("2");
+        userTalkBean.set_pageSize("10");
         userTalkBean.setUserId(userId);
         Call<ShequRemenSsBean> result= RetrofitUtils.retrofit.create(InterService.class).getYuwoxiangguan(Long.parseLong(userId),userTalkBean);
         result.enqueue(new Callback<ShequRemenSsBean>() {

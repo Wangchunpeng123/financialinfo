@@ -3,6 +3,8 @@ package com.yongyi.financialinfo.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.bouncycastle.util.encoders.Base64;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,6 +16,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 public class MyUtil {
     //long转日期,年月日，时分秒
@@ -41,10 +46,18 @@ public class MyUtil {
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
         return sd.format(date);
     }
+
+    //long转日期,时分
+    public static String longToDate5(long lo){
+        Date date = new Date(lo);
+        SimpleDateFormat sd = new SimpleDateFormat("MM-dd");
+        return sd.format(date);
+    }
+
     //输入年月日，转换为星期几
-    public static String dateToWeek(String datetime) {
+    public static int dateToWeek(String datetime) {
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-        String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        int[] weekDays = { 0, 1, 2, 3, 4, 5, 6 };
         Calendar cal = Calendar.getInstance(); // 获得一个日历
         Date datet = null;
         try {
@@ -137,5 +150,33 @@ public class MyUtil {
         if (w < 0)
             w = 0;
         return weekDays[w];
+    }
+
+    // 解密
+    public static String Decrypt(String sSrc, String sKey) throws Exception {
+        try {
+            // 判断Key是否正确
+            if (sKey == null) {
+                return null;
+            }
+            // 判断Key是否为16位
+            if (sKey.length() != 16) {
+                return null;
+            }
+            byte[] raw = sKey.getBytes("utf-8");
+            SecretKeySpec skeySpec = new SecretKeySpec(raw, "ECB");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+            byte[] encrypted1 = new Base64().decode(sSrc);//先用base64解密
+            try {
+                byte[] original = cipher.doFinal(encrypted1);
+                String originalString = new String(original,"utf-8");
+                return originalString;
+            } catch (Exception e) {
+                return null;
+            }
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

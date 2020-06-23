@@ -9,23 +9,137 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+        disable 'InvalidPackage'
+    }
+
     defaultConfig {
         applicationId "com.yongyi.financialinfo"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(rootProject.file('key.properties').newDataInputStream())
+        signingConfigs {
+            release {
+                storeFile file(properties.get('storeFile'))
+                storePassword properties.get('password')
+                keyAlias properties.get('alias')
+                keyPassword properties.get('aliasPassword')
+            }
+        }
+
+        applicationId "com.kc.bq" //JPush 上注册的包名.
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "cb0fe4b3676d2c22a9de8a0d", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            shrinkResources false
+            minifyEnabled false
+            zipAlignEnabled false
+            signingConfig signingConfigs.release
         }
     }
 
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            variant.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/app/build/outputs/apks")
+            outputFileName = "${variant.productFlavors[0].name}_${variant.productFlavors[1].name}_${variant.versionName}_${buildType.name}.apk"
+        }
+    }
+
+    flavorDimensions 'app', 'channel'
+    productFlavors {
+        kcbq{//矿池币区策略
+            dimension 'app'
+            versionCode 1
+            versionName "1.0.0"
+            applicationId "com.kc.bq"
+            ndk{
+                //选择要添加的对应 cpu 类型的 .so 库。
+                abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'x86_64', 'mips', 'mips64', 'arm64-v8a'
+            }
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : "com.kc.bq",//
+                    JPUSH_APPKEY : "cb0fe4b3676d2c22a9de8a0d", // NOTE: JPush 上注册的包名对应的 Appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.1
+            ]
+        }
+        hw {
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqhw\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+//        xm {
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqxm\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        tencent {
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqyyb\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        q360{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqqh360\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        oppo{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqoppo\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        mz{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqmz\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        baidu{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqbd\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        sougou{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqsg\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        samsung{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqsx\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+//        lenovo{
+//            dimension 'channel'
+//            buildConfigField('String', 'name', '\"kcbqlx\"')
+//            buildConfigField('String', 'platform', '\"YX\"')
+//        }
+
+
+    }
 }
 
 dependencies {
@@ -70,4 +184,10 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.2.1'
     //图片轮播器
     implementation 'com.youth.banner:banner:1.4.9'
+    //解密
+    implementation "org.bouncycastle:bcprov-jdk15on:1.56"
+    //极光推送
+    implementation 'cn.jiguang.sdk:jpush:3.1.6'  // 此处以JPush 3.1.6 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:1.2.5'  // 此处以JCore 1.2.5 版本为例。
+
 }

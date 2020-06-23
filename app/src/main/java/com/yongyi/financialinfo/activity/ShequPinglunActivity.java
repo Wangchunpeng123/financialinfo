@@ -112,7 +112,12 @@ public class ShequPinglunActivity extends AppCompatActivity {
 
     private void initView() {
         remenName.setText(nickName);
-        Glide.with(this).load(head).into(remenHead);
+        //Glide.with(this).load(head).into(remenHead);
+        Picasso.with(this)
+                .load(head)
+                .error(R.mipmap.pic_morentouxiang)
+                .transform(new CircleImageTransformer())
+                .into(remenHead);
         remenContent.setText(content);
         remenTime.setText(MyUtil.longToDate3(publishTime));
         if(!picture.equals("")){
@@ -134,7 +139,8 @@ public class ShequPinglunActivity extends AppCompatActivity {
                 //设置日期，但是日期返回为相同的
                 // holder.setTxt(R.id.rv_pinglun_time,MyUtil.longToDate2(s.getPublishTime()));
                 MyLog.e(Tag, "head: " + s.getUser().getHead());
-                holder.setImgGray(ShequPinglunActivity.this, s.getUser().getHead(), R.id.rv_pinglun_head);
+              //  holder.setImgGray(ShequPinglunActivity.this, s.getUser().getHead(), R.id.rv_pinglun_head);
+                holder.setImgUrlCrop(ShequPinglunActivity.this,s.getUser().getHead(),R.id.rv_pinglun_head);
 
             }
         };
@@ -191,7 +197,7 @@ public class ShequPinglunActivity extends AppCompatActivity {
     //获取评论列表
     private void getPinglunMsg(int _pageNumber){
         ShequPinglunBean bean=new ShequPinglunBean();
-        bean.setUserId(String.valueOf(userId));
+        //bean.setUserId(String.valueOf(userId));
         bean.setTalkId(String.valueOf(talkId));
         bean.setMatchId("-1");
         bean.setVideoId(String.valueOf(-1));

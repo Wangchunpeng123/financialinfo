@@ -9,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.activity.LoginActivity;
 import com.yongyi.financialinfo.activity.MainActivity;
 import com.yongyi.financialinfo.activity.ShequCameraActivity;
+import com.yongyi.financialinfo.activity.WoSetUserActivity;
 import com.yongyi.financialinfo.adapter.FragmentVpAdapter;
 import com.yongyi.financialinfo.adapter.HorizontalCanScrollViewPager;
 import com.yongyi.financialinfo.adapter.MyFragmentPagerAdapter;
+import com.yongyi.financialinfo.bean.UserBean;
 import com.yongyi.financialinfo.util.SpSimpleUtils;
 import com.yongyi.financialinfo.util.ViewUtil;
 
@@ -57,7 +60,8 @@ public class ShequFragment extends Fragment {
     private View view;
     private FragmentVpAdapter shequVpAdapter;
     private List<Fragment> listFragment;
-    private  String startType ;
+    public static  String startType ;
+    public static UserBean userBean;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,11 +73,14 @@ public class ShequFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         startType = SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
+        //初始化数据
+        initMsg();
+        //初始化界面
+        initView();
         if(startType.equals("2")) {
-            //初始化数据
-            initMsg();
-            //初始化界面
-            initView();
+            Gson gson = new Gson();
+            String json =SpSimpleUtils.getSp("UserBean",getContext(),"LoginActivity");
+            userBean= gson.fromJson(json, UserBean.class);
         }
     }
 
@@ -94,10 +101,14 @@ public class ShequFragment extends Fragment {
             }
             @Override
             public void onPageSelected(int position) {
-                if(position==0)
+                if(position==0){
                     shequRemen.callOnClick();//回调控件的点击事件
-                else
+                }
+
+                else{
                     shequGuanzhu.callOnClick();//回调控件的点击事件
+                }
+
             }
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -110,7 +121,10 @@ public class ShequFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.shequ_camera:
-              startActivity(new Intent(getContext(), ShequCameraActivity.class));
+                if(!startType.equals("1"))
+                    startActivity(new Intent(getContext(), ShequCameraActivity.class));
+                else
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.shequ_remen:
                 ViewUtil.setTextClick(shequRemen,15,getResources().getColor(R.color.titleWhite),shequRemenLine,true);
@@ -118,10 +132,21 @@ public class ShequFragment extends Fragment {
                 shequVp.setCurrentItem(0);
                 break;
             case R.id.shequ_guanzhu:
-                ViewUtil.setTextClick(shequGuanzhu,15,getResources().getColor(R.color.titleWhite),shequGuanzhuLine,true);
-                ViewUtil.setTextClick(shequRemen,14,getResources().getColor(R.color.fenhong),shequRemenLine,false);
-                shequVp.setCurrentItem(1);
+
+                if(!startType.equals("1")){
+                    ViewUtil.setTextClick(shequGuanzhu,15,getResources().getColor(R.color.titleWhite),shequGuanzhuLine,true);
+                    ViewUtil.setTextClick(shequRemen,14,getResources().getColor(R.color.fenhong),shequRemenLine,false);
+                    shequVp.setCurrentItem(1);
+                } else
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startType = SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
+
     }
 }

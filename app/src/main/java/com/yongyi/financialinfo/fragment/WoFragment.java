@@ -76,7 +76,8 @@ public class WoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        startType = SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
+        if(startType.equals("2"))
         //初始化数据
         initMsg();
 

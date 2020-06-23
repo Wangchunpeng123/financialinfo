@@ -40,6 +40,14 @@ public interface InterService {
 
     String baseURL="http://api.yysc.online/";
 
+
+    //获取锁
+    @FormUrlEncoded
+    @POST("checkVersion")
+    Call<ResponseBody> getSuo(@Field("platform") String platform,
+                              @Field("name") String name);
+
+
     //登录-登录
     @GET("system/login")
     Call<UserBean> login(@Query("phone") String phone,

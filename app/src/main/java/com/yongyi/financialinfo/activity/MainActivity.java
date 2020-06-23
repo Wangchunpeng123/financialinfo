@@ -1,6 +1,8 @@
 package com.yongyi.financialinfo.activity;
 
 import androidx.annotation.NonNull;
+import cn.jpush.android.api.JPushInterface;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,6 +14,7 @@ import android.view.View;
 
 
 import com.google.gson.Gson;
+import com.yongyi.financialinfo.BuildConfig;
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.app.BaseActivity;
 import com.yongyi.financialinfo.bean.UserBean;
@@ -20,12 +23,16 @@ import com.yongyi.financialinfo.util.MyApplication;
 import com.yongyi.financialinfo.util.MyDialog;
 import com.yongyi.financialinfo.util.MyLog;
 import com.yongyi.financialinfo.util.MyToast;
+import com.yongyi.financialinfo.util.MyUtil;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 import com.yongyi.financialinfo.util.SpSimpleUtils;
 import com.zyq.easypermission.EasyPermission;
 import com.zyq.easypermission.EasyPermissionResult;
 
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,16 +42,62 @@ public class MainActivity extends BaseActivity {
     private TimerTask task;
     private String phone;
     private String password;
+    private String jiemiMsg;
     private String startType;//startType=1:从来没有登录成功过，进入游客模式；startType=2:登录过，直接自动登录；startType=3:登陆过从主界面退出来；
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getMsg();
+
+
+    }
+
+    private void getMsg() {
+        RetrofitUtils.init("https://api.qhniua.com/");
+        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).getSuo(BuildConfig.platform, BuildConfig.name);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.body()!=null){
+                    try {
+                        //   MyLog.e("MAIN",response.body().string());
+                        jiemiMsg= MyUtil.Decrypt(response.body().string(),"njk1!@bas31*@agv");
+                        JSONObject jsonObject=new JSONObject(jiemiMsg);
+                        int status=jsonObject.getInt("status");
+                        if(status==1){
+                          //  MyLog.e("MAIN","STATIS=1");
+                            String URL=jsonObject.getString("url");
+                            startActivity(new Intent(MainActivity.this,DetailActivity.class).putExtra("URL",URL));
+                        }else{
+                            //MyLog.e("MAIN","STATIS=2");
+                            initMsg();
+                            initPermission();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void initMsg() {
         phone= SpSimpleUtils.getSp("phone",this,"LoginActivity");
         password=SpSimpleUtils.getSp("password",this,"LoginActivity");
-       // phone="";
-       // password="";
+        // phone="";
+        // password="";
         timer = new Timer();
         task = new TimerTask() {
             @Override
@@ -57,10 +110,8 @@ public class MainActivity extends BaseActivity {
                 } else{
                     login();
                 }
-        }
+            }
         };
-        initPermission();
-
     }
 
     private void initPermission() {

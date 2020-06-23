@@ -106,10 +106,9 @@ public class HomeActivity extends BaseActivity {
                 break;
             case R.id.home_shequ:
                 //检查是否登录
-
-                if (startType.equals("1"))
+              /*  if (startType.equals("1"))
                     startActivity(new Intent(this, LoginActivity.class));
-                else
+                else*/
                 changeUi(2);
                 break;
             case R.id.home_wo:

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -49,13 +50,13 @@ public class ShequFragmentGuanzhu extends Fragment {
 
     @BindView(R.id.guanzhu_rv)
     RecyclerView guanzhuRv;
-
+    @BindView(R.id.login_progress)
+    ProgressBar loginProgress;
 
     private View view;
     private BaseRecyclerAdapter<ShequRemenSsBean.Mydata.dateMsg> rmRvAdapter;
     private LinearLayoutManager manager;
     private List<ShequRemenSsBean.Mydata.dateMsg> remenBeans=new ArrayList<>();
-    private UserBean userBean;
     private List<Long> guanzhuList=new ArrayList<>();
     private boolean guanzhuHasMore=true;
     private int guanzhuPage=1;
@@ -75,20 +76,20 @@ public class ShequFragmentGuanzhu extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //初始化数据
-        initMsg();
+        //initMsg();
         //初始化界面
         initView();
-        //获取关注用户
-        getIsGuanzhu(guanzhuPage);
+       /* //获取关注用户
+        getIsGuanzhu(guanzhuPage);*/
 
     }
-
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isVisibleToUser) {
+            loginProgress.setVisibility(View.VISIBLE);
             guanzhuPage=1;
             tuijianPageNb=1;
             remenBeans.clear();
@@ -101,8 +102,8 @@ public class ShequFragmentGuanzhu extends Fragment {
     }
 
     private void dianZan(long talkId, int type){
-        MyLog.e(Tag,"dianZan:getId:"+userBean.getData().getId()+"talkId:"+talkId);
-        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).dianZan(userBean.getData().getId(),talkId,type);
+        MyLog.e(Tag,"dianZan:getId:"+ShequFragment.userBean.getData().getId()+"talkId:"+talkId);
+        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).dianZan(ShequFragment.userBean.getData().getId(),talkId,type);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -125,8 +126,8 @@ public class ShequFragmentGuanzhu extends Fragment {
         });
     }
     private void getIsGuanzhu(int pageNumber) {
-        MyLog.e(Tag,"getIsGuanzhu:getId:"+userBean.getData().getId());
-        Call<ShequRemenGuanzhuBean> call=RetrofitUtils.retrofit.create(InterService.class).getGuanzhu(userBean.getData().getId(),1,pageNumber,10);
+        MyLog.e(Tag,"getIsGuanzhu:getId:"+ShequFragment.userBean.getData().getId());
+        Call<ShequRemenGuanzhuBean> call=RetrofitUtils.retrofit.create(InterService.class).getGuanzhu(ShequFragment.userBean.getData().getId(),1,pageNumber,10);
         call.enqueue(new Callback<ShequRemenGuanzhuBean>() {
             @Override
             public void onResponse(Call<ShequRemenGuanzhuBean> call, Response<ShequRemenGuanzhuBean> response) {
@@ -156,7 +157,7 @@ public class ShequFragmentGuanzhu extends Fragment {
     }
 
     private void setGuanzhu(long userId,boolean isGuanzhu) {
-        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).setGuanzhu(userBean.getData().getId(),userId,isGuanzhu);
+        Call<ResponseBody> call=RetrofitUtils.retrofit.create(InterService.class).setGuanzhu(ShequFragment.userBean.getData().getId(),userId,isGuanzhu);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -176,13 +177,13 @@ public class ShequFragmentGuanzhu extends Fragment {
     }
 
     private void getTuijianMsg(int tuijianPageNb) {
-        Call<ShequRemenSsBean> call=RetrofitUtils.retrofit.create(InterService.class).getShuoShuoTuijian("futures",tuijianPageNb,10);
+        Call<ShequRemenSsBean> call=RetrofitUtils.retrofit.create(InterService.class).getShuoShuoTuijian("futures",tuijianPageNb,50);
         call.enqueue(new Callback<ShequRemenSsBean>() {
             @Override
             public void onResponse(Call<ShequRemenSsBean> call, Response<ShequRemenSsBean> response) {
                 MyLog.e(Tag,response.toString());
 
-                if(response.body()!=null&&response.body().getData().getList().size()!=0){
+                if(response.body()!=null&&response.body().getData()!=null){
                     if ("1".equals(tuijianPageNb)){
                         remenBeans.clear();
                         for(int i=0;i<response.body().getData().getList().size();i++) {
@@ -201,13 +202,12 @@ public class ShequFragmentGuanzhu extends Fragment {
                             }
                         }
                     }
-
+                    loginProgress.setVisibility(View.GONE);
                     tuijianHasMore=response.body().getData().isHasMore();
                     if(!tuijianHasMore)
-                        MyToast.shortToast(getActivity(),"暂无更多内容！");
+                       // MyToast.shortToast(getActivity(),"暂无更多内容！");
                     rmRvAdapter.notifyDataSetChanged();
                     MyLog.e(Tag,remenBeans.size()+"");
-
                 }
 
             }
@@ -215,16 +215,11 @@ public class ShequFragmentGuanzhu extends Fragment {
             @Override
             public void onFailure(Call<ShequRemenSsBean> call, Throwable t) {
                 MyLog.e(Tag,"获取数据失败");
+                loginProgress.setVisibility(View.GONE);
             }
         });
     }
 
-
-    private void initMsg() {
-        Gson gson = new Gson();
-        String json =SpSimpleUtils.getSp("UserBean",getContext(),"LoginActivity");
-        userBean= gson.fromJson(json, UserBean.class);
-    }
 
     private void initView() {
 
@@ -237,6 +232,7 @@ public class ShequFragmentGuanzhu extends Fragment {
             public void bindData(BaseRecyclerViewHolder holder, ShequRemenSsBean.Mydata.dateMsg bean, int position) {
 
                 //设置共同参数
+                holder.setInVisibility(R.id.remen_time,View.GONE);
                 holder.setTxt(R.id.remen_name, bean.getUser().getNickName());
                 holder.setTxt(R.id.remen_time, MyUtil.longToDate3(bean.getPublishTime()));
                 holder.setTxt(R.id.remen_date, MyUtil.longToDate4(bean.getPublishTime()));
@@ -321,7 +317,7 @@ public class ShequFragmentGuanzhu extends Fragment {
                                 .putExtra("content",bean.getContent())
                                 .putExtra("picture",bean.getPicture())
                                 .putExtra("time",bean.getPublishTime())
-                                .putExtra("userId",userBean.getData().getId())
+                                .putExtra("userId",ShequFragment.userBean.getData().getId())
                                 .putExtra("talkId",bean.getId())
                                 .putExtra("videoId",bean.getVideoId())
                                 .putExtra("type","2")
@@ -329,15 +325,29 @@ public class ShequFragmentGuanzhu extends Fragment {
                         break;
 
                     case R.id.remen_bukanta:
-                        remenBeans.remove(position);
+                        setGuanzhu(bean.getUser().getId(),!remenBeans.get(position).getGuanzhu());
+                        for(int i=0;i<remenBeans.size();i++){
+                            if(remenBeans.get(i).getUser().getId()==bean.getUser().getId()){
+                                remenBeans.remove(i);
+                                i--;
+                            }
+                        }
                         rmRvAdapter.notifyDataSetChanged();
                         break;
                     case R.id.remen_quxiao:
-                        remenBeans.get(position).setGuanzhu_ing(false);
+                    /*    remenBeans.get(position).setGuanzhu_ing(false);
                         MyLog.e(Tag,!remenBeans.get(position).getGuanzhu()+"");
                         setGuanzhu(bean.getUser().getId(),!remenBeans.get(position).getGuanzhu());
                         remenBeans.get(position).setGuanzhu(!remenBeans.get(position).getGuanzhu());
                         remenBeans.remove(position);
+                        rmRvAdapter.notifyDataSetChanged();*/
+                        setGuanzhu(bean.getUser().getId(),!remenBeans.get(position).getGuanzhu());
+                        for(int i=0;i<remenBeans.size();i++){
+                            if(remenBeans.get(i).getUser().getId()==bean.getUser().getId()){
+                                remenBeans.remove(i);
+                                i--;
+                            }
+                        }
                         rmRvAdapter.notifyDataSetChanged();
                         break;
                     case R.id.remen_dandu_iv:

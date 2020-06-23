@@ -46,8 +46,7 @@ public class HangqingFragment extends Fragment {
     LinearLayout hangqingChicangliang;
     @BindView(R.id.hangqing_rv_msg)
     RecyclerView hangqingRvMsg;
-    @BindView(R.id.swipe)
-    SwipeRefreshLayout swipe;
+
     private String name="Binance";
     private View view;
 

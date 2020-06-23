@@ -1,7 +1,5 @@
 package com.yongyi.financialinfo.activity;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,12 +18,15 @@ import com.yongyi.financialinfo.util.MyUtil;
 import com.yongyi.financialinfo.util.RetrofitUtils;
 import com.yongyi.financialinfo.util.SpSimpleUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,377 +62,215 @@ public class SignInActvity extends AppCompatActivity {
     @BindView(R.id.ball_btn_7)
     Button Ball7;
 
+    private boolean chongfu=false;
     long currentTimeMillis = System.currentTimeMillis();//获取系统时间 long类型
-    private List<SignListBean.Data> list=new ArrayList<>();
-    boolean monIsSignin;
-    boolean tueIsSignin;
-    boolean wedIsSignin;
-    boolean thuIsSignin;
-    boolean friIsSignin;
-    boolean satIsSignin;
-    boolean sunIsSignin;
-    int cDays;
+    private List<SignListBean.Data> list = new ArrayList<>();
     private String userId;
+    private int lianxuQiandao=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
         RetrofitUtils.init();
-        userId= SpSimpleUtils.getSp("userId",this,"LoginActivity");
+        userId = SpSimpleUtils.getSp("userId", this, "LoginActivity");
         hassgin();
         getmsg();
+
         MyAdvertisementView myAdvertisementView = new MyAdvertisementView(this);
-        qiandaoImgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signNow();
-                myAdvertisementView.showDialog();
-                int count = 0;
-                count++;
 
-                if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期一")){
-                    Ball1.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball1.setTextColor(getResources().getColor(R.color.titleWhite));
-                    monIsSignin = true ;
-                }
-                if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期二")){
-                    Ball2.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball2.setTextColor(getResources().getColor(R.color.titleWhite));
-                    tueIsSignin = true ;
-                }
-                if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期三")){
-                    Ball3.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball3.setTextColor(getResources().getColor(R.color.titleWhite));
-                    wedIsSignin = true ;
-                }
-                if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期四")){
-                    Ball4.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball4.setTextColor(getResources().getColor(R.color.titleWhite));
-                    thuIsSignin = true ;
-                }
-                if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期五")){
-                    Ball5.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball5.setTextColor(getResources().getColor(R.color.titleWhite));
-                    friIsSignin = true ;
-                }
-                if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期六")){
-                    Ball6.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball6.setTextColor(getResources().getColor(R.color.titleWhite));
-                    satIsSignin = true ;
-                }if (MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)).equals("星期日")){
-                    Ball7.setBackgroundResource(R.drawable.button_circle_shape);
-                    Ball7.setTextColor(getResources().getColor(R.color.titleWhite));
-                    sunIsSignin = true ;
-                }
-                SharedPreferences sp = getSharedPreferences("mData",MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();//获取编辑器
-
-                continuousDays.setText(count+"");
-                editor.putInt("continuousDays",count);
-                editor.putString("week", MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)));
-                MyLog.e(TAG,String.valueOf(count)+"#######"+ MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)));
-                editor.commit();
-                if (cDays == 1){
-                    jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-                }
-                if (cDays == 2){
-                    jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-                    jiangbei2Img.setImageResource(R.mipmap.pic_yiqiandao1);
-                }
-                if (cDays > 2){
-                    jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-                    jiangbei2Img.setImageResource(R.mipmap.pic_yiqiandao1);
-                    jiangbei3Img.setImageResource(R.mipmap.pic_yiqiandao1);
-                }
-                qiandaoImgButton.setEnabled(false);
-            }
-
-        });
-        backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     //用户签到历史,默认只会返回当月签到记录
-    private void getmsg(){
+    private void getmsg() {
         Call<SignListBean> call = RetrofitUtils.retrofit.create(InterService.class).getSignList(Long.valueOf(userId));
         call.enqueue(new Callback<SignListBean>() {
             @Override
             public void onResponse(Call<SignListBean> call, Response<SignListBean> response) {
-                MyLog.e(TAG,response.toString());
-                if (response.body() != null && response.body().getSuccess() == true){
+                MyLog.e(TAG, response.toString());
+                if (response.body() != null && response.body().getSuccess() == true) {
                     list.addAll(response.body().getData());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            allDays.setText(list.size()+"");
+                            allDays.setText(list.size() + "");
+                            if(list.size()>1&&list.size()<10){
+                                jiangbei1Img.setImageResource(R.mipmap.pic_ziyoutianjiashuziyi);
+                            }else if(list.size()>10&&list.size()<20){
+                                jiangbei1Img.setImageResource(R.mipmap.pic_ziyoutianjiashuziyi);
+                                jiangbei2Img.setImageResource(R.mipmap.pic_ziyoutianjiashuziyi);
+                            }else if(list.size()>20&&list.size()<30){
+                                jiangbei1Img.setImageResource(R.mipmap.pic_ziyoutianjiashuziyi);
+                                jiangbei2Img.setImageResource(R.mipmap.pic_ziyoutianjiashuziyi);
+                                jiangbei3Img.setImageResource(R.mipmap.pic_ziyoutianjiashuziyi);
+                            }
                         }
                     });
-
+                    if(list.size()!=0)
+                    initQiaodaojilu();
                 }
             }
 
             @Override
             public void onFailure(Call<SignListBean> call, Throwable t) {
-                MyLog.e(TAG,"什么情况");
+                MyLog.e(TAG, "错误");
             }
         });
     }
 
+    private void initQiaodaojilu() {
 
+        //设置连续签到
+        List<String> allDay=new ArrayList<>();
+        String toDay;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");// HH:mm:ss
+        //获取当前时间
+        Date date = new Date(System.currentTimeMillis());
+        MyLog.e(TAG,"Date获取当前日期时间"+simpleDateFormat.format(date));
+        toDay=simpleDateFormat.format(date);
+        for(int i=list.size();i>0;i--){
+            allDay.add(MyUtil.longToDate5(list.get(i-1).getTime()));
+        }
+        //判断昨天有没有签到，有的话加上，没有就从1开始
+        List<Integer> iList=new ArrayList<>();
+        for(String str:allDay){
+            iList.add(Integer.valueOf(str.substring(str.length()-1,str.length())));
+                MyLog.e(TAG,"获取list时间"+str);
+        }
+        MyLog.e(TAG,"iList.size:"+iList.size());
+        for(Integer it:iList)
+            MyLog.e(TAG,"iList:"+it);
+        for(int i=0;i<iList.size();i++){
+            if(iList.get(i)!=1){
+             //   MyLog.e(TAG,"11111:");
+                if(i+1<iList.size()&&iList.get(i)-iList.get(i+1)==1){
+                  //  MyLog.e(TAG,"22222:");
+                    lianxuQiandao++;
+                } else{
+                   // MyLog.e(TAG,"33333:");
+                    lianxuQiandao++;
+                    break;
+                }
+            }else {
+                if(i+1<iList.size()&&iList.get(i+1)==9){
+                 //   MyLog.e(TAG,"444444:");
+                    lianxuQiandao++;
+                }
+            }
+        }
+        continuousDays.setText(lianxuQiandao+"");
+        MyLog.e(TAG,"lianxuQiandao:"+lianxuQiandao);
+        //设置小圆球
+        List<Integer> day=new ArrayList<>();
+        int index=0;
+        for(int i=list.size();i>0;i--){
+            day.add(MyUtil.dateToWeek(MyUtil.longToDate4(list.get(i-1).getTime())));
+          if(day.get(index)==1){
+              //本周签到记录完毕
+              break;
+          }
+          index++;
+        }
+
+        MyLog.e(TAG,"length: "+ day.size());
+        for(int i=0;i<day.size();i++){
+            MyLog.e(TAG," "+ day.get(i));
+            switch (day.get(i)){
+                case 1:    Ball1.setBackgroundResource(R.drawable.button_circle_shape);
+                             Ball1.setTextColor(getResources().getColor(R.color.titleWhite));
+                             continue;
+                case 2:    Ball2.setBackgroundResource(R.drawable.button_circle_shape);
+                            Ball2.setTextColor(getResources().getColor(R.color.titleWhite));
+                             continue;
+                case 3:
+                         Ball3.setBackgroundResource(R.drawable.button_circle_shape);
+                         Ball3.setTextColor(getResources().getColor(R.color.titleWhite));
+                            continue;
+                case 4:    Ball4.setBackgroundResource(R.drawable.button_circle_shape);
+                            Ball4.setTextColor(getResources().getColor(R.color.titleWhite));
+                         continue;
+                case 5:   Ball5.setBackgroundResource(R.drawable.button_circle_shape);
+                         Ball5.setTextColor(getResources().getColor(R.color.titleWhite));
+                            continue;
+                case 6:    Ball6.setBackgroundResource(R.drawable.button_circle_shape);
+                         Ball6.setTextColor(getResources().getColor(R.color.titleWhite));
+                            continue;
+                case 0:   Ball7.setBackgroundResource(R.drawable.button_circle_shape);
+                         Ball7.setTextColor(getResources().getColor(R.color.titleWhite));
+                         continue;
+            }
+        }
+
+
+
+    }
 
 
     //今日是否已经签到
-    private void hassgin(){
-        Call<HasSignBean> call = RetrofitUtils.retrofit.create(InterService.class).gethasSign(4186);
+    private  void hassgin() {
+        Call<HasSignBean> call = RetrofitUtils.retrofit.create(InterService.class).gethasSign(Long.valueOf(userId));
         call.enqueue(new Callback<HasSignBean>() {
             @Override
             public void onResponse(Call<HasSignBean> call, Response<HasSignBean> response) {
-                MyLog.e(TAG,response.toString());
-                if (response.body() != null && response.body().isSuccess() == true){
-
-                    if (response.body().isData() == false){
-
-                        Toast.makeText(SignInActvity.this,"今日未签到",Toast.LENGTH_LONG).show();
-                        qiandaoImgButton.setEnabled(true);
-                        weiqiandaoInitView();
-                        }else {
-                        Toast.makeText(SignInActvity.this,"今日已签到",Toast.LENGTH_LONG).show();
-                        qiandaoImgButton.setEnabled(false);
-                        initView();
-                        MyLog.e(TAG,"是你吗"+ MyUtil.longToDate1(currentTimeMillis)+"星期"+ MyUtil.dateToyesterdayweek(MyUtil.longToDate1(currentTimeMillis)));
+                MyLog.e(TAG, response.toString());
+                if (response.body() != null && response.body().isSuccess() == true) {
+                    if (response.body().isData() == false) {
+                        Toast.makeText(SignInActvity.this, "今日未签到", Toast.LENGTH_SHORT).show();
+                    } else {
+                        chongfu=true;
+                        Toast.makeText(SignInActvity.this, "今日已签到", Toast.LENGTH_SHORT).show();
                     }
+
                 }
             }
+
             @Override
             public void onFailure(Call<HasSignBean> call, Throwable t) {
-                MyLog.e(TAG,"错误111");
+                MyLog.e(TAG, "错误111");
             }
         });
     }
+
     //今日签到
-    private void signNow(){
-        Call<SignNowBean> call = RetrofitUtils.retrofit.create(InterService.class).signNow(4186);
+    private void signNow() {
+        Call<SignNowBean> call = RetrofitUtils.retrofit.create(InterService.class).signNow(Long.valueOf(userId));
         call.enqueue(new Callback<SignNowBean>() {
             @Override
             public void onResponse(Call<SignNowBean> call, Response<SignNowBean> response) {
-                if (response.body() != null && response.body().isSuccess() == true){
+                if (response.body() != null && response.body().isSuccess() == true) {
                     response.body().setData(true);
-                    if (response.body().isData() == true){
-
-                    }else {
-                        Toast.makeText(SignInActvity.this,"签到失败1",Toast.LENGTH_SHORT).show();
+                    if (response.body().isData() == true) {
+                        Toast.makeText(SignInActvity.this, "签到成功", Toast.LENGTH_SHORT).show();
+                        chongfu=true;
+                        //获取网络签到记录
+                        getmsg();
+                    } else {
+                        Toast.makeText(SignInActvity.this, "签到失败", Toast.LENGTH_SHORT).show();
                     }
 
                 }
             }
+
             @Override
             public void onFailure(Call<SignNowBean> call, Throwable t) {
-                MyLog.e(TAG,"错误2222");
+                MyLog.e(TAG, "错误2222");
             }
         });
     }
-    private void initView(){
-        SharedPreferences sharedPreferences = getSharedPreferences("mData",MODE_PRIVATE);
 
-        String week = sharedPreferences.getString("week","");
-        //cDays = sharedPreferences.getInt("continuousDays",0);
 
-        if (week.equals("星期一")){
-            sharedPreferences.edit().remove("week");
-            week = "星期一";
-
-        }
-
-        if (week.equals("星期一")){
-            Ball1.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball1.setTextColor(getResources().getColor(R.color.titleWhite));
-
-            Ball2.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball2.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball3.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball3.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball4.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball4.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball5.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball5.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball6.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball6.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball7.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball7.setTextColor(getResources().getColor(R.color.ball_text));
-            if (sunIsSignin = false){
-                cDays = 1;
-            }
-
-        }
-        if (week.equals("星期二")){
-            Ball2.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball2.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (monIsSignin = false){
-                cDays = 1;
-            }
-        }
-        if (week.equals("星期三")){
-            Ball3.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball3.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (tueIsSignin = false){
-                cDays = 1;
-            }
-        }
-        if (week.equals("星期四")){
-            Ball4.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball4.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (wedIsSignin = false){
-                cDays = 1;
-            }
-        }
-        if (week.equals("星期五")){
-            Ball5.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball5.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (thuIsSignin = false){
-                cDays = 1;
-            }
-        }
-        if (week.equals("星期六")){
-            Ball6.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball6.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (friIsSignin = false){
-                cDays = 1;
-            }
-        }if (week.equals("星期日")){
-            Ball7.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball7.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (satIsSignin = false){
-                cDays = 1;
-            }
-        }
-
-        continuousDays.setText(cDays+"");
-        MyLog.e(TAG,String.valueOf(cDays)+"#######"+week);
-
-        if (cDays == 1){
-            jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-        }
-        if (cDays == 2){
-            jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-            jiangbei2Img.setImageResource(R.mipmap.pic_yiqiandao1);
-        }
-        if (cDays > 2){
-            jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-            jiangbei2Img.setImageResource(R.mipmap.pic_yiqiandao1);
-            jiangbei3Img.setImageResource(R.mipmap.pic_yiqiandao1);
+    @OnClick({R.id.signin_iv_back, R.id.signin_iv_lianxuqiandaobeijing})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.signin_iv_back:
+                finish();
+                break;
+            case R.id.signin_iv_lianxuqiandaobeijing:
+                if(chongfu){
+                    Toast.makeText(SignInActvity.this, "今日已签到", Toast.LENGTH_SHORT).show();
+                }else
+                    signNow();//签到
+                break;
         }
     }
-    private void weiqiandaoInitView(){
-        SharedPreferences sharedPreferences = getSharedPreferences("mData",MODE_PRIVATE);
-
-        String week = sharedPreferences.getString("week","");
-        cDays = sharedPreferences.getInt("continuousDays",0);
-
-        allDays.setText(cDays +"");
-
-
-        if (week.equals("星期一")){
-            sharedPreferences.edit().remove("week");
-            week = "星期一";
-
-        }
-
-        if (week.equals("星期一")){
-            Ball1.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball1.setTextColor(getResources().getColor(R.color.titleWhite));
-
-            Ball2.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball2.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball3.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball3.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball4.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball4.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball5.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball5.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball6.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball6.setTextColor(getResources().getColor(R.color.ball_text));
-
-            Ball7.setBackgroundResource(R.drawable.button_circle_shape1);
-            Ball7.setTextColor(getResources().getColor(R.color.ball_text));
-            if (sunIsSignin = false){
-                cDays = 0;
-            }
-
-        }
-        if (week.equals("星期二")){
-            Ball2.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball2.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (monIsSignin = false){
-                cDays = 0;
-            }
-        }
-        if (week.equals("星期三")){
-            Ball3.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball3.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (tueIsSignin = false){
-                cDays = 0;
-            }
-        }
-        if (week.equals("星期四")){
-            Ball4.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball4.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (wedIsSignin = false){
-                cDays = 0;
-            }
-        }
-        if (week.equals("星期五")){
-            Ball5.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball5.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (thuIsSignin = false){
-                cDays = 0;
-            }
-        }
-        if (week.equals("星期六")){
-            Ball6.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball6.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (friIsSignin = false){
-                cDays = 0;
-            }
-        }if (week.equals("星期日")){
-            Ball7.setBackgroundResource(R.drawable.button_circle_shape);
-            Ball7.setTextColor(getResources().getColor(R.color.titleWhite));
-            if (satIsSignin = false){
-                cDays = 0;
-            }
-        }
-
-        continuousDays.setText(cDays+"");
-        MyLog.e(TAG,String.valueOf(cDays)+"#######"+week);
-
-        if (cDays == 1){
-            jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-        }
-        if (cDays == 2){
-            jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-            jiangbei2Img.setImageResource(R.mipmap.pic_yiqiandao1);
-        }
-        if (cDays > 2){
-            jiangbei1Img.setImageResource(R.mipmap.pic_yiqiandao1);
-            jiangbei2Img.setImageResource(R.mipmap.pic_yiqiandao1);
-            jiangbei3Img.setImageResource(R.mipmap.pic_yiqiandao1);
-        }
-    }
-
-
-
-
 }
