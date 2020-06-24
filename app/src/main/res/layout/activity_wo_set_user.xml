@@ -58,7 +58,7 @@
             android:layout_height="@dimen/dp_50"
             android:scaleType="centerCrop"
             android:id="@+id/set_touxiang_iv"
-            android:src="@drawable/touxiang"
+            android:src="@drawable/tianjia"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"            app:layout_constraintRight_toRightOf="parent"
            app:layout_constraintRight_toLeftOf="@+id/set_jiantou"

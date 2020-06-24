@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
 import com.yongyi.financialinfo.activity.LoginActivity;
+import com.yongyi.financialinfo.activity.MainActivity;
 import com.yongyi.financialinfo.activity.NewsContentActivity;
 import com.yongyi.financialinfo.activity.ShouyeCJSJActivity;
 import com.yongyi.financialinfo.activity.ShouyeHYFBActivity;
@@ -109,7 +110,7 @@ public class ShouyeFragment extends Fragment {
     }
 
     private void isGreat() {
-        SpSimpleUtils.saveSp("great","" , getContext(),"ShouyeFragment");
+        //SpSimpleUtils.saveSp("great","" , getContext(),"ShouyeFragment");
 
        String isgreat= SpSimpleUtils.getSp("great",getContext(),"ShouyeFragment");
         if(isgreat.equals("")){
@@ -225,7 +226,7 @@ public class ShouyeFragment extends Fragment {
     //获取新闻数据
     private void getNewsMsg(int pageNo) {
         RetrofitUtils.init();
-        Call<ShouyeNewBean> result = RetrofitUtils.retrofit.create(InterService.class).getNews(10, pageNo, "blockchain");
+        Call<ShouyeNewBean> result = RetrofitUtils.retrofit.create(InterService.class).getNews(10, pageNo, MainActivity.projectName);
         result.enqueue(new Callback<ShouyeNewBean>() {
             @Override
             public void onResponse(Call<ShouyeNewBean> call, Response<ShouyeNewBean> response) {

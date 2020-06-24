@@ -51,6 +51,8 @@ public class UserZhuCheActivity extends AppCompatActivity {
     TextView shoujiYanzhengmaClick;
     @BindView(R.id.userzhuche_zhuchexieyi)
     TextView userzhucheZhuchexieyi;
+    @BindView(R.id.userzhuche_yinsi)
+    TextView userzhucheYinsi;
     @BindView(userzhuche_zhuche)
     ImageView imageBtnZhuche;
     @BindView(R.id.userzhuche_cb)
@@ -99,7 +101,7 @@ public class UserZhuCheActivity extends AppCompatActivity {
 
     //获取手机验证码
     private void getPhoneYanzhengma() {
-        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),1,"futures",tuxiangYanzhengmaEt.getText().toString());
+        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),1,MainActivity.projectName,tuxiangYanzhengmaEt.getText().toString());
         result.enqueue(new Callback<LoginPhoneYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginPhoneYanzhengmaBean> call, Response<LoginPhoneYanzhengmaBean> response) {
@@ -122,7 +124,7 @@ public class UserZhuCheActivity extends AppCompatActivity {
     //上传注册信息
     private void postZhuce() {
         Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class)
-                .postZhuce(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),1,"futures");
+                .postZhuce(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),1,MainActivity.projectName);
         result.enqueue(new Callback<UserBean>() {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {
@@ -147,16 +149,25 @@ public class UserZhuCheActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.userzhuche_zhuchexieyi,R.id.back_iv, R.id.userzhuche_iv_tuxing_yanzhengma, R.id.userzhuche_tv_shouji_yanzhengma_click, userzhuche_zhuche})
+    @OnClick({R.id.userzhuche_yinsi,R.id.userzhuche_zhuchexieyi,R.id.back_iv, R.id.userzhuche_iv_tuxing_yanzhengma, R.id.userzhuche_tv_shouji_yanzhengma_click, userzhuche_zhuche})
     public void Onclick(View view){
         switch (view.getId()){
             case R.id.userzhuche_zhuchexieyi:
                 startActivity(new Intent(this, YongHuXieYiActivity.class));
                 MyLog.e(TAG,"点击了用户协议");
                 break;
+            case R.id.userzhuche_yinsi:
+                startActivity(new Intent(this, YinsiZhengceActivity.class));
+                MyLog.e(TAG,"点击了隐私政策");
+                break;
             case R.id.back_iv:
-                Intent intent1 = new Intent(UserZhuCheActivity.this,LoginActivity.class);
+               /* Intent intent1 = new Intent(UserZhuCheActivity.this,LoginActivity.class);
                 startActivity(intent1);
+                finish();*/
+                Intent intent = new Intent();
+                intent.putExtra("phone",shoujihaoEt.getText().toString());
+                intent.putExtra("password",mimaEt.getText().toString());
+                setResult(RESULT_OK,intent);
                 finish();
                 break;
             case R.id.userzhuche_iv_tuxing_yanzhengma:

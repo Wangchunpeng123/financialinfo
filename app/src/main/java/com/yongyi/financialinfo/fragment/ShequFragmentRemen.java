@@ -209,7 +209,7 @@ public class ShequFragmentRemen extends Fragment {
 
     private void getRemenMsg(int tuijianPageNb) {
         MyLog.e(Tag,"获取热门list");
-        Call<ShequRemenSsBean> call=RetrofitUtils.retrofit.create(InterService.class).getShuoShuoTuijian("futures",tuijianPageNb,5);
+        Call<ShequRemenSsBean> call=RetrofitUtils.retrofit.create(InterService.class).getShuoShuoTuijian(MainActivity.projectName,tuijianPageNb,5);
         call.enqueue(new Callback<ShequRemenSsBean>() {
             @Override
             public void onResponse(Call<ShequRemenSsBean> call, Response<ShequRemenSsBean> response) {

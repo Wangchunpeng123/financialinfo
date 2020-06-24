@@ -177,7 +177,7 @@ public class ShequFragmentGuanzhu extends Fragment {
     }
 
     private void getTuijianMsg(int tuijianPageNb) {
-        Call<ShequRemenSsBean> call=RetrofitUtils.retrofit.create(InterService.class).getShuoShuoTuijian("futures",tuijianPageNb,50);
+        Call<ShequRemenSsBean> call=RetrofitUtils.retrofit.create(InterService.class).getShuoShuoTuijian(MainActivity.projectName,tuijianPageNb,50);
         call.enqueue(new Callback<ShequRemenSsBean>() {
             @Override
             public void onResponse(Call<ShequRemenSsBean> call, Response<ShequRemenSsBean> response) {

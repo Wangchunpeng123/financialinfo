@@ -286,6 +286,7 @@
                     app:layout_constraintTop_toBottomOf="@id/liangbi"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:text="换手率:"
+                    android:paddingBottom="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_13"
                     android:layout_marginLeft="@dimen/dp_9"/>
 
@@ -297,6 +298,7 @@
                     app:layout_constraintTop_toBottomOf="@id/liangbi_number"
                     android:layout_marginTop="@dimen/dp_13"
                     android:layout_marginLeft="@dimen/dp_9"
+
                     android:text="0.00"
                     android:textColor="@color/hei"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

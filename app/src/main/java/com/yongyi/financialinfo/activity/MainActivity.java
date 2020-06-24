@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
     private String password;
     private String jiemiMsg;
     private String startType;//startType=1:从来没有登录成功过，进入游客模式；startType=2:登录过，直接自动登录；startType=3:登陆过从主界面退出来；
-
+    public static String projectName="blockchain";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity {
     //获取服务器数据
     private void login() {
         RetrofitUtils.init();
-        Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class).login(phone,password,1,"futures");
+        Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class).login(phone,password,1,MainActivity.projectName);
         result.enqueue(new Callback<UserBean>() {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {

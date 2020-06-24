@@ -96,7 +96,7 @@ public class LoginWangjiActivity extends AppCompatActivity {
 
     //获取手机验证码
     private void getPhoneYanzhengma() {
-        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),3,"futures",tuxiangYanzhengmaEt.getText().toString());
+        Call<LoginPhoneYanzhengmaBean> result = RetrofitUtils.retrofit.create(InterService.class).getPhoneYanzhengma(shoujihaoEt.getText().toString(),3,MainActivity.projectName,tuxiangYanzhengmaEt.getText().toString());
         result.enqueue(new Callback<LoginPhoneYanzhengmaBean>() {
             @Override
             public void onResponse(Call<LoginPhoneYanzhengmaBean> call, Response<LoginPhoneYanzhengmaBean> response) {
@@ -121,8 +121,8 @@ public class LoginWangjiActivity extends AppCompatActivity {
         MyLog.e(TAG,"上传的内容有：" + shoujihaoEt.getText().toString() + " "
                 + mimaEt.getText().toString() + " "
                 + userzhucheEtQr.getText().toString() + " "
-                + shoujiYanzhengmaEt.getText().toString() + " "+"futures");
-        Call<ResponseBody> result = RetrofitUtils.retrofit.create(InterService.class).resetPassword(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),"futures");
+                + shoujiYanzhengmaEt.getText().toString() + " "+MainActivity.projectName);
+        Call<ResponseBody> result = RetrofitUtils.retrofit.create(InterService.class).resetPassword(shoujihaoEt.getText().toString(),mimaEt.getText().toString(),userzhucheEtQr.getText().toString(),shoujiYanzhengmaEt.getText().toString(),MainActivity.projectName);
         result.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

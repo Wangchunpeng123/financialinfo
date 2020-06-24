@@ -63,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText userPassword;
     @BindView(R.id.login_zhuche)
     TextView loginZhuche;
-    @BindView(R.id.login_xieyi)
-    TextView loginXieyi;
     @BindView(R.id.login_yonghu)
     TextView loginYonghu;
     @BindView(R.id.yonghuxieyi_cb)
@@ -124,10 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         userphone.addTextChangedListener(textWatcher);
         userPassword.addTextChangedListener(textWatcher);
 
-        //设置底部字体颜色
-        SpannableStringBuilder style=new SpannableStringBuilder(loginXieyi.getText().toString());
-        style.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")),9,18, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        loginXieyi.setText(style);
+
     }
 
     //登录
@@ -137,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         password=userPassword.getText().toString().trim();
         MyLog.e(Tag,"登录时的phone和password:"+phone+"###"+password);
         RetrofitUtils.init();
-        Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class).login(phone,password,1,"futures");
+        Call<UserBean> result = RetrofitUtils.retrofit.create(InterService.class).login(phone,password,1,MainActivity.projectName);
         result.enqueue(new Callback<UserBean>() {
             @Override
             public void onResponse(Call<UserBean> call, Response<UserBean> response) {

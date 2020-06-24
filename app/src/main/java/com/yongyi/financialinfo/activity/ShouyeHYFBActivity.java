@@ -192,7 +192,7 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
     //获取新闻数据
     private void getMsg(int pageNo) {
         RetrofitUtils.init();
-        Call<ShouyeNewBean> result= RetrofitUtils.retrofit.create(InterService.class).getNews(10,pageNo,"blockchain");
+        Call<ShouyeNewBean> result= RetrofitUtils.retrofit.create(InterService.class).getNews(10,pageNo,MainActivity.projectName);
         result.enqueue(new Callback<ShouyeNewBean>() {
             @Override
             public void onResponse(Call<ShouyeNewBean> call, Response<ShouyeNewBean> response) {
