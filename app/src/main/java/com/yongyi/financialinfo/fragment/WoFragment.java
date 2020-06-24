@@ -18,6 +18,8 @@ import com.yongyi.financialinfo.activity.WoGuanzhuActivity;
 import com.yongyi.financialinfo.activity.WoSetUserActivity;
 import com.yongyi.financialinfo.activity.WoXiaoxiActivity;
 import com.yongyi.financialinfo.activity.WoYuwoxiangguanActivity;
+import com.yongyi.financialinfo.activity.YinsiZhengceActivity;
+import com.yongyi.financialinfo.activity.YongHuXieYiActivity;
 import com.yongyi.financialinfo.bean.UserBean;
 import com.yongyi.financialinfo.custom.CircleImageTransformer;
 import com.yongyi.financialinfo.http.InterService;
@@ -60,6 +62,10 @@ public class WoFragment extends Fragment {
     ConstraintLayout woLlXiaoxi;
     @BindView(R.id.wo_ll_tuichu)
     ConstraintLayout woLlTuichu;
+    @BindView(R.id.wo_ll_yinsi)
+    ConstraintLayout woLlYinsi;
+    @BindView(R.id.wo_ll_yonghu)
+    ConstraintLayout woLlYonghu;
     private View view;
     private UserBean userBean;
     private String Tag="WoFragment";
@@ -105,7 +111,7 @@ public class WoFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.wo_head, R.id.wo_name, R.id.wo_biaoqian, R.id.wo_shezhi, R.id.wo_ll_fensi, R.id.wo_ll_xiangguan, R.id.wo_ll_guanzhu, R.id.wo_ll_xiaoxi, R.id.wo_ll_tuichu})
+    @OnClick({R.id.wo_head, R.id.wo_name, R.id.wo_biaoqian, R.id.wo_shezhi, R.id.wo_ll_fensi, R.id.wo_ll_xiangguan, R.id.wo_ll_guanzhu, R.id.wo_ll_xiaoxi, R.id.wo_ll_tuichu,R.id.wo_ll_yinsi,R.id.wo_ll_yonghu})
     public void onClick(View view) {
         startType = SpSimpleUtils.getSp("startType",getContext(),"LoginActivity");
         switch (view.getId()) {
@@ -160,10 +166,16 @@ public class WoFragment extends Fragment {
                 else
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
+            case R.id.wo_ll_yinsi:
+                startActivity(new Intent(getActivity(), YinsiZhengceActivity.class));
+                break;
+            case R.id.wo_ll_yonghu:
+                startActivity(new Intent(getActivity(), YongHuXieYiActivity.class));
+                break;
             case R.id.wo_ll_tuichu:
                /* startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();*/
-                new MyDialog1(getContext(), R.style.dialog, "确认", "您即将退出登录", new MyDialog1.OnCloseListener() {
+                new MyDialog1(getContext(), R.style.dialog, "确认", "您即将退出登录","确定","取消", new MyDialog1.OnCloseListener() {
                     @Override
                     public void onClick(Dialog dialog, boolean confirm) {
                         if(confirm){
@@ -180,6 +192,11 @@ public class WoFragment extends Fragment {
                         }else{
                             MyLog.e("WoFragment:","false");
                         }
+                    }
+
+                    @Override
+                    public void onClickYinsi(Dialog dialog, String str) {
+
                     }
                 }).show();
 

@@ -49,6 +49,8 @@ public class UserZhuCheActivity extends AppCompatActivity {
     EditText shoujihaoEt;
     @BindView(R.id.userzhuche_tv_shouji_yanzhengma_click)
     TextView shoujiYanzhengmaClick;
+    @BindView(R.id.userzhuche_zhuchexieyi)
+    TextView userzhucheZhuchexieyi;
     @BindView(userzhuche_zhuche)
     ImageView imageBtnZhuche;
     @BindView(R.id.userzhuche_cb)
@@ -145,9 +147,13 @@ public class UserZhuCheActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.back_iv, R.id.userzhuche_iv_tuxing_yanzhengma, R.id.userzhuche_tv_shouji_yanzhengma_click, userzhuche_zhuche})
+    @OnClick({R.id.userzhuche_zhuchexieyi,R.id.back_iv, R.id.userzhuche_iv_tuxing_yanzhengma, R.id.userzhuche_tv_shouji_yanzhengma_click, userzhuche_zhuche})
     public void Onclick(View view){
         switch (view.getId()){
+            case R.id.userzhuche_zhuchexieyi:
+                startActivity(new Intent(this, YongHuXieYiActivity.class));
+                MyLog.e(TAG,"点击了用户协议");
+                break;
             case R.id.back_iv:
                 Intent intent1 = new Intent(UserZhuCheActivity.this,LoginActivity.class);
                 startActivity(intent1);

@@ -65,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView loginZhuche;
     @BindView(R.id.login_xieyi)
     TextView loginXieyi;
+    @BindView(R.id.login_yonghu)
+    TextView loginYonghu;
     @BindView(R.id.yonghuxieyi_cb)
     CheckBox yonghuxieyi_cb;
     @BindView(R.id.login_progress)
@@ -173,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.back_iv, R.id.userphone, R.id.login_denglu, R.id.user_password, R.id.login_zhuche,R.id.forget})
+    @OnClick({R.id.login_yonghu,R.id.back_iv, R.id.userphone, R.id.login_denglu, R.id.user_password, R.id.login_zhuche,R.id.forget})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_iv:
@@ -181,6 +183,10 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.userphone:
+                break;
+            case R.id.login_yonghu:
+                startActivity(new Intent(this, YongHuXieYiActivity.class));
+                MyLog.e(Tag,"点击了用户协议");
                 break;
             case R.id.login_denglu:
                 if (userphone.getText().toString().length() < 11)

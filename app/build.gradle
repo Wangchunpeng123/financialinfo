@@ -36,7 +36,7 @@ android {
             }
         }
 
-        
+
         applicationId "com.kc.bq" //JPush 上注册的包名.
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。
@@ -64,13 +64,16 @@ android {
         }
     }
 
-    android.applicationVariants.all { variant ->
+
+
+    
+   /* android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             variant.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/app/build/outputs/apks")
             outputFileName = "${variant.productFlavors[0].name}_${variant.productFlavors[1].name}_${variant.versionName}_${buildType.name}.apk"
         }
     }
-
+*/
     flavorDimensions 'app', 'channel'
     productFlavors {
         kcbq{//矿池币区策略
@@ -93,51 +96,51 @@ android {
             buildConfigField('String', 'name', '\"kcbqhw\"')
             buildConfigField('String', 'platform', '\"YX\"')
         }
-//        xm {
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqxm\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        tencent {
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqyyb\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        q360{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqqh360\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        oppo{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqoppo\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        mz{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqmz\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        baidu{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqbd\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        sougou{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqsg\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        samsung{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqsx\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
-//        lenovo{
-//            dimension 'channel'
-//            buildConfigField('String', 'name', '\"kcbqlx\"')
-//            buildConfigField('String', 'platform', '\"YX\"')
-//        }
+        xm {
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqxm\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        tencent {
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqyyb\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        q360{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqqh360\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        oppo{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqoppo\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        mz{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqmz\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        baidu{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqbd\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        sougou{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqsg\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        samsung{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqsx\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
+        lenovo{
+            dimension 'channel'
+            buildConfigField('String', 'name', '\"kcbqlx\"')
+            buildConfigField('String', 'platform', '\"YX\"')
+        }
 
 
     }

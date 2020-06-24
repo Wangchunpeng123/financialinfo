@@ -69,23 +69,32 @@ public class MainActivity extends BaseActivity {
                           //  MyLog.e("MAIN","STATIS=1");
                             String URL=jsonObject.getString("url");
                             startActivity(new Intent(MainActivity.this,DetailActivity.class).putExtra("URL",URL));
+                            finish();
                         }else{
                             //MyLog.e("MAIN","STATIS=2");
                             initMsg();
                             initPermission();
                         }
                     } catch (IOException e) {
+                        initMsg();
+                        initPermission();
                         e.printStackTrace();
                     } catch (Exception e) {
+                        initMsg();
+                        initPermission();
                         e.printStackTrace();
                     }
+                }else {
+                    initMsg();
+                    initPermission();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                initMsg();
+                initPermission();
             }
         });
     }
@@ -104,6 +113,7 @@ public class MainActivity extends BaseActivity {
                 {
                     SpSimpleUtils.saveSp("startType","1",MainActivity.this,"LoginActivity");
                     startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                    finish();
                 } else{
                     login();
                 }

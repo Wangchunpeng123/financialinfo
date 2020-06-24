@@ -47,7 +47,7 @@ public class WoXiaoxiXitongActivity extends AppCompatActivity {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, String s, int position) {
                     holder.setImg(WoXiaoxiXitongActivity.this,"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2457285391,3956866123&fm=26&gp=0.jpg",R.id.rv_xitong_head);
-                    holder.setTxt(R.id.rv_xitong_tv,"欢迎登录本APP，APP致力于创建一个股票期贷资讯" +
+                    holder.setTxt(R.id.rv_xitong_tv,"欢迎登录本APP，APP致力于创建一个数字货币资讯" +
                             "社区，用户可在本APP中查看资讯，发布和评论用户的见解，查看行情和指数" +
                             "。请在APP中准守国家法律，违反者我们将封号处理。");
             }

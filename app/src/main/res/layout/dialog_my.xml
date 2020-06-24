@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="@dimen/dp_260"
-    android:layout_height="@dimen/dp_150"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/bg_white_gray"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,7 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/dp_15"
-        android:text="登录失败"
+        android:text="标题"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_17"
         />
@@ -28,28 +28,72 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialog_title"
-        android:text="手机号码错误"
+        android:text="内容"
         android:layout_marginTop="@dimen/dp_17"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
         android:textSize="@dimen/sp_14"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_ll"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_content"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_yinsi"
+            android:text="《隐私政策》"
+            android:textColor="@color/cengse_remen"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="和"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_yonghu"
+            android:text="《用户协议》"
+            android:textColor="@color/cengse_remen"
+            />
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:id="@+id/dialog_view"
         android:background="@color/gray"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_ok"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_ll"
+        android:layout_marginTop="@dimen/dp_10"
         />
     <Button
         android:layout_width="@dimen/dp_120"
         android:layout_height="wrap_content"
         android:id="@+id/dialog_ok"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_view"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="确定"
         android:padding="@dimen/dp_15"
         android:textSize="@dimen/sp_15"
-        android:textColor="@color/blue"
+        android:textColor="@color/black"
         android:background="#0000"
+        />
+    <View
+        android:layout_width="1dp"
+        android:layout_height="@dimen/dp_30"
+        android:background="@color/black"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_view"
         />
     <Button
         android:layout_width="@dimen/dp_120"
@@ -57,10 +101,11 @@
         android:id="@+id/dialog_cancel"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_view"
         android:text="取消"
         android:padding="@dimen/dp_15"
         android:textSize="@dimen/sp_15"
-        android:textColor="@color/blue"
+        android:textColor="@color/cengse"
         android:background="#0000"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

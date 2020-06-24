@@ -120,7 +120,7 @@ public class SignInActvity extends AppCompatActivity {
     }
 
     private void initQiaodaojilu() {
-
+        lianxuQiandao=0;
         //设置连续签到
         List<String> allDay=new ArrayList<>();
         String toDay;

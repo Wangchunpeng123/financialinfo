@@ -14,10 +14,11 @@ import com.yongyi.financialinfo.util.MyToast;
 import com.zyq.easypermission.EasyPermissionHelper;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     public String TAG = "";
     ActivityManager activityManager;
 

@@ -31,6 +31,8 @@
             android:text="手机号码错误"
             android:layout_marginTop="@dimen/dp_17"
             android:textSize="@dimen/sp_14"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
             />
 
     <View

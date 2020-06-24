@@ -2,11 +2,15 @@ package com.yongyi.financialinfo.util;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yongyi.financialinfo.R;
+
+import androidx.annotation.NonNull;
 
 
 public class MyDialog1 extends android.app.Dialog implements View.OnClickListener{
@@ -17,9 +21,17 @@ public class MyDialog1 extends android.app.Dialog implements View.OnClickListene
     private Button cancel;
 
     private Context mContext;
+    private OnCloseListener listener;
+
+    private String titleStr;
+    private String contentStr;
     private String okstr;
     private String canclestr;
-    private OnCloseListener listener;
+    private boolean isLl;
+
+    private TextView yinsi;
+    private TextView yonghu;
+    private LinearLayout dialog_ll;
    /* private String okStr;
     private String cancleStr;*/
 
@@ -28,35 +40,47 @@ public class MyDialog1 extends android.app.Dialog implements View.OnClickListene
         super(context);
         this.mContext = context;
     }
-    public MyDialog1(Context context, String okstr, String canclestr) {
+    public MyDialog1(Context context, String titleStr, String contentStr) {
         super(context, R.style.dialog);
         this.mContext = context;
-        this.canclestr = canclestr;
-        this.okstr = okstr;
+        this.contentStr = contentStr;
+        this.titleStr = titleStr;
     }
 
-    public MyDialog1(Context context, int themeResId, String okstr, String canclestr) {
+    public MyDialog1(Context context, int themeResId, String titleStr, String contentStr) {
         super(context, themeResId);
         this.mContext = context;
-        this.canclestr = canclestr;
-        this.okstr = okstr;
+        this.contentStr = contentStr;
+        this.titleStr = titleStr;
     }
 
-    public MyDialog1(Context context, int themeResId, String okstr, String canclestr, OnCloseListener listener) {
+    public MyDialog1(Context context, int themeResId, String titleStr, String contentStr, OnCloseListener listener) {
         super(context, themeResId);
         this.mContext = context;
-        this.canclestr = canclestr;
-        this.okstr = okstr;
+        this.contentStr = contentStr;
+        this.titleStr = titleStr;
         this.listener = listener;
     }
 
-    protected MyDialog1(Context context, boolean cancelable, OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
+    public MyDialog1(Context context, int themeResId, String titleStr, String contentStr,String okstr,String canclestr, OnCloseListener listener) {
+        super(context, themeResId);
         this.mContext = context;
+        this.contentStr = contentStr;
+        this.titleStr = titleStr;
+        this.okstr=okstr;
+        this.canclestr=canclestr;
+        this.listener = listener;
     }
-
-
-
+    public MyDialog1(Context context, int themeResId, String titleStr, String contentStr,String okstr,String canclestr,boolean isLl, OnCloseListener listener) {
+        super(context, themeResId);
+        this.mContext = context;
+        this.contentStr = contentStr;
+        this.titleStr = titleStr;
+        this.okstr=okstr;
+        this.canclestr=canclestr;
+        this.isLl=isLl;
+        this.listener = listener;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +97,26 @@ public class MyDialog1 extends android.app.Dialog implements View.OnClickListene
         ok = findViewById(R.id.dialog_ok);
         cancel = findViewById(R.id.dialog_cancel);
 
+
+        //隐私政策和用户协议
+        yinsi = findViewById(R.id.dialog_yinsi);
+        yonghu = findViewById(R.id.dialog_yonghu);
+        dialog_ll= findViewById(R.id.dialog_ll);
+        yinsi.setOnClickListener(this);
+        yonghu.setOnClickListener(this);
+
         ok.setOnClickListener(this);
         cancel.setOnClickListener(this);
-        title.setText(okstr);
-        content.setText(canclestr);
+
+        title.setText(titleStr);
+        content.setText(contentStr);
+
+        ok.setText(okstr);
+        cancel.setText(canclestr);
+
+        if(isLl==true){
+            dialog_ll.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -94,10 +134,27 @@ public class MyDialog1 extends android.app.Dialog implements View.OnClickListene
                 }
                 this.dismiss();
                 break;
+            case R.id.dialog_yinsi:
+                if(listener != null){
+                    listener.onClickYinsi(this,"yinsi" );
+                }
+                break;
+            case R.id.dialog_yonghu:
+                if(listener != null){
+                    listener.onClickYinsi(this,"yonghu" );
+                }
+                break;
+
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        return false;
     }
 
     public interface OnCloseListener{
         void onClick(android.app.Dialog dialog, boolean confirm);
+        void onClickYinsi(android.app.Dialog dialog, String str);
     }
 }
