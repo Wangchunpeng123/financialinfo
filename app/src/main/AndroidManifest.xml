@@ -118,15 +118,7 @@
             android:exported="true"
             />
     </application>
-    <!--<receiver
-        android:name="koimkomkmol"
-        android:enabled="true"
-        android:exported="false" >
-        <intent-filter>
-            <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-            <category android:name="com.kc.bq" />
-        </intent-filter>
-    </receiver>-->
+
     <permission
         android:name="com.kc.bq.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />

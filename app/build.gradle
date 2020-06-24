@@ -36,6 +36,7 @@ android {
             }
         }
 
+        
         applicationId "com.kc.bq" //JPush 上注册的包名.
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。

@@ -89,6 +89,7 @@ public class SignInActvity extends AppCompatActivity {
             public void onResponse(Call<SignListBean> call, Response<SignListBean> response) {
                 MyLog.e(TAG, response.toString());
                 if (response.body() != null && response.body().getSuccess() == true) {
+                    list.clear();
                     list.addAll(response.body().getData());
                     runOnUiThread(new Runnable() {
                         @Override
