@@ -106,12 +106,15 @@ public class ShequFragment extends Fragment {
                 }
 
                 else{
+                    ViewUtil.setTextClick(shequGuanzhu,15,getResources().getColor(R.color.titleWhite),shequGuanzhuLine,true);
+                    ViewUtil.setTextClick(shequRemen,14,getResources().getColor(R.color.fenhong),shequRemenLine,false);
                     shequGuanzhu.callOnClick();//回调控件的点击事件
                 }
 
             }
             @Override
             public void onPageScrollStateChanged(int state) {
+               // arg0 ==1的时辰默示正在滑动，arg0==2的时辰默示滑动完毕了，arg0==0的时辰默示什么都没做
             }
         });
         //初始化顶部显示
@@ -132,7 +135,6 @@ public class ShequFragment extends Fragment {
                 shequVp.setCurrentItem(0);
                 break;
             case R.id.shequ_guanzhu:
-
                 if(!startType.equals("1")){
                     ViewUtil.setTextClick(shequGuanzhu,15,getResources().getColor(R.color.titleWhite),shequGuanzhuLine,true);
                     ViewUtil.setTextClick(shequRemen,14,getResources().getColor(R.color.fenhong),shequRemenLine,false);

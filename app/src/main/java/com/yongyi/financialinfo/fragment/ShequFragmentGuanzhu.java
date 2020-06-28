@@ -94,6 +94,7 @@ public class ShequFragmentGuanzhu extends Fragment {
             tuijianPageNb=1;
             remenBeans.clear();
             guanzhuList.clear();
+            if(ShequFragment.userBean!=null)
             getIsGuanzhu(guanzhuPage);
             MyLog.e(Tag,"onResume1");
         }else

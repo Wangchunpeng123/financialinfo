@@ -101,10 +101,10 @@ public class ShouyeHYFBActivity extends AppCompatActivity {
             @Override
             public void bindData(BaseRecyclerViewHolder holder, ShouyeNewBean.Mydata.dateMsg s, int position) {
                 holder.setClick(R.id.shishiremen_cons, s, position,rvAdapter);
-                if (s.getTitle().length() < 10)
+                if (s.getTitle().length() < 7)
                         holder.setTxt(R.id.shishi_tv, s.getTitle());
                     else
-                        holder.setTxt(R.id.shishi_tv, s.getTitle().substring(0, 10)+"...");
+                        holder.setTxt(R.id.shishi_tv, s.getTitle().substring(0, 7)+"...");
             }
             @Override
             public void clickEvent(int viewId, ShouyeNewBean.Mydata.dateMsg s, int position) {

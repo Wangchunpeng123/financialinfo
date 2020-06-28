@@ -360,7 +360,7 @@ COOKIES,从而正常运行上述功能;
                 android:text="济南柳梦信息科技有限公司
                 \n地址:山东省济南市槐荫区齐州路2477号绿地缤纷城2206室
                 \n邮箱:yohb22@janhz.com
-                \n联系人:刘浩明"
+                \n联系人:王先生"
                 android:textColor="@color/hei"
                 android:layout_marginBottom="@dimen/dp_13"
                 android:layout_marginTop="@dimen/dp_30"/>

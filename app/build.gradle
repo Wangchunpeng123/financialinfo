@@ -67,12 +67,14 @@ android {
 
 
     
-    android.applicationVariants.all { variant ->
+    /*android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             variant.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/app/build/outputs/apks")
             outputFileName = "${variant.productFlavors[0].name}_${variant.productFlavors[1].name}_${variant.versionName}_${buildType.name}.apk"
         }
-    }
+    }*/
+
+
     flavorDimensions 'app', 'channel'
     productFlavors {
         kcbq{//矿池币区策略
